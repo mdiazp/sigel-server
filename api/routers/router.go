@@ -9,6 +9,9 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
+	"gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers"
+	"gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers"
+	"gitlab.com/manuel.diaz/sirel/server/api/controllers/public_controllers"
 )
 
 func init() {
@@ -23,24 +26,24 @@ func init() {
 	ns := beego.NewNamespace("/api",
 		beego.NSNamespace("/public",
 			beego.NSInclude(
-				&controllers.LoginController{},
-				&controllers.PublicAreasController{},
+				&public_controllers.LoginController{},
+				&public_controllers.PublicAreasController{},
 			),
 		),
 		beego.NSNamespace("/private",
 			beego.NSBefore(controllers.AuthFilter),
 			beego.NSInclude(
-				&controllers.LogoutController{},
-				&controllers.ProfileController{},
+				&private_controllers.LogoutController{},
+				&private_controllers.ProfileController{},
 			),
 		),
 		beego.NSNamespace("/admin",
 			beego.NSBefore(controllers.AuthFilter),
 			beego.NSBefore(controllers.AdminFilter),
 			beego.NSInclude(
-				&controllers.AdminUsersController{},
-				&controllers.AdminAreasController{},
-				&controllers.AdminLocalsController{},
+				&admin_controllers.AdminUsersController{},
+				&admin_controllers.AdminAreasController{},
+				&admin_controllers.AdminLocalsController{},
 			),
 		),
 	)
