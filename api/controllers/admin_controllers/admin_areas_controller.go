@@ -22,12 +22,9 @@ type AdminAreasController struct {
 // @Accept json
 // @router /area [get]
 func (this *AdminAreasController) Get() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Area{}
 
-	this.BaseAreasController.Show(id, &o, nil)
+	this.BaseAreasController.Show(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -68,12 +65,9 @@ func (this *AdminAreasController) Post() {
 // @Accept json
 // @router /area [put]
 func (this *AdminAreasController) Put() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Area{}
 
-	this.BaseAreasController.Update(id, &o)
+	this.BaseAreasController.Update(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -92,9 +86,7 @@ func (this *AdminAreasController) Put() {
 // @Accept json
 // @router /area [delete]
 func (this *AdminAreasController) Remove() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-	this.BaseAreasController.Remove(id)
+	this.BaseAreasController.Remove()
 	this.ServeJSON()
 }
 

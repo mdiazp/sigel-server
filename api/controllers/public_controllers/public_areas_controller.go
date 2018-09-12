@@ -19,13 +19,10 @@ type PublicAreasController struct {
 // @Accept json
 // @router /area [get]
 func (this *PublicAreasController) Get() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Area{}
-	enable_to_reserve := true
+	this.Ctx.Input.SetParam("enable_to_reserve", "true")
 
-	this.BaseAreasController.Show(id, &o, &enable_to_reserve)
+	this.BaseAreasController.Show(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()

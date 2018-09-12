@@ -22,12 +22,9 @@ type AdminLocalsController struct {
 // @Accept json
 // @router /local [get]
 func (this *AdminLocalsController) Get() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Local{}
 
-	this.BaseLocalsController.Show(id, &o, nil)
+	this.BaseLocalsController.Show(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -68,12 +65,9 @@ func (this *AdminLocalsController) Post() {
 // @Accept json
 // @router /local [put]
 func (this *AdminLocalsController) Put() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Local{}
 
-	this.BaseLocalsController.Update(id, &o)
+	this.BaseLocalsController.Update(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -92,9 +86,7 @@ func (this *AdminLocalsController) Put() {
 // @Accept json
 // @router /local [delete]
 func (this *AdminLocalsController) Remove() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-	this.BaseLocalsController.Remove(id)
+	this.BaseLocalsController.Remove()
 	this.ServeJSON()
 }
 

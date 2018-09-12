@@ -13,13 +13,17 @@ type BaseLocalsController struct {
 	BaseController
 }
 
-func (this *BaseLocalsController) Show(id int, container *models.Local, enable_to_reserve *bool) {
+func (this *BaseLocalsController) Show(container *models.Local) {
 	var (
 		e error
 	)
 
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
+
 	qs := app.Model().QueryTable(&models.Local{}).Filter("id", id)
-	if enable_to_reserve != nil {
+	enable_to_reserve := this.GetString("enable_to_reserve")
+	if enable_to_reserve != "" {
 		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
 	}
 	e = qs.Limit(1).One(container)
@@ -48,10 +52,13 @@ func (this *BaseLocalsController) Create(container *models.Local) {
 	}
 }
 
-func (this *BaseLocalsController) Update(id int, container *models.Local) {
+func (this *BaseLocalsController) Update(container *models.Local) {
 	var (
 		e error
 	)
+
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
 
 	this.ReadInputBody(container)
 	container.Id = id
@@ -67,10 +74,13 @@ func (this *BaseLocalsController) Update(id int, container *models.Local) {
 	}
 }
 
-func (this *BaseLocalsController) Remove(id int) {
+func (this *BaseLocalsController) Remove() {
 	var (
 		e error
 	)
+
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
 
 	_, e = app.Model().QueryTable(&models.Local{}).Filter("id", id).Limit(1).Delete()
 	if e == models.ErrResultNotFound {

@@ -19,13 +19,10 @@ type PublicLocalsController struct {
 // @Accept json
 // @router /local [get]
 func (this *PublicLocalsController) Get() {
-	id, e := this.GetInt("id")
-	this.WE(e, 400)
-
 	o := models.Local{}
-	enable_to_reserve := true
+	this.Ctx.Input.SetParam("enable_to_reserve", "true")
 
-	this.BaseLocalsController.Show(id, &o, &enable_to_reserve)
+	this.BaseLocalsController.Show(&o)
 
 	this.Data["json"] = o
 	this.ServeJSON()

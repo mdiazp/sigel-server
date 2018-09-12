@@ -13,13 +13,17 @@ type BaseAreasController struct {
 	BaseController
 }
 
-func (this *BaseAreasController) Show(id int, container *models.Area, enable_to_reserve *bool) {
+func (this *BaseAreasController) Show(container *models.Area) {
 	var (
 		e error
 	)
 
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
+
 	qs := app.Model().QueryTable(&models.Area{}).Filter("id", id)
-	if enable_to_reserve != nil {
+	enable_to_reserve := this.GetString("enable_to_reserve")
+	if enable_to_reserve != "" {
 		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
 	}
 	e = qs.Limit(1).One(container)
@@ -48,10 +52,13 @@ func (this *BaseAreasController) Create(container *models.Area) {
 	}
 }
 
-func (this *BaseAreasController) Update(id int, container *models.Area) {
+func (this *BaseAreasController) Update(container *models.Area) {
 	var (
 		e error
 	)
+
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
 
 	//save id to prevent that id in body and in path be diferents
 	this.ReadInputBody(container)
@@ -68,10 +75,13 @@ func (this *BaseAreasController) Update(id int, container *models.Area) {
 	}
 }
 
-func (this *BaseAreasController) Remove(id int) {
+func (this *BaseAreasController) Remove() {
 	var (
 		e error
 	)
+
+	id, e := this.GetInt("id")
+	this.WE(e, 400)
 
 	_, e = app.Model().QueryTable(&models.Area{}).Filter("id", id).Limit(1).Delete()
 	if e == models.ErrResultNotFound {
