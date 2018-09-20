@@ -3,11 +3,12 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type BaseController struct {
@@ -57,16 +58,35 @@ func (this *BaseController) Validate(obj interface{}) {
 	}
 }
 
-func (this *BaseController) ReadPagAndOrdOptions() PagAndOrdOptions {
+func (this *BaseController) ReadPagAndOrdOptions(defaultOrderByOption string, orderByOptions ...string) PagAndOrdOptions {
 	var (
 		opt PagAndOrdOptions
 		e   error
+		ok  bool
 	)
 
 	opt.Limit, e = this.GetInt("limit", 20)
 	opt.Offset, e = this.GetInt("offset", 0)
 	opt.OrderBy = this.GetString("orderby", "id")
-	opt.Desc, e = this.GetBool("desc", false)
+
+	ok = false
+
+	for _, o := range orderByOptions {
+		if o == opt.OrderBy {
+			ok = true
+			break
+		}
+	}
+
+	if !ok {
+		opt.OrderBy = defaultOrderByOption
+	}
+
+	opt.orderDirection = this.GetString("orderDirection", "asc")
+	if opt.orderDirection != "asc" && opt.orderDirection != "desc" {
+		e = errors.New(fmt.Sprintf("orderDirection have an invalid value: %s", opt.orderDirection))
+		beego.Debug(e.Error())
+	}
 
 	this.WE(e, 400)
 
@@ -75,7 +95,7 @@ func (this *BaseController) ReadPagAndOrdOptions() PagAndOrdOptions {
 
 func (this *BaseController) Fmtorder(opt *PagAndOrdOptions) string {
 	exp := opt.OrderBy
-	if opt.Desc {
+	if opt.orderDirection == "desc" {
 		exp = "-" + exp
 	}
 	return exp

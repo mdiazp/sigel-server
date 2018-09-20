@@ -1,7 +1,7 @@
 package private_controllers
 
 import (
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/controllers"
 )
 
 type LogoutController struct {

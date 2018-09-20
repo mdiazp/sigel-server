@@ -5,8 +5,8 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type BaseLocalsController struct {
@@ -99,7 +99,7 @@ func (this *BaseLocalsController) List(container *[]models.Local) {
 
 	qs := app.Model().QueryTable(&models.Local{})
 
-	opt := this.ReadPagAndOrdOptions()
+	opt := this.ReadPagAndOrdOptions("id", "id", "name")
 	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
 	if opt.OrderBy == "" {
 		opt.OrderBy = "id"
@@ -115,23 +115,26 @@ func (this *BaseLocalsController) List(container *[]models.Local) {
 		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
 	}
 
-	fname := this.GetString("fname")
+	fname := this.GetString("search")
 	if fname != "" {
 		qs = qs.Filter("name__icontains", fname)
 	}
 
-	area_id, e := this.GetInt("area_id")
-	if area_id > 0 {
+	tmp = this.GetString("area_id")
+	if tmp != "" {
+		area_id, e := strconv.Atoi(tmp)
+		this.WE(e, 400)
 		qs = qs.Filter("area_id", area_id)
 	}
 
 	_, e = qs.All(container)
 
-	if e != nil {
-		if e == models.ErrResultNotFound {
-			this.WE(e, 404)
-		}
+	if e != nil && e != models.ErrResultNotFound {
 		beego.Error(e.Error())
 		this.WE(e, 500)
+	}
+
+	if e == models.ErrResultNotFound {
+		*container = make([]models.Local, 0)
 	}
 }

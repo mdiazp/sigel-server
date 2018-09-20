@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/area`,
@@ -15,7 +15,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/area`,
@@ -23,15 +23,15 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
-			Method: "Put",
+			Method: "Patch",
 			Router: `/area`,
-			AllowHTTPMethods: []string{"put"},
+			AllowHTTPMethods: []string{"patch"},
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
 			Method: "Remove",
 			Router: `/area`,
@@ -39,7 +39,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminAreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/areas`,
@@ -47,7 +47,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/local`,
@@ -55,7 +55,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/local`,
@@ -63,15 +63,15 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
-			Method: "Put",
+			Method: "Patch",
 			Router: `/local`,
-			AllowHTTPMethods: []string{"put"},
+			AllowHTTPMethods: []string{"patch"},
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
 			Method: "Remove",
 			Router: `/local`,
@@ -79,7 +79,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminLocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/locals`,
@@ -87,7 +87,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/user`,
@@ -95,15 +95,15 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"],
 		beego.ControllerComments{
-			Method: "Put",
+			Method: "Patch",
 			Router: `/user`,
-			AllowHTTPMethods: []string{"put"},
+			AllowHTTPMethods: []string{"patch"},
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/admin_controllers:AdminUsersController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminUsersController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/users`,

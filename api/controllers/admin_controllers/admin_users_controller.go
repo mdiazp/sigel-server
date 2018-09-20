@@ -5,9 +5,9 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type AdminUsersController struct {
@@ -58,8 +58,8 @@ func (this *AdminUsersController) Get() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /user [put]
-func (this *AdminUsersController) Put() {
+// @router /user [patch]
+func (this *AdminUsersController) Patch() {
 	var (
 		e error
 	)
@@ -106,7 +106,8 @@ func (this *AdminUsersController) Put() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	desc		query	bool	false		"Order Desc"
+// @Param	sortorder		query	string	false		"asc or desc"
+// @Param	search		query	string	false		"Filter by username"
 // @Success 200 {object} []models.User
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
@@ -116,16 +117,13 @@ func (this *AdminUsersController) Put() {
 // @Accept json
 // @router /users [get]
 func (this *AdminUsersController) List() {
-
-	//Nota: validate orderBy column name
-
 	var (
 		e error
 	)
 
 	qs := app.Model().QueryTable(&models.User{})
 
-	opt := this.ReadPagAndOrdOptions()
+	opt := this.ReadPagAndOrdOptions("id", "id", "username")
 	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
 	if opt.OrderBy == "" {
 		opt.OrderBy = "id"
@@ -134,15 +132,21 @@ func (this *AdminUsersController) List() {
 		qs = qs.OrderBy(this.Fmtorder(&opt))
 	}
 
+	fusername := this.GetString("fusername")
+	if fusername != "" {
+		qs = qs.Filter("username__icontains", fusername)
+	}
+
 	var l []models.User
 	_, e = qs.All(&l)
 
-	if e != nil {
-		if e == models.ErrResultNotFound {
-			this.WE(e, 404)
-		}
+	if e != nil && e != models.ErrResultNotFound {
 		beego.Error(e.Error())
 		this.WE(e, 500)
+	}
+
+	if e == models.ErrResultNotFound {
+		l = make([]models.User, 0)
 	}
 
 	this.Data["json"] = l

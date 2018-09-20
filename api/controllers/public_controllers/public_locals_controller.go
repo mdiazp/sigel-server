@@ -1,8 +1,8 @@
 package public_controllers
 
 import (
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type PublicLocalsController struct {
@@ -33,9 +33,9 @@ func (this *PublicLocalsController) Get() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	desc		query	bool	false		"Order Desc"
+// @Param	orderDirection		query	string	false		"asc or desc"
 // @Param	area_id		query	int	false		"Property Local"
-// @Param	fname		query	string	false		"Search in name"
+// @Param	search		query	string	false		"Search in name"
 // @Success 200 {object} []models.Local
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized

@@ -1,8 +1,8 @@
 package admin_controllers
 
 import (
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type AdminLocalsController struct {
@@ -63,8 +63,8 @@ func (this *AdminLocalsController) Post() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /local [put]
-func (this *AdminLocalsController) Put() {
+// @router /local [patch]
+func (this *AdminLocalsController) Patch() {
 	o := models.Local{}
 
 	this.BaseLocalsController.Update(&o)
@@ -96,10 +96,10 @@ func (this *AdminLocalsController) Remove() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	desc		query	bool	false		"Order Desc"
+// @Param	sortorder		query	string	false		"asc or desc"
 // @Param	enable_to_reserve		query	string	false		"Local Property (true o false)"
 // @Param	area_id		query	int	false		"Local Property"
-// @Param	fname		query	string	false		"Search in name"
+// @Param	search		query	string	false		"Search in name"
 // @Success 200 {object} []models.Local
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized

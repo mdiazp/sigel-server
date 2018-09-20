@@ -5,8 +5,8 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type ReservationBaseController struct {
@@ -47,7 +47,7 @@ func (this *ReservationBaseController) List(container *[]models.Reservation) {
 
 	qs := app.Model().QueryTable(&models.Reservation{})
 
-	opt := this.ReadPagAndOrdOptions()
+	opt := this.ReadPagAndOrdOptions("id", "id", "activity_name", "begin_time")
 	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
 	if opt.OrderBy == "" {
 		opt.OrderBy = "id"

@@ -7,8 +7,8 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	_ "gitlab.com/manuel.diaz/sirel/server/api/routers"
+	"github.com/mdiazp/sirel-server/api/app"
+	_ "github.com/mdiazp/sirel-server/api/routers"
 )
 
 type SirelConfig struct {

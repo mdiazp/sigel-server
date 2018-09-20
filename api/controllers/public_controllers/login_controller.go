@@ -4,9 +4,9 @@ import (
 	"errors"
 
 	"github.com/astaxie/beego"
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type LoginController struct {

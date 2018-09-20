@@ -5,8 +5,8 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type BaseAreasController struct {
@@ -100,7 +100,7 @@ func (this *BaseAreasController) List(container *[]models.Area) {
 
 	qs := app.Model().QueryTable(&models.Area{})
 
-	opt := this.ReadPagAndOrdOptions()
+	opt := this.ReadPagAndOrdOptions("id", "id", "name")
 	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
 	if opt.OrderBy == "" {
 		opt.OrderBy = "id"
@@ -116,7 +116,7 @@ func (this *BaseAreasController) List(container *[]models.Area) {
 		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
 	}
 
-	fname := this.GetString("fname")
+	fname := this.GetString("search")
 	if fname != "" {
 		qs = qs.Filter("name__icontains", fname)
 	}
@@ -124,10 +124,11 @@ func (this *BaseAreasController) List(container *[]models.Area) {
 	_, e = qs.All(container)
 
 	if e != nil {
-		if e == models.ErrResultNotFound {
-			this.WE(e, 404)
-		}
 		beego.Error(e.Error())
 		this.WE(e, 500)
+	}
+
+	if e == models.ErrResultNotFound {
+		*container = make([]models.Area, 0)
 	}
 }

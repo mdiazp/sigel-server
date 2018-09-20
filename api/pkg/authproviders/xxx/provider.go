@@ -2,15 +2,22 @@ package xxx
 
 import (
 	"errors"
+	"strings"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/pkg/authproviders"
+	"github.com/mdiazp/sirel-server/api/pkg/authproviders"
 )
 
 type provider struct{}
 
 func (this *provider) Authenticate(username, password string) error {
 	if users[username] == zero {
-		return errors.New("User not found")
+		users[username] = authproviders.UserRecords{
+			Username: username,
+			Email:    username + "@upr.edu.cu",
+			Name:     strings.Split(username, ".")[0] + " " + strings.Split(username, ".")[1],
+		}
+		return nil
+		// return errors.New("User not found")
 	}
 	if password != "123" {
 		return errors.New("Fail Authentication")

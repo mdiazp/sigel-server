@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:LogoutController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:LogoutController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:LogoutController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:LogoutController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -15,7 +15,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:ProfileController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:ProfileController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:ProfileController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:ProfileController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/profile`,
@@ -23,11 +23,11 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:ProfileController"] = append(beego.GlobalControllerRouter["gitlab.com/manuel.diaz/sirel/server/api/controllers/private_controllers:ProfileController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:ProfileController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/private_controllers:ProfileController"],
 		beego.ControllerComments{
-			Method: "Put",
+			Method: "Patch",
 			Router: `/profile`,
-			AllowHTTPMethods: []string{"put"},
+			AllowHTTPMethods: []string{"patch"},
 			MethodParams: param.Make(),
 			Params: nil})
 

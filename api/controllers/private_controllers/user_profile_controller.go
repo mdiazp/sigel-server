@@ -2,9 +2,9 @@ package private_controllers
 
 import (
 	"github.com/astaxie/beego"
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 type ProfileController struct {
@@ -37,8 +37,8 @@ func (this *ProfileController) Get() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile [put]
-func (this *ProfileController) Put() {
+// @router /profile [patch]
+func (this *ProfileController) Patch() {
 	var (
 		e error
 	)

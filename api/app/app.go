@@ -3,11 +3,11 @@ package app
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
-	"gitlab.com/manuel.diaz/sirel/server/api/pkg/authproviders"
-	"gitlab.com/manuel.diaz/sirel/server/api/pkg/authproviders/ldap"
-	"gitlab.com/manuel.diaz/sirel/server/api/pkg/authproviders/xxx"
-	"gitlab.com/manuel.diaz/sirel/server/api/pkg/cryptoutil"
+	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/pkg/authproviders"
+	"github.com/mdiazp/sirel-server/api/pkg/authproviders/ldap"
+	"github.com/mdiazp/sirel-server/api/pkg/authproviders/xxx"
+	"github.com/mdiazp/sirel-server/api/pkg/cryptoutil"
 )
 
 var (

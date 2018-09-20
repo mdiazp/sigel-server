@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/astaxie/beego/context"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 /*
@@ -34,8 +34,8 @@ func GetAuthorFromInputData(ctx *context.Context) (models.User, error) {
 }
 
 type PagAndOrdOptions struct {
-	Limit   int
-	Offset  int
-	OrderBy string
-	Desc    bool
+	Limit          int
+	Offset         int
+	OrderBy        string
+	orderDirection string
 }

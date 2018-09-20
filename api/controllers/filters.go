@@ -7,8 +7,8 @@ import (
 	"github.com/astaxie/beego"
 
 	"github.com/astaxie/beego/context"
-	"gitlab.com/manuel.diaz/sirel/server/api/app"
-	"gitlab.com/manuel.diaz/sirel/server/api/models"
+	"github.com/mdiazp/sirel-server/api/app"
+	"github.com/mdiazp/sirel-server/api/models"
 )
 
 const AuthHd = "authHd"
