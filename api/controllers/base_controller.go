@@ -31,6 +31,7 @@ func (this *BaseController) WE(e error, statusCode int, ms ...interface{}) {
 
 func (this *BaseController) ReadInputBody(obj interface{}) {
 	e := json.Unmarshal(this.Ctx.Input.RequestBody, &obj)
+	beego.Debug(e)
 	this.WE(e, 400)
 }
 

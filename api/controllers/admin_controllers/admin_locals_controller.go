@@ -85,7 +85,7 @@ func (this *AdminLocalsController) Patch() {
 // @Failure 500 Internal Server Error
 // @Accept json
 // @router /local [delete]
-func (this *AdminLocalsController) Remove() {
+func (this *AdminLocalsController) Delete() {
 	this.BaseLocalsController.Remove()
 	this.ServeJSON()
 }

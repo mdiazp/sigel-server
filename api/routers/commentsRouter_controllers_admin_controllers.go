@@ -73,7 +73,7 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
-			Method: "Remove",
+			Method: "Delete",
 			Router: `/local`,
 			AllowHTTPMethods: []string{"delete"},
 			MethodParams: param.Make(),
