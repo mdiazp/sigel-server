@@ -27,7 +27,10 @@ func init() {
 		beego.NSNamespace("/public",
 			beego.NSInclude(
 				&public_controllers.LoginController{},
+				&public_controllers.PublicUsersController{},
+				&public_controllers.PublicLocalsController{},
 				&public_controllers.PublicAreasController{},
+				&public_controllers.PublicReservationsController{},
 			),
 		),
 		beego.NSNamespace("/private",
@@ -44,6 +47,7 @@ func init() {
 				&admin_controllers.AdminUsersController{},
 				&admin_controllers.AdminAreasController{},
 				&admin_controllers.AdminLocalsController{},
+				&admin_controllers.AdminReservationsController{},
 			),
 		),
 	)

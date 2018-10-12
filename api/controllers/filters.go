@@ -19,7 +19,7 @@ func AuthFilter(ctx *context.Context) {
 	}
 
 	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
-		u := models.User{
+		u := models.KUser{
 			Username: "manuel.diaz",
 			Rol:      "Admin",
 		}
@@ -34,9 +34,9 @@ func AuthFilter(ctx *context.Context) {
 		return
 	}
 
-	var u models.User
+	var u models.KUser
 	if username != "SIREL" {
-		e = app.Model().QueryTable(&models.User{}).Filter("username", username).Limit(1).One(&u)
+		e = app.Model().QueryTable(&models.KUser{}).Filter("username", username).Limit(1).One(&u)
 		if e != nil {
 			if e == models.ErrResultNotFound {
 				wrec(ctx, 401)
@@ -52,7 +52,7 @@ func AuthFilter(ctx *context.Context) {
 			return
 		}
 	} else {
-		u = models.User{
+		u = models.KUser{
 			Username: "SIREL",
 			Rol:      models.RolSuperadmin,
 		}

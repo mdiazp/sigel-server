@@ -47,4 +47,20 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public_controllers:PublicReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public_controllers:PublicReservationsController"],
+		beego.ControllerComments{
+			Method: "Get",
+			Router: `/reservation`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public_controllers:PublicUsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public_controllers:PublicUsersController"],
+		beego.ControllerComments{
+			Method: "GetUsernamesList",
+			Router: `/users/usernames`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 }

@@ -30,7 +30,7 @@ func (c *LoginController) URLMapping() {
 func (this *LoginController) Login() {
 	var (
 		e error
-		u models.User
+		u models.KUser
 	)
 	// Read Credentials
 	cred := Credentials{}
@@ -58,10 +58,10 @@ func (this *LoginController) Login() {
 		cred.Username = urecords.Username
 
 		// Register user if they is not yet
-		e = app.Model().QueryTable(models.User{}).Filter("username", cred.Username).Limit(1).One(&u)
+		e = app.Model().QueryTable(models.KUser{}).Filter("username", cred.Username).Limit(1).One(&u)
 		if e == models.ErrResultNotFound {
 			//Then register the new user
-			u = models.User{
+			u = models.KUser{
 				Username: urecords.Username,
 				Name:     urecords.Name,
 				Email:    urecords.Email,
@@ -88,7 +88,7 @@ func (this *LoginController) Login() {
 		if beego.AppConfig.String("SIREL_PASSWORD") != cred.Password {
 			this.WE(errors.New("401: wrong credentials"), 401)
 		}
-		u = models.User{
+		u = models.KUser{
 			Username: "SIREL",
 			Rol:      models.RolSuperadmin,
 			Enable:   true,

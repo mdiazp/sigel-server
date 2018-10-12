@@ -31,11 +31,13 @@ func (this *BaseController) WE(e error, statusCode int, ms ...interface{}) {
 
 func (this *BaseController) ReadInputBody(obj interface{}) {
 	e := json.Unmarshal(this.Ctx.Input.RequestBody, &obj)
-	beego.Debug(e)
+	if e != nil {
+		beego.Debug(e)
+	}
 	this.WE(e, 400)
 }
 
-func (this *BaseController) GetAuthor() models.User {
+func (this *BaseController) GetAuthor() models.KUser {
 	// Author of request must be loggued
 	u, e := GetAuthorFromInputData(this.Ctx)
 	if e != nil {
@@ -54,6 +56,7 @@ func (this *BaseController) Validate(obj interface{}) {
 		this.WE(e, 500)
 	}
 	if !ok {
+		beego.Debug(fmt.Sprint(obj))
 		beego.Debug(valid.Errors)
 		this.WE(errors.New("bad request"), 400)
 	}

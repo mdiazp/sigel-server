@@ -25,12 +25,12 @@ func AccessRolControl(this *beego.Controller, Rol string) {
 }
 */
 
-func GetAuthorFromInputData(ctx *context.Context) (models.User, error) {
+func GetAuthorFromInputData(ctx *context.Context) (models.KUser, error) {
 	x := ctx.Input.Data()["Author"]
-	if auth, ok := x.(models.User); ok {
+	if auth, ok := x.(models.KUser); ok {
 		return auth, nil
 	}
-	return models.User{}, errors.New("Not user founded in ctx.Input.Data[\"Author\"]")
+	return models.KUser{}, errors.New("Not user founded in ctx.Input.Data[\"Author\"]")
 }
 
 type PagAndOrdOptions struct {

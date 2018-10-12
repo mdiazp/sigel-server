@@ -114,3 +114,60 @@ func (this *AdminLocalsController) List() {
 	this.Data["json"] = l
 	this.ServeJSON()
 }
+
+// @Title Get Admins
+// @Description Delete user from admins by id (role admin required)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	id		query	string	true		"Local id"
+// @Success 200 {[]models.UserPublicInfo}
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /local/admins [get]
+func (this *AdminLocalsController) Admins() {
+	var admins []models.UserPublicInfo
+	this.BaseLocalsController.Admins(&admins)
+	this.Data["json"] = admins
+	this.ServeJSON()
+}
+
+// @Title Delete User from Admins
+// @Description Delete user from admins by id (role admin required)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	local_id		query	int	true		"Local id"
+// @Param	user_id		query	int	true		"User id"
+// @Success 200 {string}
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /local/admins [put]
+func (this *AdminLocalsController) PutAdmin() {
+	this.BaseLocalsController.AddAdmin()
+	this.Data["json"] = "OK"
+	this.ServeJSON()
+}
+
+// @Title Delete User from Admins
+// @Description Delete user from admins by id (role admin required)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	local_id		query	string	true		"Local id"
+// @Param	user_id		query	string	true		"User id"
+// @Success 200 {string}
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /local/admins [delete]
+func (this *AdminLocalsController) DeleteAdmin() {
+	this.BaseLocalsController.RemoveAdmin()
+	this.Data["json"] = "OK"
+	this.ServeJSON()
+}

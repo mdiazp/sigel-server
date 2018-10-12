@@ -59,7 +59,7 @@ func (this *ProfileController) Patch() {
 	this.ServeJSON()
 }
 
-func toProfile(u *models.User) Profile {
+func toProfile(u *models.KUser) Profile {
 	return Profile{
 		Username: u.Username,
 		Name:     u.Name,

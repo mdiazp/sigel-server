@@ -41,6 +41,30 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
 		beego.ControllerComments{
+			Method: "Admins",
+			Router: `/area/admins`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
+		beego.ControllerComments{
+			Method: "PutAdmin",
+			Router: `/area/admins`,
+			AllowHTTPMethods: []string{"put"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
+		beego.ControllerComments{
+			Method: "DeleteAdmin",
+			Router: `/area/admins`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminAreasController"],
+		beego.ControllerComments{
 			Method: "List",
 			Router: `/areas`,
 			AllowHTTPMethods: []string{"get"},
@@ -81,8 +105,40 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
 		beego.ControllerComments{
+			Method: "Admins",
+			Router: `/local/admins`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
+		beego.ControllerComments{
+			Method: "PutAdmin",
+			Router: `/local/admins`,
+			AllowHTTPMethods: []string{"put"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
+		beego.ControllerComments{
+			Method: "DeleteAdmin",
+			Router: `/local/admins`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminLocalsController"],
+		beego.ControllerComments{
 			Method: "List",
 			Router: `/locals`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin_controllers:AdminReservationsController"],
+		beego.ControllerComments{
+			Method: "List",
+			Router: `/reservations`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})

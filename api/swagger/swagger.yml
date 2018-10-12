@@ -31,6 +31,10 @@ paths:
         required: true
         type: integer
         format: int64
+      - in: query
+        name: load_admins
+        description: Local id
+        type: string
       responses:
         "200":
           description: ""
@@ -147,6 +151,118 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/models.Area'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /admin/area/admins:
+    get:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminAreasController.Get Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: id
+        description: Area id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{[]models.UserPublicInfo}'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminAreasController.Delete User from Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: area_id
+        description: Area id
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: user_id
+        description: User id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: '{string}'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminAreasController.Delete User from Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: area_id
+        description: Area id
+        required: true
+        type: string
+      - in: query
+        name: user_id
+        description: User id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string}'
         "400":
           description: Bad request
         "401":
@@ -364,6 +480,118 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/local/admins:
+    get:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminLocalsController.Get Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: id
+        description: Local id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{[]models.UserPublicInfo}'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminLocalsController.Delete User from Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: local_id
+        description: Local id
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: user_id
+        description: User id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: '{string}'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - admin
+      description: Delete user from admins by id (role admin required)
+      operationId: AdminLocalsController.Delete User from Admins
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: local_id
+        description: Local id
+        required: true
+        type: string
+      - in: query
+        name: user_id
+        description: User id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string}'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/locals:
     get:
       tags:
@@ -428,6 +656,71 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/reservations:
+    get:
+      tags:
+      - admin
+      description: Get reservations list (role admin required)
+      operationId: AdminReservationsController.Get Reservations List
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: limit
+        description: Limit (10 or 50 or 100)
+        type: integer
+        format: int64
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+        format: int64
+      - in: query
+        name: orderby
+        description: OrderBy (property name)
+        type: string
+      - in: query
+        name: sortorder
+        description: asc or desc
+        type: string
+      - in: query
+        name: local_id
+        description: Reservation Property
+        type: integer
+        format: int64
+      - in: query
+        name: user_id
+        description: Reservation Property
+        type: integer
+        format: int64
+      - in: query
+        name: search_in_activity_name
+        description: Search in activity name
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.Reservation'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/user:
     get:
       tags:
@@ -454,7 +747,7 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/.User'
         "400":
           description: Bad request
         "401":
@@ -497,7 +790,7 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/.User'
         "400":
           description: Bad request
         "401":
@@ -552,7 +845,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/models.User'
+              $ref: '#/definitions/.User'
         "400":
           description: Bad request
         "401":
@@ -726,6 +1019,89 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /public/local:
+    get:
+      tags:
+      - public
+      description: Get local info by id
+      operationId: PublicLocalsController.Retrieve public local info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: id
+        description: Local id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Local'
+        "400":
+          description: Bad request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /public/locals:
+    get:
+      tags:
+      - public
+      description: Get public locals list
+      operationId: PublicLocalsController.Get public locals list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        description: Limit (10 or 50 or 100)
+        type: integer
+        format: int64
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+        format: int64
+      - in: query
+        name: orderby
+        description: OrderBy (property name)
+        type: string
+      - in: query
+        name: sortorder
+        description: asc or desc
+        type: string
+      - in: query
+        name: area_id
+        description: Local Property
+        type: integer
+        format: int64
+      - in: query
+        name: search
+        description: Search in name
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.Local'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /public/login:
     post:
       tags:
@@ -755,10 +1131,81 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
+  /public/reservation:
+    get:
+      tags:
+      - public
+      description: Get reservation info by id
+      operationId: PublicReservationsController.Retrieve public reservation info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: id
+        description: Reservation id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Reservation'
+        "400":
+          description: Bad request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /public/users/usernames:
+    get:
+      tags:
+      - public
+      description: Get usernames list
+      operationId: PublicUsersController.Get usernames list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: prefixFilter
+        description: prefixFilter
+        required: true
+        type: string
+      - in: query
+        name: limit
+        description: Limit
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: offset
+        description: Offset
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/.UserOnlyUsernamesAndId'
+        "400":
+          description: Bad request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
 definitions:
   .Profile:
     type: object
   .ProfileEdit:
+    type: object
+  .User:
+    type: object
+  .UserOnlyUsernamesAndId:
     type: object
   admin_controllers.UserEdit:
     title: UserEdit
@@ -801,25 +1248,49 @@ definitions:
         type: string
       name:
         type: string
-  models.User:
-    title: User
+      working_begin_time_hours:
+        type: integer
+        format: int64
+      working_begin_time_minutes:
+        type: integer
+        format: int64
+      working_end_time_hours:
+        type: integer
+        format: int64
+      working_end_time_minutes:
+        type: integer
+        format: int64
+      working_months:
+        type: string
+      working_week_days:
+        type: string
+  models.Reservation:
+    title: Reservation
     type: object
     properties:
-      email:
+      activity_description:
         type: string
-      enable:
+      activity_name:
+        type: string
+      begin_time:
+        type: string
+        format: datetime
+      confirmed:
         type: boolean
+      end_time:
+        type: string
+        format: datetime
       id:
         type: integer
         format: int64
-      name:
-        type: string
-      rol:
-        type: string
-      send_notifications_to_email:
+      local_id:
+        type: integer
+        format: int64
+      pending:
         type: boolean
-      username:
-        type: string
+      user_id:
+        type: integer
+        format: int64
   public_controllers.Credentials:
     title: Credentials
     type: object

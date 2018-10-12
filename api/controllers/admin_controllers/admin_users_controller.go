@@ -34,8 +34,8 @@ func (this *AdminUsersController) Get() {
 	id, e := this.GetInt("id")
 	this.WE(e, 400)
 
-	u := models.User{}
-	e = app.Model().QueryTable(&models.User{}).Filter("id", id).Limit(1).One(&u)
+	u := models.KUser{}
+	e = app.Model().QueryTable(&models.KUser{}).Filter("id", id).Limit(1).One(&u)
 	if e != nil {
 		if e == models.ErrResultNotFound {
 			this.WE(e, 404)
@@ -77,8 +77,8 @@ func (this *AdminUsersController) Patch() {
 	uedit := UserEdit{}
 	this.ReadInputBody(&uedit)
 
-	u := models.User{}
-	e = app.Model().QueryTable(&models.User{}).Filter("id", id).Limit(1).One(&u)
+	u := models.KUser{}
+	e = app.Model().QueryTable(&models.KUser{}).Filter("id", id).Limit(1).One(&u)
 	if e != nil {
 		if e == models.ErrResultNotFound {
 			this.WE(e, 404)
@@ -121,7 +121,7 @@ func (this *AdminUsersController) List() {
 		e error
 	)
 
-	qs := app.Model().QueryTable(&models.User{})
+	qs := app.Model().QueryTable(&models.KUser{})
 
 	opt := this.ReadPagAndOrdOptions("id", "id", "username")
 	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
@@ -137,7 +137,7 @@ func (this *AdminUsersController) List() {
 		qs = qs.Filter("username__icontains", fusername)
 	}
 
-	var l []models.User
+	var l []models.KUser
 	_, e = qs.All(&l)
 
 	if e != nil && e != models.ErrResultNotFound {
@@ -146,7 +146,7 @@ func (this *AdminUsersController) List() {
 	}
 
 	if e == models.ErrResultNotFound {
-		l = make([]models.User, 0)
+		l = make([]models.KUser, 0)
 	}
 
 	this.Data["json"] = l

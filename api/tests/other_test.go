@@ -8,7 +8,7 @@ import (
 	h "net/http"
 	"testing"
 
-	"gitlab.com/manuel.diaz/sirel/server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/controllers"
 )
 
 const apihost string = "http://localhost:8080"
