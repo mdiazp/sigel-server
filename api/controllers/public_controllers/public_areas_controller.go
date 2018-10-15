@@ -11,7 +11,7 @@ type PublicAreasController struct {
 
 // @Title Retrieve public area info
 // @Description Get area info by id
-// @Param	id		query	int	true		"Area id"
+// @Param	area_id		query	int	true		"Area id"
 // @Success 200 {object} models.Area
 // @Failure 400 Bad request
 // @Failure 404 Not Found
@@ -45,7 +45,7 @@ func (this *PublicAreasController) Get() {
 // @router /areas [get]
 func (this *PublicAreasController) List() {
 	var l []models.Area
-	this.Ctx.Input.SetParam("enable_to_reserve", "true")
+	this.Ctx.Input.SetParam("ofAdmin", "false")
 	this.BaseAreasController.List(&l)
 	this.Data["json"] = l
 	this.ServeJSON()

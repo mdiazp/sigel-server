@@ -11,7 +11,7 @@ type PublicLocalsController struct {
 
 // @Title Retrieve public local info
 // @Description Get local info by id
-// @Param	id		query	int	true		"Local id"
+// @Param	local_id		query	int	true		"Local id"
 // @Success 200 {object} models.Local
 // @Failure 400 Bad request
 // @Failure 404 Not Found

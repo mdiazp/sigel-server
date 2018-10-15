@@ -3,7 +3,6 @@ package controllers
 import (
 	"errors"
 	"fmt"
-	"strconv"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -21,7 +20,7 @@ func (this *BaseAreasController) Show(container *models.Area) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("area_id")
 	this.WE(e, 400)
 
 	qs := app.Model().QueryTable(&models.Area{}).Filter("id", id)
@@ -53,6 +52,11 @@ func (this *BaseAreasController) Create(container *models.Area) {
 		beego.Error(e.Error())
 		this.WE(e, 500)
 	}
+
+	author := this.GetAuthor()
+	if !author.HaveRol(models.RolSuperadmin) {
+		this.addAdmin(container.Id, author.Id)
+	}
 }
 
 func (this *BaseAreasController) Update(container *models.Area) {
@@ -60,7 +64,7 @@ func (this *BaseAreasController) Update(container *models.Area) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("area_id")
 	this.WE(e, 400)
 
 	//save id to prevent that id in body and in path be diferents
@@ -83,7 +87,7 @@ func (this *BaseAreasController) Remove() {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("area_id")
 	this.WE(e, 400)
 
 	_, e = app.Model().QueryTable(&models.Area{}).Filter("id", id).Limit(1).Delete()
@@ -96,43 +100,30 @@ func (this *BaseAreasController) Remove() {
 	}
 }
 
-func (this *BaseAreasController) List2(container *[]models.Area) {
+func (this *BaseAreasController) List(container *[]models.Area) {
 	var (
 		e error
 	)
 
 	qb, e := models.GetQueryBuilder()
-	this.WE(e, 500)
+	if e != nil {
+		beego.Debug(e.Error())
+		this.WE(e, 500)
+	}
 
 	opt := this.ReadPagAndOrdOptions("id", "id", "name")
 
 	qb = qb.Select("area.id",
 		"area.name",
 		"area.description",
-		"area.location",
-		"area.enable_to_reserve").From("area")
+		"area.location").From("area")
 
 	ofAdmin := this.GetString("ofAdmin")
-	if ofAdmin != "" {
+	if ofAdmin == "true" {
 		author := this.GetAuthor()
 		qb = qb.InnerJoin("area_admin").
 			On("area.id=area_admin.area_id").
 			Where(fmt.Sprintf("area_admin.user_id=%d", author.Id))
-	}
-
-	qb = qb.Limit(opt.Limit).Offset(opt.Offset)
-	if opt.OrderBy == "" {
-		opt.OrderBy = "id"
-	}
-	if opt.OrderBy != "" {
-		qb = qb.OrderBy(this.Fmtorder(&opt))
-	}
-
-	tmp := this.GetString("enable_to_reserve")
-	if tmp != "" {
-		enable_to_reserve, e := strconv.ParseBool(tmp)
-		this.WE(e, 400)
-		qb = qb.Where(fmt.Sprintf("enable_to_reserve=%t", enable_to_reserve))
 	}
 
 	fname := this.GetString("search")
@@ -140,56 +131,26 @@ func (this *BaseAreasController) List2(container *[]models.Area) {
 		qb = qb.Where(fmt.Sprintf("name__icontains=%s", fname))
 	}
 
-	beego.Debug(qb.String())
-	app.Model().Raw(qb.String()).QueryRows(container)
-
-	if e != nil {
-		beego.Error(e.Error())
-		this.WE(e, 500)
-	}
-
-	if e == models.ErrResultNotFound {
-		*container = make([]models.Area, 0)
-	}
-}
-
-func (this *BaseAreasController) List(container *[]models.Area) {
-	var (
-		e error
-	)
-
-	qs := app.Model().QueryTable(&models.Area{})
-
-	opt := this.ReadPagAndOrdOptions("id", "id", "name")
-
-	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
-	if opt.OrderBy == "" {
-		opt.OrderBy = "id"
-	}
 	if opt.OrderBy != "" {
-		qs = qs.OrderBy(this.Fmtorder(&opt))
+		qb = qb.OrderBy("area." + opt.OrderBy)
+		if opt.orderDirection == "desc" {
+			qb = qb.Desc()
+		} else {
+			qb = qb.Asc()
+		}
 	}
 
-	tmp := this.GetString("enable_to_reserve")
-	if tmp != "" {
-		enable_to_reserve, e := strconv.ParseBool(tmp)
-		this.WE(e, 400)
-		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
-	}
+	qb = qb.Limit(opt.Limit).Offset(opt.Offset)
 
-	fname := this.GetString("search")
-	if fname != "" {
-		qs = qs.Filter("name__icontains", fname)
-	}
-
-	_, e = qs.All(container)
+	beego.Debug(qb.String())
+	cnt, e := app.Model().Raw(qb.String()).QueryRows(container)
 
 	if e != nil {
 		beego.Error(e.Error())
 		this.WE(e, 500)
 	}
 
-	if e == models.ErrResultNotFound {
+	if e == models.ErrResultNotFound || cnt == 0 {
 		*container = make([]models.Area, 0)
 	}
 }
@@ -199,7 +160,7 @@ func (this *BaseAreasController) Admins(admins *[]models.UserPublicInfo) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("area_id")
 	this.WE(e, 400)
 
 	query := models.QueryAreaAdmins
@@ -258,17 +219,18 @@ func (this *BaseAreasController) addAdmin(areaID, userID int) {
 
 func (this *BaseAreasController) RemoveAdmin() {
 	var (
-		e error
+		e               error
+		userID, localID int
 	)
 
-	id, e := this.GetInt("area_id")
-	this.WE(e, 400)
-
-	userID, e := this.GetInt("user_id")
+	userID, e = this.GetInt("user_id")
+	if e == nil {
+		localID, e = this.GetInt("area_id")
+	}
 	this.WE(e, 400)
 
 	rp, e := app.Model().Raw("delete from area_admin where area_id=? and user_id=?").Prepare()
-	_, e = rp.Exec(id, userID)
+	_, e = rp.Exec(localID, userID)
 	rp.Close()
 
 	if e != nil {

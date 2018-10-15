@@ -21,7 +21,6 @@ create table area(
     name                        varchar(100) not null,
     description                 varchar(1024) not null,
     location                    varchar(1024),
-    enable_to_reserve           boolean not null
 );
 
 create table local(

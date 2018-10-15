@@ -36,17 +36,11 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "area_id",
                         "description": "Area id",
                         "required": true,
                         "type": "integer",
                         "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "load_admins",
-                        "description": "Local id",
-                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -149,7 +143,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "area_id",
                         "description": "Area id",
                         "required": true,
                         "type": "string"
@@ -198,7 +192,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "area_id",
                         "description": "Area id",
                         "required": true,
                         "type": "integer",
@@ -262,7 +256,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "area_id",
                         "description": "Area id",
                         "required": true,
                         "type": "string"
@@ -453,12 +447,6 @@
                     },
                     {
                         "in": "query",
-                        "name": "enable_to_reserve",
-                        "description": "Area Property (true o false)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
                         "name": "search",
                         "description": "Search in name",
                         "type": "string"
@@ -515,7 +503,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "local_id",
                         "description": "Local id",
                         "required": true,
                         "type": "integer",
@@ -622,7 +610,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "local_id",
                         "description": "Local id",
                         "required": true,
                         "type": "string"
@@ -671,7 +659,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "local_id",
                         "description": "Local id",
                         "required": true,
                         "type": "integer",
@@ -735,7 +723,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "local_id",
                         "description": "Local id",
                         "required": true,
                         "type": "string"
@@ -1411,7 +1399,7 @@
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "area_id",
                         "description": "Area id",
                         "required": true,
                         "type": "integer",
@@ -1528,7 +1516,7 @@
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "local_id",
                         "description": "Local id",
                         "required": true,
                         "type": "integer",
@@ -1811,9 +1799,6 @@
             "properties": {
                 "description": {
                     "type": "string"
-                },
-                "enable_to_reserve": {
-                    "type": "boolean"
                 },
                 "id": {
                     "type": "integer",

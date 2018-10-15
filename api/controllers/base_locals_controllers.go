@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -20,7 +21,7 @@ func (this *BaseLocalsController) Show(container *models.Local) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("local_id")
 	this.WE(e, 400)
 
 	qs := app.Model().QueryTable(&models.Local{}).Filter("id", id)
@@ -47,14 +48,34 @@ func (this *BaseLocalsController) Create(container *models.Local) {
 
 	this.Validate(container)
 
+	//only users that are admins of an area can
+	//insert in it any local
+	author := this.GetAuthor()
+
+	if !author.HaveRol(models.RolSuperadmin) {
+		var tmp []orm.Params
+		_, e = app.Model().Raw("select user_id from area_admin "+
+			"where area_id=? and user_id=? limit 1 offset 0",
+			container.AreaId, author.Id).Values(&tmp)
+
+		if e != nil {
+			beego.Error(e)
+			this.WE(e, 500)
+		}
+
+		if len(tmp) == 0 {
+			this.WE(errors.New("only users that are admins of an area can insert in it any local"), 403)
+		}
+	}
+
 	_, e = app.Model().Insert(container)
 	if e != nil {
 		beego.Error(e.Error())
 		this.WE(e, 500)
 	}
 
-	author := this.GetAuthor()
 	if !author.HaveRol(models.RolSuperadmin) {
+		//Add the user as admin of the local
 		this.addAdmin(container.Id, author.Id)
 	}
 }
@@ -64,7 +85,7 @@ func (this *BaseLocalsController) Update(container *models.Local) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("local_id")
 	this.WE(e, 400)
 
 	this.ReadInputBody(container)
@@ -86,7 +107,7 @@ func (this *BaseLocalsController) Remove() {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("local_id")
 	this.WE(e, 400)
 
 	_, e = app.Model().QueryTable(&models.Local{}).Filter("id", id).Limit(1).Delete()
@@ -104,44 +125,75 @@ func (this *BaseLocalsController) List(container *[]models.Local) {
 		e error
 	)
 
-	qs := app.Model().QueryTable(&models.Local{})
+	qb, e := models.GetQueryBuilder()
+	if e != nil {
+		beego.Debug(e.Error())
+		this.WE(e, 500)
+	}
 
 	opt := this.ReadPagAndOrdOptions("id", "id", "name")
-	qs = qs.Limit(opt.Limit).Offset(opt.Offset)
-	if opt.OrderBy == "" {
-		opt.OrderBy = "id"
-	}
-	if opt.OrderBy != "" {
-		qs = qs.OrderBy(this.Fmtorder(&opt))
-	}
 
-	tmp := this.GetString("enable_to_reserve")
-	if tmp != "" {
-		enable_to_reserve, e := strconv.ParseBool(tmp)
-		this.WE(e, 400)
-		qs = qs.Filter("enable_to_reserve", enable_to_reserve)
+	qb = qb.Select("*").From("local")
+
+	ofAdmin := this.GetString("ofAdmin")
+	if ofAdmin == "true" {
+		author := this.GetAuthor()
+		qb = qb.Where("local.id").In(
+			fmt.Sprintf(
+				"SELECT local_admin.local_id from local_admin "+
+					"WHERE local_admin.user_id=%d", author.Id,
+			),
+		).Or("local.id").In(
+			fmt.Sprintf(
+				"SELECT local.id from area_admin "+
+					"INNER JOIN local ON area_admin.area_id=local.area_id "+
+					"WHERE area_admin.user_id=%d", author.Id,
+			),
+		)
 	}
 
 	fname := this.GetString("search")
 	if fname != "" {
-		qs = qs.Filter("name__icontains", fname)
+		qb = qb.Where(fmt.Sprintf("name__icontains=%s", fname))
 	}
 
-	tmp = this.GetString("area_id")
+	tmp := this.GetString("area_id")
 	if tmp != "" {
 		area_id, e := strconv.Atoi(tmp)
 		this.WE(e, 400)
-		qs = qs.Filter("area_id", area_id)
+		qb = qb.Where(fmt.Sprintf("area_id=%d", area_id))
 	}
 
-	_, e = qs.All(container)
+	tmp = this.GetString("enable_to_reserve")
+	if tmp != "" {
+		enable_to_reserve, e := strconv.ParseBool(tmp)
+		this.WE(e, 400)
+		qb = qb.Where(fmt.Sprintf("local.enable_to_reserve=%t", enable_to_reserve))
+	}
 
-	if e != nil && e != models.ErrResultNotFound {
+	if opt.OrderBy == "" {
+		opt.OrderBy = "id"
+	}
+	if opt.OrderBy != "" {
+		qb = qb.OrderBy("local." + opt.OrderBy)
+		if opt.orderDirection == "desc" {
+			qb = qb.Desc()
+		} else {
+			qb = qb.Asc()
+		}
+	}
+
+	qb = qb.Limit(opt.Limit).Offset(opt.Offset)
+
+	beego.Debug(qb.String())
+	cnt, e := app.Model().Raw(qb.String()).QueryRows(container)
+
+	if e != nil {
 		beego.Error(e.Error())
 		this.WE(e, 500)
 	}
 
-	if e == models.ErrResultNotFound {
+	if e == models.ErrResultNotFound || cnt == 0 {
 		*container = make([]models.Local, 0)
 	}
 }
@@ -151,7 +203,7 @@ func (this *BaseLocalsController) Admins(admins *[]models.UserPublicInfo) {
 		e error
 	)
 
-	id, e := this.GetInt("id")
+	id, e := this.GetInt("local_id")
 	this.WE(e, 400)
 
 	query := models.QueryLocalAdmins

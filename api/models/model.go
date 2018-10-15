@@ -5,6 +5,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 
 	// Postgresql Driver
 	_ "github.com/lib/pq"
@@ -61,9 +62,14 @@ func NewModel() orm.Ormer {
 	orm.RegisterDataBase(dbAlias, dbDriver, conn)
 
 	o := orm.NewOrm()
-	return o
+	m := models2.NewModel(o)
+	return m
 }
 
 func GetQueryBuilder() (orm.QueryBuilder, error) {
-	return orm.NewQueryBuilder("postgres")
+	return orm.NewQueryBuilder("mysql")
+
+	// var x models2.Area
+
+	return nil, nil
 }

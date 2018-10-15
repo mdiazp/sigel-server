@@ -25,9 +25,12 @@ func (this *AdminAreasController) accessControl() {
 		return
 	}
 
-	area_id, e := this.GetInt("id")
+	area_id, e := this.GetInt("area_id")
+	this.WE(e, 400)
+
 	var tmp []orm.Params
-	_, e = app.Model().Raw("select user_id from area_admin where area_id=? and user_id=? limit 1 offset 0",
+	_, e = app.Model().Raw("select user_id from area_admin "+
+		"where area_id=? and user_id=? limit 1 offset 0",
 		area_id, author.Id).Values(&tmp)
 
 	if e != nil {
@@ -45,8 +48,7 @@ func (this *AdminAreasController) accessControl() {
 // @Title Retrieve Area Info
 // @Description Get area info by id (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	id		query	int	true		"Area id"
-// @Param	load_admins		query	string	false		"Local id"
+// @Param	area_id		query	int	true		"Area id"
 // @Success 200 {object} models.Area
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
@@ -78,8 +80,6 @@ func (this *AdminAreasController) Get() {
 // @Accept json
 // @router /area [post]
 func (this *AdminAreasController) Post() {
-	this.accessControl()
-
 	o := models.Area{}
 	this.BaseAreasController.Create(&o)
 
@@ -90,7 +90,7 @@ func (this *AdminAreasController) Post() {
 // @Title Update Area
 // @Description Edit area (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	id		query	int	true		"Area id"
+// @Param	area_id		query	int	true		"Area id"
 // @Param	area		body	models.Area	true		"Edited Area"
 // @Success 200 {object} models.Area
 // @Failure 400 Bad request
@@ -113,7 +113,7 @@ func (this *AdminAreasController) Patch() {
 // @Title Delete Area
 // @Description Remove area by id (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	id		query	string	true		"Area id"
+// @Param	area_id		query	string	true		"Area id"
 // @Success 200 {string}
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
@@ -136,7 +136,6 @@ func (this *AdminAreasController) Remove() {
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
 // @Param	orderDirection		query	string	false		"asc or desc"
-// @Param	enable_to_reserve		query	string	false		"Area Property (true o false)"
 // @Param	search		query	string	false		"Search in name"
 // @Success 200 {object} []models.Area
 // @Failure 400 Bad request
@@ -147,30 +146,15 @@ func (this *AdminAreasController) Remove() {
 // @Accept json
 // @router /areas [get]
 func (this *AdminAreasController) List() {
-	author := this.GetAuthor()
+	var (
+		l []models.Area
+	)
 
-	beego.Debug(author)
-
-	var l []models.Area
-	if author.HaveRol(models.RolSuperadmin) {
-		this.BaseAreasController.List(&l)
-	} else {
-		ln, e := app.Model().Raw("select area.id, area.name, "+
-			"area.description, area.location, "+
-			"area.enable_to_reserve from area join "+
-			"area_admin on area.id=area_admin.area_id where "+
-			"area_admin.user_id=?",
-			author.Id).QueryRows(&l)
-
-		if ln == 0 {
-			l = make([]models.Area, 0)
-		}
-
-		if e != nil {
-			beego.Error(e)
-			this.WE(e, 500)
-		}
+	u := this.GetAuthor()
+	if !u.HaveRol(models.RolSuperadmin) {
+		this.Ctx.Input.SetParam("ofAdmin", "true")
 	}
+	this.BaseAreasController.List(&l)
 
 	this.Data["json"] = l
 	this.ServeJSON()
@@ -179,7 +163,7 @@ func (this *AdminAreasController) List() {
 // @Title Get Admins
 // @Description Delete user from admins by id (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	id		query	string	true		"Area id"
+// @Param	area_id		query	string	true		"Area id"
 // @Success 200 {[]models.UserPublicInfo}
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
