@@ -1766,9 +1766,182 @@
                     }
                 }
             }
+        },
+        "/test/area": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "description": "Get area",
+                "operationId": "TestingModel2Controller.Retrieve Area list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "area_id",
+                        "description": "area id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models2.Area"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "description": "Create area",
+                "operationId": "TestingModel2Controller.Create Area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "area",
+                        "description": "Area",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models2.Area"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models2.Area"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "test"
+                ],
+                "description": "Delete area",
+                "operationId": "TestingModel2Controller.Delete Area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "area_id",
+                        "description": "area id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "test"
+                ],
+                "description": "Update area",
+                "operationId": "TestingModel2Controller.Update Area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "area",
+                        "description": "Area",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models2.Area"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models2.Area"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        ".0xc420357420": {
+            "type": "object"
+        },
+        ".0xc4203574e0": {
+            "type": "object"
+        },
+        ".DB": {
+            "type": "object"
+        },
+        ".Ormer": {
+            "type": "object"
+        },
         ".Profile": {
             "type": "object"
         },
@@ -1895,6 +2068,49 @@
                 "user_id": {
                     "type": "integer",
                     "format": "int64"
+                }
+            }
+        },
+        "models2.Area": {
+            "title": "Area",
+            "type": "object",
+            "properties": {
+                "admins": {
+                    "$ref": "#/definitions/3266.\u003cnil\u003e.0xc4203574e0"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "locals": {
+                    "$ref": "#/definitions/3222.\u003cnil\u003e.0xc420357420"
+                },
+                "locatiion": {
+                    "type": "string"
+                },
+                "lzLoadAdmins": {
+                    "type": "boolean"
+                },
+                "lzLoadLocals": {
+                    "type": "boolean"
+                },
+                "model": {
+                    "$ref": "#/definitions/models2.model"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models2.model": {
+            "title": "model",
+            "type": "object",
+            "properties": {
+                "db": {
+                    "$ref": "#/definitions/sql.DB"
                 }
             }
         },

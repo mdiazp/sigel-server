@@ -2,8 +2,8 @@ package app
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 	"github.com/mdiazp/sirel-server/api/pkg/authproviders"
 	"github.com/mdiazp/sirel-server/api/pkg/authproviders/ldap"
 	"github.com/mdiazp/sirel-server/api/pkg/authproviders/xxx"
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	model        orm.Ormer
+	model        models2.Model
 	crypto       *cryptoutil.JWTCrypt
 	ldapProvider authproviders.Provider
 	xxxProvider  authproviders.Provider
@@ -30,7 +30,7 @@ func InitApp() {
 	xxxProvider = xxx.GetProvider()
 }
 
-func Model() orm.Ormer {
+func Model() models2.Model {
 	return model
 }
 

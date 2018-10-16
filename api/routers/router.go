@@ -50,6 +50,11 @@ func init() {
 				&admin_controllers.AdminReservationsController{},
 			),
 		),
+		beego.NSNamespace("/test",
+			beego.NSInclude(
+				&controllers.TestingModel2Controller{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 

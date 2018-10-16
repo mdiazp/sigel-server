@@ -47,7 +47,7 @@ func init() {
 }
 
 // NewModel ...
-func NewModel() orm.Ormer {
+func NewModel() models2.Model {
 	dbName := beego.AppConfig.String("DB_SOURCE_NAME")
 	dbUser := beego.AppConfig.String("DB_USER")
 	dbPassword := beego.AppConfig.String("DB_PASSWORD")

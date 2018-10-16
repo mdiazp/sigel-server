@@ -1,6 +1,8 @@
 package models2
 
-import "errors"
+import (
+	"errors"
+)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,93 +13,112 @@ type Area struct {
 	Description string `json:"description" valid:"Required;MaxSize(1024)"`
 	Location    string `json:"locatiion" valid:"Required;MaxSize(1024)"`
 
-	areaActions
+	model *model
+
+	locals       *[]*Local
+	lzLoadLocals bool
+
+	admins       *[]*AreaAdmin
+	lzLoadAdmins bool
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-type areaActions interface {
-	Update() error
-
-	Locals() ([]*Local, error)
-	AddLocal(*Local) error
-	DeleteLocal(*Local) error
-
-	Admins() ([]*AreaAdmin, error)
-	AddAdmin(*AreaAdmin) error
-	DeleteAdmin(*AreaAdmin) error
+func (a *Area) tableName() string {
+	return "area"
 }
 
-type area struct {
-	*Area
-	*model
-
-	locals       []*Local
-	lzLoadLocals bool
-
-	admins       []*AreaAdmin
-	lzLoadAdmins bool
+func (a *Area) autoPKey() bool {
+	return true
 }
 
-func (a *area) Update() error {
-	return errors.New("Not implemented yet")
+func (a *Area) pkeyName() string {
+	return "id"
 }
 
-func (a *area) Locals() ([]*Local, error) {
-	return nil, errors.New("Not implemented yet")
+func (a *Area) pkeyValue() interface{} {
+	return a.ID
 }
 
-func (a *area) AddLocal(lo *Local) error {
-	return errors.New("Not implemented yet")
+func (a *Area) pkeyPointer() interface{} {
+	return &a.ID
 }
 
-func (a *area) DeleteLocal(lo *Local) error {
-	return errors.New("Not implemented yet")
-}
-
-func (a *area) Admins() ([]*AreaAdmin, error) {
-	return nil, errors.New("Not implemented yet")
-}
-
-func (a *area) AddAdmin(aa *AreaAdmin) error {
-	return errors.New("Not implemented yet")
-}
-
-func (a *area) DeleteAdmin(aa *AreaAdmin) error {
-	return errors.New("Not implemented yet")
-}
-
-func (m *model) newArea() Area {
-	a := Area{}
-	a.areaActions = &area{
-		Area: &a,
+func (a *Area) columnNames(pk ...bool) []string {
+	names := []string{"name", "description", "location"}
+	if len(pk) > 0 && pk[0] {
+		names = append(names, a.pkeyName())
 	}
+	return names
+}
 
-	return a
+func (a *Area) columnValues(pk ...bool) []interface{} {
+	values := []interface{}{a.Name, a.Description, a.Location}
+	if len(pk) > 0 && pk[0] {
+		values = append(values, a.pkeyValue())
+	}
+	return values
+}
+
+func (a *Area) columnPointers(pk ...bool) []interface{} {
+	pointers := []interface{}{&a.Name, &a.Description, &a.Location}
+	if len(pk) > 0 && pk[0] {
+		pointers = append(pointers, a.pkeyPointer())
+	}
+	return pointers
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+// Update ...
+func (a *Area) Update() error {
+	return a.model.Update2(a)
+}
+
+// Locals ...
+func (a *Area) Locals() (*[]*Local, error) {
+	return nil, errors.New("Not implemented yet")
+}
+
+// AddLocal ...
+func (a *Area) AddLocal(lo *Local) error {
+	return errors.New("Not implemented yet")
+}
+
+// DeleteLocal ...
+func (a *Area) DeleteLocal(lo *Local) error {
+	return errors.New("Not implemented yet")
+}
+
+// Admins ...
+func (a *Area) Admins() ([]*AreaAdmin, error) {
+	return nil, errors.New("Not implemented yet")
+}
+
+// AddAdmin ...
+func (a *Area) AddAdmin(aa *AreaAdmin) error {
+	return errors.New("Not implemented yet")
+}
+
+// DeleteAdmin ...
+func (a *Area) DeleteAdmin(aa *AreaAdmin) error {
+	return errors.New("Not implemented yet")
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 // AreaModel ...
 type AreaModel interface {
-	InsertArea(Area) (Area, error)
-	DeleteArea(Area) error
-	UpdateArea(Area) (Area, error)
+	NewArea() *Area
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-// InsertArea ...
-func (m *model) InsertArea(a Area) (Area, error) {
-	return Area{}, errors.New("Not implemented yet")
-}
+// NewArea ...
+func (m *model) NewArea() *Area {
+	a := Area{
+		model: m,
+	}
 
-// DeleteArea ...
-func (m *model) DeleteArea(a Area) error {
-	return errors.New("Not implemented yet")
-}
-
-// UpdateArea ...
-func (m *model) UpdateArea(a Area) (Area, error) {
-	return Area{}, errors.New("Not implemented yet")
+	return &a
 }

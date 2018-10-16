@@ -19,6 +19,11 @@ func (this *BaseController) WE(e error, statusCode int, ms ...interface{}) {
 	if e == nil {
 		return
 	}
+
+	if statusCode == 500 {
+		beego.Debug(e.Error())
+	}
+
 	this.Ctx.Output.SetStatus(statusCode)
 	if len(ms) > 0 {
 		this.Data["json"] = ms[0]
