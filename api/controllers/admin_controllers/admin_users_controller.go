@@ -70,7 +70,7 @@ func (this *AdminUsersController) Patch() {
 	// The author can't update itself
 	au := this.GetAuthor()
 
-	if au.Id == id {
+	if au.ID == id {
 		this.WE(errors.New("author can't update itself"), 403)
 	}
 

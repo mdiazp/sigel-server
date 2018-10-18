@@ -1,0 +1,42 @@
+{
+    "StructName" : "Area",
+    "TableName" : "area",
+    "AutoPKey" : true,
+	"Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "Name",
+            "PropertyType" : "string",
+            "ColumnName" : "name",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Description",
+            "PropertyType" : "string",
+            "ColumnName" : "description",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Location",
+            "PropertyType" : "string",
+            "ColumnName" : "location",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [
+        {
+            "RelationClass" : "Local",
+            "RelationColumn" : "area_id"
+        },
+        {
+            "RelationClass" : "AreaAdmin",
+            "RelationColumn" : "area_id"
+        }
+    ],
+    "Ones" : []
+}

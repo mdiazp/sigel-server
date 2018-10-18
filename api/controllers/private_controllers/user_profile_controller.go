@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/controllers"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 type ProfileController struct {
@@ -23,7 +23,7 @@ type ProfileController struct {
 // @router /profile [get]
 func (this *ProfileController) Get() {
 	au := this.GetAuthor()
-	this.Data["json"] = toProfile(&au)
+	this.Data["json"] = toProfile(au)
 	this.ServeJSON()
 }
 
@@ -55,11 +55,11 @@ func (this *ProfileController) Patch() {
 		beego.Error(e.Error())
 		this.WE(e, 500)
 	}
-	this.Data["json"] = toProfile(&au)
+	this.Data["json"] = toProfile(au)
 	this.ServeJSON()
 }
 
-func toProfile(u *models.KUser) Profile {
+func toProfile(u *models2.User) Profile {
 	return Profile{
 		Username: u.Username,
 		Name:     u.Name,

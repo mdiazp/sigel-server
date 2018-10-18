@@ -9,6 +9,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 const AuthHd = "authHd"
@@ -19,7 +20,7 @@ func AuthFilter(ctx *context.Context) {
 	}
 
 	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
-		u := models.KUser{
+		u := &models2.User{
 			Username: "manuel.diaz",
 			Rol:      "Admin",
 		}
@@ -34,9 +35,10 @@ func AuthFilter(ctx *context.Context) {
 		return
 	}
 
-	var u models.KUser
+	u := app.Model().NewUser()
 	if username != "SIREL" {
-		e = app.Model().QueryTable(&models.KUser{}).Filter("username", username).Limit(1).One(&u)
+		var ku models.KUser
+		e = app.Model().QueryTable(&models.KUser{}).Filter("username", username).Limit(1).One(&ku)
 		if e != nil {
 			if e == models.ErrResultNotFound {
 				wrec(ctx, 401)
@@ -47,15 +49,16 @@ func AuthFilter(ctx *context.Context) {
 			return
 		}
 
-		if !u.Enable {
+		if !ku.Enable {
 			wrec(ctx, 401)
 			return
 		}
+
+		u.ID = ku.Id
+		u.Load()
 	} else {
-		u = models.KUser{
-			Username: "SIREL",
-			Rol:      models.RolSuperadmin,
-		}
+		u.Username = "SIREL"
+		u.Rol = models2.RolSuperadmin
 	}
 
 	ctx.Input.SetData("Author", u)

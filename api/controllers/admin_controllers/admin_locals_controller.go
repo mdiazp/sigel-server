@@ -32,7 +32,7 @@ func (this *AdminLocalsController) accessControl() {
 	//checking local_admin
 	_, e = app.Model().Raw("select user_id from local_admin "+
 		"where local_id=? and user_id=? limit 1 offset 0",
-		local_id, author.Id).Values(&tmp)
+		local_id, author.ID).Values(&tmp)
 
 	if e != nil {
 		beego.Error(e)
@@ -47,7 +47,7 @@ func (this *AdminLocalsController) accessControl() {
 	_, e = app.Model().Raw("select user_id from area_admin "+
 		"join area on area.id=area_admin.area_id join local on local.area_id=area.id "+
 		"where local.id=? and area_admin.user_id=? limit 1 offset 0",
-		local_id, author.Id).Values(&tmp)
+		local_id, author.ID).Values(&tmp)
 
 	if e != nil {
 		beego.Error(e)

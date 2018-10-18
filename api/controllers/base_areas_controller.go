@@ -9,98 +9,79 @@ import (
 
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
+// BaseAreasController ...
 type BaseAreasController struct {
 	BaseController
 }
 
-func (this *BaseAreasController) Show(container *models.Area) {
+// Show ...
+func (this *BaseAreasController) Show(container *models2.Area) {
 	var (
 		e error
 	)
 
-	id, e := this.GetInt("area_id")
-	this.WE(e, 400)
+	container.ID = *this.ReadInt("area_id", true)
+	beego.Debug("area_id = ", container.ID)
+	e = container.Load()
 
-	qs := app.Model().QueryTable(&models.Area{}).Filter("id", id)
-	enableToReserve := this.GetString("enable_to_reserve")
-	if enableToReserve != "" {
-		qs = qs.Filter("enable_to_reserve", enableToReserve)
-	}
-	e = qs.Limit(1).One(container)
-	if e != nil {
-		if e == models.ErrResultNotFound {
-			this.WE(e, 404)
-		}
-		beego.Error(e.Error())
-		this.WE(e, 500)
-	}
-}
-
-func (this *BaseAreasController) Create(container *models.Area) {
-	var (
-		e error
-	)
-
-	this.ReadInputBody(container)
-
-	this.Validate(container)
-
-	_, e = app.Model().Insert(container)
-	if e != nil {
-		beego.Error(e.Error())
-		this.WE(e, 500)
-	}
-
-	author := this.GetAuthor()
-	if !author.HaveRol(models.RolSuperadmin) {
-		this.addAdmin(container.Id, author.Id)
-	}
-}
-
-func (this *BaseAreasController) Update(container *models.Area) {
-	var (
-		e error
-	)
-
-	id, e := this.GetInt("area_id")
-	this.WE(e, 400)
-
-	//save id to prevent that id in body and in path be diferents
-	this.ReadInputBody(container)
-	container.Id = id
-	this.Validate(container)
-
-	_, e = app.Model().Update(container)
-	if e == models.ErrResultNotFound {
+	if e == models2.ErrNoRows {
 		this.WE(e, 404)
 	}
-	if e != nil {
-		beego.Error(e.Error())
-		this.WE(e, 500)
+	this.WE(e, 500)
+}
+
+func (this *BaseAreasController) Create(container *models2.Area) {
+	var (
+		e error
+	)
+
+	this.ReadInputBody(container)
+	this.Validate(container)
+
+	e = app.Model().Create(container)
+	this.WE(e, 500)
+
+	author := this.GetAuthor()
+	if !author.HaveRol(models2.RolSuperadmin) {
+		this.addAdmin(container.ID, author.ID)
 	}
+}
+
+func (this *BaseAreasController) Update(container *models2.Area) {
+	var e error
+
+	id := this.ReadInt("area_id", true)
+	this.ReadInputBody(container)
+	this.Validate(container)
+	container.ID = *id
+
+	e = container.Update()
+	if e == models2.ErrNoRows {
+		this.WE(e, 404)
+	}
+	this.WE(e, 500)
 }
 
 func (this *BaseAreasController) Remove() {
-	var (
-		e error
-	)
+	var e error
 
-	id, e := this.GetInt("area_id")
-	this.WE(e, 400)
+	id := this.ReadInt("area_id", true)
 
-	_, e = app.Model().QueryTable(&models.Area{}).Filter("id", id).Limit(1).Delete()
-	if e == models.ErrResultNotFound {
+	model := app.Model()
+	area := model.NewArea()
+	area.ID = *id
+	e = area.Load()
+
+	if e == models2.ErrNoRows {
 		this.WE(e, 404)
 	}
-	if e != nil {
-		beego.Error(e.Error())
-		this.WE(e, 500)
-	}
+	this.WE(e, 500)
 }
 
-func (this *BaseAreasController) List(container *[]models.Area) {
+func (this *BaseAreasController) List(container *[]models2.Area) {
 	var (
 		e error
 	)
@@ -123,7 +104,7 @@ func (this *BaseAreasController) List(container *[]models.Area) {
 		author := this.GetAuthor()
 		qb = qb.InnerJoin("area_admin").
 			On("area.id=area_admin.area_id").
-			Where(fmt.Sprintf("area_admin.user_id=%d", author.Id))
+			Where(fmt.Sprintf("area_admin.user_id=%d", author.ID))
 	}
 
 	fname := this.GetString("search")
@@ -151,7 +132,11 @@ func (this *BaseAreasController) List(container *[]models.Area) {
 	}
 
 	if e == models.ErrResultNotFound || cnt == 0 {
-		*container = make([]models.Area, 0)
+		*container = make([]models2.Area, 0)
+	}
+
+	for _, a := range *container {
+		beego.Debug(a.ID)
 	}
 }
 

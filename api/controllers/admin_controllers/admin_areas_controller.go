@@ -9,6 +9,7 @@ import (
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 type AdminAreasController struct {
@@ -31,7 +32,7 @@ func (this *AdminAreasController) accessControl() {
 	var tmp []orm.Params
 	_, e = app.Model().Raw("select user_id from area_admin "+
 		"where area_id=? and user_id=? limit 1 offset 0",
-		area_id, author.Id).Values(&tmp)
+		area_id, author.ID).Values(&tmp)
 
 	if e != nil {
 		beego.Error(e)
@@ -49,7 +50,7 @@ func (this *AdminAreasController) accessControl() {
 // @Description Get area info by id (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
 // @Param	area_id		query	int	true		"Area id"
-// @Success 200 {object} models.Area
+// @Success 200 {object} models2.Area
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 403 Forbidden
@@ -60,8 +61,9 @@ func (this *AdminAreasController) accessControl() {
 func (this *AdminAreasController) Get() {
 	this.accessControl()
 
-	o := models.Area{}
-	this.BaseAreasController.Show(&o)
+	model := app.Model()
+	o := model.NewArea()
+	this.BaseAreasController.Show(o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -71,7 +73,7 @@ func (this *AdminAreasController) Get() {
 // @Description Create new area (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
 // @Param	area		body	models.Area	true		"New Area"
-// @Success 200 {object} models.Area
+// @Success 200 {object} models2.Area
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 403 Forbidden
@@ -80,8 +82,8 @@ func (this *AdminAreasController) Get() {
 // @Accept json
 // @router /area [post]
 func (this *AdminAreasController) Post() {
-	o := models.Area{}
-	this.BaseAreasController.Create(&o)
+	o := app.Model().NewArea()
+	this.BaseAreasController.Create(o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -91,8 +93,8 @@ func (this *AdminAreasController) Post() {
 // @Description Edit area (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
 // @Param	area_id		query	int	true		"Area id"
-// @Param	area		body	models.Area	true		"Edited Area"
-// @Success 200 {object} models.Area
+// @Param	area		body	models2.Area	true		"Edited Area"
+// @Success 200 {object} models2.Area
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 403 Forbidden
@@ -103,8 +105,8 @@ func (this *AdminAreasController) Post() {
 func (this *AdminAreasController) Patch() {
 	this.accessControl()
 
-	o := models.Area{}
-	this.BaseAreasController.Update(&o)
+	o := app.Model().NewArea()
+	this.BaseAreasController.Update(o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -126,6 +128,8 @@ func (this *AdminAreasController) Remove() {
 	this.accessControl()
 
 	this.BaseAreasController.Remove()
+
+	this.Data["json"] = "OK"
 	this.ServeJSON()
 }
 
@@ -137,7 +141,7 @@ func (this *AdminAreasController) Remove() {
 // @Param	orderby		query	string	false		"OrderBy (property name)"
 // @Param	orderDirection		query	string	false		"asc or desc"
 // @Param	search		query	string	false		"Search in name"
-// @Success 200 {object} []models.Area
+// @Success 200 {object} []models2.Area
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 403 Forbidden
@@ -147,7 +151,7 @@ func (this *AdminAreasController) Remove() {
 // @router /areas [get]
 func (this *AdminAreasController) List() {
 	var (
-		l []models.Area
+		l []models2.Area
 	)
 
 	u := this.GetAuthor()

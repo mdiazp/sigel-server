@@ -56,7 +56,7 @@ func (this *BaseLocalsController) Create(container *models.Local) {
 		var tmp []orm.Params
 		_, e = app.Model().Raw("select user_id from area_admin "+
 			"where area_id=? and user_id=? limit 1 offset 0",
-			container.AreaId, author.Id).Values(&tmp)
+			container.AreaId, author.ID).Values(&tmp)
 
 		if e != nil {
 			beego.Error(e)
@@ -76,7 +76,7 @@ func (this *BaseLocalsController) Create(container *models.Local) {
 
 	if !author.HaveRol(models.RolSuperadmin) {
 		//Add the user as admin of the local
-		this.addAdmin(container.Id, author.Id)
+		this.addAdmin(container.Id, author.ID)
 	}
 }
 
@@ -141,13 +141,13 @@ func (this *BaseLocalsController) List(container *[]models.Local) {
 		qb = qb.Where("local.id").In(
 			fmt.Sprintf(
 				"SELECT local_admin.local_id from local_admin "+
-					"WHERE local_admin.user_id=%d", author.Id,
+					"WHERE local_admin.user_id=%d", author.ID,
 			),
 		).Or("local.id").In(
 			fmt.Sprintf(
 				"SELECT local.id from area_admin "+
 					"INNER JOIN local ON area_admin.area_id=local.area_id "+
-					"WHERE area_admin.user_id=%d", author.Id,
+					"WHERE area_admin.user_id=%d", author.ID,
 			),
 		)
 	}

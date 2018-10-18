@@ -1,0 +1,60 @@
+{
+    "StructName" : "User",
+    "TableName" : "k_user",
+    "AutoPKey" : true,
+	"Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "Username",
+            "PropertyType" : "string",
+            "ColumnName" : "username",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Name",
+            "PropertyType" : "string",
+            "ColumnName" : "name",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Email",
+            "PropertyType" : "string",
+            "ColumnName" : "email",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "SendNotificationsToEmail",
+            "PropertyType" : "bool",
+            "ColumnName" : "send_notifications_to_email",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Rol",
+            "PropertyType" : "string",
+            "ColumnName" : "rol",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Enable",
+            "PropertyType" : "bool",
+            "ColumnName" : "enable",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [
+        {
+            "RelationClass" : "LocalAdmin",
+            "RelationColumn" : "user_id"
+        },
+        {
+            "RelationClass" : "AreaAdmin",
+            "RelationColumn" : "user_id"
+        }
+    ],
+    "Ones" : []
+}

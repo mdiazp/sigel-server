@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/astaxie/beego/context"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 /*
@@ -25,12 +25,12 @@ func AccessRolControl(this *beego.Controller, Rol string) {
 }
 */
 
-func GetAuthorFromInputData(ctx *context.Context) (models.KUser, error) {
+func GetAuthorFromInputData(ctx *context.Context) (*models2.User, error) {
 	x := ctx.Input.Data()["Author"]
-	if auth, ok := x.(models.KUser); ok {
+	if auth, ok := x.(*models2.User); ok {
 		return auth, nil
 	}
-	return models.KUser{}, errors.New("Not user founded in ctx.Input.Data[\"Author\"]")
+	return nil, errors.New("Not user founded in ctx.Input.Data[\"Author\"]")
 }
 
 type PagAndOrdOptions struct {

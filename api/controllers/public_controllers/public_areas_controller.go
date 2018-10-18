@@ -1,8 +1,9 @@
 package public_controllers
 
 import (
+	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/controllers"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 type PublicAreasController struct {
@@ -19,10 +20,9 @@ type PublicAreasController struct {
 // @Accept json
 // @router /area [get]
 func (this *PublicAreasController) Get() {
-	o := models.Area{}
-	this.Ctx.Input.SetParam("enable_to_reserve", "true")
-
-	this.BaseAreasController.Show(&o)
+	model := app.Model()
+	o := model.NewArea()
+	this.BaseAreasController.Show(o)
 
 	this.Data["json"] = o
 	this.ServeJSON()
@@ -44,7 +44,7 @@ func (this *PublicAreasController) Get() {
 // @Accept json
 // @router /areas [get]
 func (this *PublicAreasController) List() {
-	var l []models.Area
+	var l []models2.Area
 	this.Ctx.Input.SetParam("ofAdmin", "false")
 	this.BaseAreasController.List(&l)
 	this.Data["json"] = l

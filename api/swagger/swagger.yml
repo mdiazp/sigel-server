@@ -35,7 +35,7 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.Area'
+            $ref: '#/definitions/models2.Area'
         "400":
           description: Bad request
         "401":
@@ -71,7 +71,7 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.Area'
+            $ref: '#/definitions/models2.Area'
         "400":
           description: Bad request
         "401":
@@ -141,12 +141,12 @@ paths:
         description: Edited Area
         required: true
         schema:
-          $ref: '#/definitions/models.Area'
+          $ref: '#/definitions/models2.Area'
       responses:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.Area'
+            $ref: '#/definitions/models2.Area'
         "400":
           description: Bad request
         "401":
@@ -313,7 +313,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/models.Area'
+              $ref: '#/definitions/models2.Area'
         "400":
           description: Bad request
         "401":
@@ -1297,14 +1297,58 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /test/areas:
+    get:
+      tags:
+      - test
+      description: Areas
+      operationId: TestingModel2Controller.Areas
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchInName
+        description: searchInName
+        type: string
+      - in: query
+        name: limit
+        description: limit
+        type: integer
+        format: int64
+      - in: query
+        name: offset
+        description: offset
+        type: integer
+        format: int64
+      - in: query
+        name: orderby
+        description: orderby
+        type: string
+      - in: query
+        name: orderDesc
+        description: orderDesc (true or false)
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/.Area'
+        "400":
+          description: Bad request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
 definitions:
-  .0xc420357420:
+  .0xc4203142c0:
     type: object
-  .0xc4203574e0:
+  .0xc420314340:
     type: object
-  .DB:
-    type: object
-  .Ormer:
+  .Area:
     type: object
   .Profile:
     type: object
@@ -1400,31 +1444,23 @@ definitions:
     title: Area
     type: object
     properties:
-      admins:
-        $ref: '#/definitions/3266.<nil>.0xc4203574e0'
-      description:
+      Description:
         type: string
-      id:
+      ID:
         type: integer
         format: int64
+      Location:
+        type: string
+      Name:
+        type: string
+      areaAdmins:
+        $ref: '#/definitions/4882.<nil>.0xc420314340'
       locals:
-        $ref: '#/definitions/3222.<nil>.0xc420357420'
-      locatiion:
-        type: string
-      lzLoadAdmins:
-        type: boolean
-      lzLoadLocals:
-        type: boolean
+        $ref: '#/definitions/4860.<nil>.0xc4203142c0'
       model:
-        $ref: '#/definitions/models2.model'
-      name:
-        type: string
-  models2.model:
-    title: model
+        $ref: '#/definitions/models2.Model'
+  models2.Model:
     type: object
-    properties:
-      db:
-        $ref: '#/definitions/sql.DB'
   public_controllers.Credentials:
     title: Credentials
     type: object

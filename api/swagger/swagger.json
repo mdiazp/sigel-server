@@ -47,7 +47,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models2.Area"
                         }
                     },
                     "400": {
@@ -101,7 +101,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models2.Area"
                         }
                     },
                     "400": {
@@ -204,7 +204,7 @@
                         "description": "Edited Area",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models2.Area"
                         }
                     }
                 ],
@@ -212,7 +212,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models2.Area"
                         }
                     },
                     "400": {
@@ -458,7 +458,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Area"
+                                "$ref": "#/definitions/models2.Area"
                             }
                         }
                     },
@@ -1927,19 +1927,85 @@
                     }
                 }
             }
+        },
+        "/test/areas": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "description": "Areas",
+                "operationId": "TestingModel2Controller.Areas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "searchInName",
+                        "description": "searchInName",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "limit",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "orderby",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderDesc",
+                        "description": "orderDesc (true or false)",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        ".0xc420357420": {
+        ".0xc4203142c0": {
             "type": "object"
         },
-        ".0xc4203574e0": {
+        ".0xc420314340": {
             "type": "object"
         },
-        ".DB": {
-            "type": "object"
-        },
-        ".Ormer": {
+        ".Area": {
             "type": "object"
         },
         ".Profile": {
@@ -2075,44 +2141,32 @@
             "title": "Area",
             "type": "object",
             "properties": {
-                "admins": {
-                    "$ref": "#/definitions/3266.\u003cnil\u003e.0xc4203574e0"
-                },
-                "description": {
+                "Description": {
                     "type": "string"
                 },
-                "id": {
+                "ID": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "locals": {
-                    "$ref": "#/definitions/3222.\u003cnil\u003e.0xc420357420"
-                },
-                "locatiion": {
+                "Location": {
                     "type": "string"
                 },
-                "lzLoadAdmins": {
-                    "type": "boolean"
+                "Name": {
+                    "type": "string"
                 },
-                "lzLoadLocals": {
-                    "type": "boolean"
+                "areaAdmins": {
+                    "$ref": "#/definitions/4882.\u003cnil\u003e.0xc420314340"
+                },
+                "locals": {
+                    "$ref": "#/definitions/4860.\u003cnil\u003e.0xc4203142c0"
                 },
                 "model": {
-                    "$ref": "#/definitions/models2.model"
-                },
-                "name": {
-                    "type": "string"
+                    "$ref": "#/definitions/models2.Model"
                 }
             }
         },
-        "models2.model": {
-            "title": "model",
-            "type": "object",
-            "properties": {
-                "db": {
-                    "$ref": "#/definitions/sql.DB"
-                }
-            }
+        "models2.Model": {
+            "type": "object"
         },
         "public_controllers.Credentials": {
             "title": "Credentials",

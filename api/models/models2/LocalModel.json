@@ -1,0 +1,91 @@
+{
+    "StructName" : "Local",
+    "TableName" : "local",
+    "AutoPKey" : true,
+	"Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "AreaID",
+            "PropertyType" : "int",
+            "ColumnName" : "area_id",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Name",
+            "PropertyType" : "string",
+            "ColumnName" : "name",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Description",
+            "PropertyType" : "string",
+            "ColumnName" : "description",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Location",
+            "PropertyType" : "string",
+            "ColumnName" : "location",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingMonths",
+            "PropertyType" : "string",
+            "ColumnName" : "working_months",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingWeekDays",
+            "PropertyType" : "string",
+            "ColumnName" : "working_week_days",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingBeginTimeHours",
+            "PropertyType" : "int",
+            "ColumnName" : "working_begin_time_hours",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingBeginTimeMinutes",
+            "PropertyType" : "int",
+            "ColumnName" : "working_begin_time_minutes",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingEndTimeHours",
+            "PropertyType" : "int",
+            "ColumnName" : "working_end_time_hours",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "WorkingEndTimeMinutes",
+            "PropertyType" : "int",
+            "ColumnName" : "working_end_time_minutes",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "EnableToReserve",
+            "PropertyType" : "bool",
+            "ColumnName" : "enable_to_reserve",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [
+        {
+            "RelationClass" : "LocalAdmin",
+            "RelationColumn" : "local_id"
+        } 
+    ],
+    "Ones" : [
+        {
+            "RelationClass" : "Area",
+	        "RelationProperty" : "AreaID"
+        }
+    ]
+}

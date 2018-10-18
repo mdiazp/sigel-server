@@ -5,10 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sirel-server/api/models/models2"
 )
 
 type BaseController struct {
@@ -36,20 +37,13 @@ func (this *BaseController) WE(e error, statusCode int, ms ...interface{}) {
 
 func (this *BaseController) ReadInputBody(obj interface{}) {
 	e := json.Unmarshal(this.Ctx.Input.RequestBody, &obj)
-	if e != nil {
-		beego.Debug(e)
-	}
 	this.WE(e, 400)
 }
 
-func (this *BaseController) GetAuthor() models.KUser {
+func (this *BaseController) GetAuthor() *models2.User {
 	// Author of request must be loggued
 	u, e := GetAuthorFromInputData(this.Ctx)
-	if e != nil {
-		// Then the authenticator filter fail
-		beego.Error(e.Error())
-		this.WE(e, 500)
-	}
+	this.WE(e, 500)
 	return u
 }
 
@@ -108,4 +102,41 @@ func (this *BaseController) Fmtorder(opt *PagAndOrdOptions) string {
 		exp = "-" + exp
 	}
 	return exp
+}
+
+// ReadString ...
+func (this *BaseController) ReadString(name string, required ...bool) *string {
+	tmp := this.GetString(name)
+	if tmp != "" {
+		return &tmp
+	} else if len(required) > 0 && required[0] {
+		this.WE(fmt.Errorf("%s is missing in the input", name), 400)
+	}
+	return nil
+}
+
+// ReadInt ...
+func (this *BaseController) ReadInt(name string, required ...bool) *int {
+	tmp := this.GetString(name)
+	if tmp != "" {
+		c, e := strconv.Atoi(tmp)
+		this.WE(e, 400)
+		return &c
+	} else if len(required) > 0 && required[0] {
+		this.WE(fmt.Errorf("%s is missing in the input", name), 400)
+	}
+	return nil
+}
+
+// ReadBool ...
+func (this *BaseController) ReadBool(name string, required ...bool) *bool {
+	tmp := this.GetString(name)
+	if tmp != "" {
+		c, e := strconv.ParseBool(tmp)
+		this.WE(e, 400)
+		return &c
+	} else if len(required) > 0 && required[0] {
+		this.WE(fmt.Errorf("%s is missing in the input", name), 400)
+	}
+	return nil
 }

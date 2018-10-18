@@ -39,4 +39,12 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers:TestingModel2Controller"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers:TestingModel2Controller"],
+		beego.ControllerComments{
+			Method: "Areas",
+			Router: `/areas`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 }
