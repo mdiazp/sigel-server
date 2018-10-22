@@ -1,0 +1,36 @@
+{
+    "StructName" : "LocalAdmin",
+    "TableName" : "local_admin",
+    "AutoPKey" : true,
+    "Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "UserID",
+            "PropertyType" : "int",
+            "ColumnName" : "user_id",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "LocalID",
+            "PropertyType" : "int",
+            "ColumnName" : "local_id",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [],
+    "Ones" : [
+        {
+            "RelationClass" : "Local",
+            "RelationProperty" : "ID"
+        },
+        {
+            "RelationClass" : "User",
+            "RelationProperty" : "UserID"
+        }
+    ]
+}

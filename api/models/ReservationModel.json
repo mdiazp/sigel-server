@@ -1,0 +1,72 @@
+{
+    "StructName" : "Reservation",
+    "TableName" : "reservation",
+    "AutoPKey" : true,
+	"Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "UserID",
+            "PropertyType" : "int",
+            "ColumnName" : "user_id",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "LocalID",
+            "PropertyType" : "int",
+            "ColumnName" : "local_id",
+            "PrimaryKey" : false
+        },
+	    {
+            "PropertyName" : "ActivityName",
+            "PropertyType" : "string",
+            "ColumnName" : "activity_name",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "ActivityDescription",
+            "PropertyType" : "string",
+            "ColumnName" : "activity_description",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "BeginTime",
+            "PropertyType" : "time.Time",
+            "ColumnName" : "begin_time",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "EndTime",
+            "PropertyType" : "time.Time",
+            "ColumnName" : "end_time",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Confirmed",
+            "PropertyType" : "bool",
+            "ColumnName" : "confirmed",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Pending",
+            "PropertyType" : "bool",
+            "ColumnName" : "pending",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [],
+    "Ones" : [
+        {
+            "RelationClass" : "Local",
+	        "RelationProperty" : "LocalID"
+        },
+        {
+            "RelationClass" : "User",
+	        "RelationProperty" : "UserID"
+        }
+    ]
+}

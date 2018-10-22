@@ -9,9 +9,9 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"github.com/mdiazp/sirel-server/api/controllers"
-	"github.com/mdiazp/sirel-server/api/controllers/admin_controllers"
-	"github.com/mdiazp/sirel-server/api/controllers/private_controllers"
-	"github.com/mdiazp/sirel-server/api/controllers/public_controllers"
+	"github.com/mdiazp/sirel-server/api/controllers/admin"
+	"github.com/mdiazp/sirel-server/api/controllers/private"
+	"github.com/mdiazp/sirel-server/api/controllers/public"
 )
 
 func init() {
@@ -26,28 +26,29 @@ func init() {
 	ns := beego.NewNamespace("/api",
 		beego.NSNamespace("/public",
 			beego.NSInclude(
-				&public_controllers.LoginController{},
-				&public_controllers.PublicUsersController{},
-				&public_controllers.PublicLocalsController{},
-				&public_controllers.PublicAreasController{},
-				&public_controllers.PublicReservationsController{},
+				&public.LoginController{},
+				&public.UsersController{},
+				&public.LocalsController{},
+				&public.AreasController{},
+				&public.ReservationsController{},
 			),
 		),
 		beego.NSNamespace("/private",
 			beego.NSBefore(controllers.AuthFilter),
 			beego.NSInclude(
-				&private_controllers.LogoutController{},
-				&private_controllers.ProfileController{},
+				&private.LogoutController{},
+				&private.ProfileController{},
+				&private.ReservationsController{},
 			),
 		),
 		beego.NSNamespace("/admin",
 			beego.NSBefore(controllers.AuthFilter),
 			beego.NSBefore(controllers.AdminFilter),
 			beego.NSInclude(
-				&admin_controllers.AdminUsersController{},
-				&admin_controllers.AdminAreasController{},
-				&admin_controllers.AdminLocalsController{},
-				&admin_controllers.AdminReservationsController{},
+				&admin.UsersController{},
+				&admin.AreasController{},
+				&admin.LocalsController{},
+				&admin.ReservationsController{},
 			),
 		),
 		beego.NSNamespace("/test",

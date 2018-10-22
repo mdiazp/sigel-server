@@ -27,7 +27,7 @@ type SirelConfig struct {
 
 func loadConfig() error {
 	var config_path string
-	flag.StringVar(&config_path, "configpath", "/home/kino/my_configs/sirel_config/config.json", "Path to config file.")
+	flag.StringVar(&config_path, "configpath", "/home/kino/my_configs/sirel/config.json", "Path to config file.")
 	flag.Parse()
 
 	file, err := os.Open(config_path)

@@ -1,0 +1,80 @@
+package private
+
+import (
+	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sirel-server/api/models"
+)
+
+// ProfileController ...
+type ProfileController struct {
+	controllers.BaseAreasController
+}
+
+// Get ...
+// @Title Get User Profile
+// @Description Get user profile by username
+// @Param	authHd		header	string	true		"Authentication token"
+// @Success 200 {object} private.Profile
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /profile [get]
+func (c *ProfileController) Get() {
+	au := c.GetAuthor()
+	c.Data["json"] = toProfile(au)
+	c.ServeJSON()
+}
+
+// Patch ...
+// @Title Edit Profile
+// @Description Edit profile
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	profile		body	private.ProfileEdit	true		"Edited Profile"
+// @Success 200 {object} private.Profile
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /profile [patch]
+func (c *ProfileController) Patch() {
+	profile := ProfileEdit{}
+	c.ReadInputBody(&profile)
+
+	au := c.GetAuthor()
+	au.Email = profile.Email
+	au.SendNotificationsToEmail = profile.SendNotificationsToEmail
+	c.Validate(&au)
+
+	e := au.Update()
+	c.WE(e, 500)
+
+	c.Data["json"] = toProfile(au)
+	c.ServeJSON()
+}
+
+func toProfile(u *models.User) Profile {
+	return Profile{
+		Username: u.Username,
+		Name:     u.Name,
+		ProfileEdit: ProfileEdit{
+			Email: u.Email,
+			SendNotificationsToEmail: u.SendNotificationsToEmail,
+		},
+	}
+}
+
+// Profile ...
+type Profile struct {
+	Username string `json:"username"`
+	Name     string `json:"name"`
+	ProfileEdit
+}
+
+// ProfileEdit ...
+type ProfileEdit struct {
+	Email                    string `json:"email"`
+	SendNotificationsToEmail bool   `json:"send_notifications_to_email"`
+}

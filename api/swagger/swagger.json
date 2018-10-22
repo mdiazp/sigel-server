@@ -19,7 +19,7 @@
                     "admin"
                 ],
                 "description": "Get area info by id (role admin required)",
-                "operationId": "AdminAreasController.Retrieve Area Info",
+                "operationId": "AreasController.Retrieve Area Info",
                 "consumes": [
                     "application/json"
                 ],
@@ -47,7 +47,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -72,7 +72,7 @@
                     "admin"
                 ],
                 "description": "Create new area (role admin required)",
-                "operationId": "AdminAreasController.Create new area",
+                "operationId": "AreasController.Create new area",
                 "consumes": [
                     "application/json"
                 ],
@@ -93,7 +93,7 @@
                         "description": "New Area",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     }
                 ],
@@ -101,7 +101,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -126,7 +126,7 @@
                     "admin"
                 ],
                 "description": "Remove area by id (role admin required)",
-                "operationId": "AdminAreasController.Delete Area",
+                "operationId": "AreasController.Delete Area",
                 "consumes": [
                     "application/json"
                 ],
@@ -175,7 +175,7 @@
                     "admin"
                 ],
                 "description": "Edit area (role admin required)",
-                "operationId": "AdminAreasController.Update Area",
+                "operationId": "AreasController.Update Area",
                 "consumes": [
                     "application/json"
                 ],
@@ -204,7 +204,7 @@
                         "description": "Edited Area",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     }
                 ],
@@ -212,173 +212,8 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/admin/area/admins": {
-            "get": {
-                "tags": [
-                    "admin"
-                ],
-                "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminAreasController.Get Admins",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "area_id",
-                        "description": "Area id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{[]models.UserPublicInfo}"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "admin"
-                ],
-                "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminAreasController.Delete User from Admins",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "area_id",
-                        "description": "Area id",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "user_id",
-                        "description": "User id",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string}"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "admin"
-                ],
-                "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminAreasController.Delete User from Admins",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "area_id",
-                        "description": "Area id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "user_id",
-                        "description": "User id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string}"
                     },
                     "400": {
                         "description": "Bad request"
@@ -404,7 +239,7 @@
                     "admin"
                 ],
                 "description": "Get areas list (role admin required)",
-                "operationId": "AdminAreasController.Get Areas List",
+                "operationId": "AreasController.Get Areas List",
                 "consumes": [
                     "application/json"
                 ],
@@ -441,8 +276,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "orderDirection",
-                        "description": "asc or desc",
+                        "name": "orderDesc",
+                        "description": "true or false",
                         "type": "string"
                     },
                     {
@@ -458,7 +293,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models2.Area"
+                                "$ref": "#/definitions/models.AreaInfo"
                             }
                         }
                     },
@@ -486,7 +321,7 @@
                     "admin"
                 ],
                 "description": "Get local info by id (role admin required)",
-                "operationId": "AdminLocalsController.Retrieve Local Info",
+                "operationId": "LocalsController.Retrieve Local Info",
                 "consumes": [
                     "application/json"
                 ],
@@ -514,7 +349,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     },
                     "400": {
@@ -539,7 +374,7 @@
                     "admin"
                 ],
                 "description": "Create new local (role admin required)",
-                "operationId": "AdminLocalsController.Create new local",
+                "operationId": "LocalsController.Create new local",
                 "consumes": [
                     "application/json"
                 ],
@@ -560,7 +395,7 @@
                         "description": "New Local",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     }
                 ],
@@ -568,7 +403,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     },
                     "400": {
@@ -593,7 +428,7 @@
                     "admin"
                 ],
                 "description": "Remove local by id (role admin required)",
-                "operationId": "AdminLocalsController.Delete Local",
+                "operationId": "LocalsController.Delete Local",
                 "consumes": [
                     "application/json"
                 ],
@@ -642,7 +477,7 @@
                     "admin"
                 ],
                 "description": "Edit local (role admin required)",
-                "operationId": "AdminLocalsController.Update Local",
+                "operationId": "LocalsController.Update Local",
                 "consumes": [
                     "application/json"
                 ],
@@ -671,7 +506,7 @@
                         "description": "Edited Local",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     }
                 ],
@@ -679,7 +514,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     },
                     "400": {
@@ -706,7 +541,7 @@
                     "admin"
                 ],
                 "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminLocalsController.Get Admins",
+                "operationId": "LocalsController.Get Admins",
                 "consumes": [
                     "application/json"
                 ],
@@ -731,7 +566,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{[]models.UserPublicInfo}"
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserPublicInfo"
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request"
@@ -755,7 +596,7 @@
                     "admin"
                 ],
                 "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminLocalsController.Delete User from Admins",
+                "operationId": "LocalsController.Add User to Admins",
                 "consumes": [
                     "application/json"
                 ],
@@ -813,7 +654,7 @@
                     "admin"
                 ],
                 "description": "Delete user from admins by id (role admin required)",
-                "operationId": "AdminLocalsController.Delete User from Admins",
+                "operationId": "LocalsController.Delete User from Admins",
                 "consumes": [
                     "application/json"
                 ],
@@ -871,7 +712,7 @@
                     "admin"
                 ],
                 "description": "Get locals list (role admin required)",
-                "operationId": "AdminLocalsController.Get Locals List",
+                "operationId": "LocalsController.Get Locals List",
                 "consumes": [
                     "application/json"
                 ],
@@ -908,8 +749,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "sortorder",
-                        "description": "asc or desc",
+                        "name": "orderDesc",
+                        "description": "true or false",
                         "type": "string"
                     },
                     {
@@ -938,7 +779,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Local"
+                                "$ref": "#/definitions/models.LocalInfo"
                             }
                         }
                     },
@@ -960,13 +801,13 @@
                 }
             }
         },
-        "/admin/reservations": {
+        "/admin/reservation": {
             "get": {
                 "tags": [
                     "admin"
                 ],
-                "description": "Get reservations list (role admin required)",
-                "operationId": "AdminReservationsController.Get Reservations List",
+                "description": "Get reservation's info by id",
+                "operationId": "ReservationsController.Retrieve area info",
                 "consumes": [
                     "application/json"
                 ],
@@ -975,12 +816,47 @@
                 ],
                 "parameters": [
                     {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
+                        "in": "query",
+                        "name": "reservation_id",
+                        "description": "Reservation id",
                         "required": true,
-                        "type": "string"
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ReservationInfo"
+                        }
                     },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/admin/reservations": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Get public areas list",
+                "operationId": "ReservationsController.Get public reservation list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
                     {
                         "in": "query",
                         "name": "limit",
@@ -1003,27 +879,45 @@
                     },
                     {
                         "in": "query",
-                        "name": "sortorder",
-                        "description": "asc or desc",
+                        "name": "orderDesc",
+                        "description": "true or false",
                         "type": "string"
                     },
                     {
                         "in": "query",
-                        "name": "local_id",
-                        "description": "Reservation Property",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
                         "name": "user_id",
-                        "description": "Reservation Property",
+                        "description": "User ID",
                         "type": "integer",
                         "format": "int64"
                     },
                     {
                         "in": "query",
-                        "name": "search_in_activity_name",
+                        "name": "local_id",
+                        "description": "Local ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "confirmed",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pending",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
                         "description": "Search in activity name",
                         "type": "string"
                     }
@@ -1034,7 +928,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Reservation"
+                                "$ref": "#/definitions/models.ReservationInfo"
                             }
                         }
                     },
@@ -1062,7 +956,7 @@
                     "admin"
                 ],
                 "description": "Get user info by id (role admin required)",
-                "operationId": "AdminUsersController.Get User Info",
+                "operationId": "UsersController.Get User Info",
                 "consumes": [
                     "application/json"
                 ],
@@ -1079,7 +973,7 @@
                     },
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "user_id",
                         "description": "User id",
                         "required": true,
                         "type": "integer",
@@ -1090,7 +984,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.User"
+                            "$ref": "#/definitions/models.UserInfo"
                         }
                     },
                     "400": {
@@ -1115,7 +1009,7 @@
                     "admin"
                 ],
                 "description": "Edit rol and enable properties (role admin required, user can't edit itself)",
-                "operationId": "AdminUsersController.Edit User",
+                "operationId": "UsersController.Edit User",
                 "consumes": [
                     "application/json"
                 ],
@@ -1131,8 +1025,8 @@
                         "type": "string"
                     },
                     {
-                        "in": "path",
-                        "name": "id",
+                        "in": "query",
+                        "name": "user_id",
                         "description": "User id",
                         "required": true,
                         "type": "integer",
@@ -1144,7 +1038,7 @@
                         "description": "Edited User",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin_controllers.UserEdit"
+                            "$ref": "#/definitions/admin.UserEdit"
                         }
                     }
                 ],
@@ -1152,7 +1046,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.User"
+                            "$ref": "#/definitions/models.UserInfo"
                         }
                     },
                     "400": {
@@ -1179,7 +1073,7 @@
                     "admin"
                 ],
                 "description": "Get users list (role admin required, user can't edit itself)",
-                "operationId": "AdminUsersController.Get Users List",
+                "operationId": "UsersController.Get Users List",
                 "consumes": [
                     "application/json"
                 ],
@@ -1192,6 +1086,12 @@
                         "name": "authHd",
                         "description": "Authentication token",
                         "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "prefixFilter",
+                        "description": "prefixFilter",
                         "type": "string"
                     },
                     {
@@ -1216,14 +1116,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "sortorder",
-                        "description": "asc or desc",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "search",
-                        "description": "Filter by username",
+                        "name": "ordDesc",
+                        "description": "true or false",
                         "type": "string"
                     }
                 ],
@@ -1233,7 +1127,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/.User"
+                                "$ref": "#/definitions/models.UserInfo"
                             }
                         }
                     },
@@ -1314,7 +1208,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.Profile"
+                            "$ref": "#/definitions/private.Profile"
                         }
                     },
                     "400": {
@@ -1357,7 +1251,7 @@
                         "description": "Edited Profile",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/.ProfileEdit"
+                            "$ref": "#/definitions/private.ProfileEdit"
                         }
                     }
                 ],
@@ -1365,7 +1259,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.Profile"
+                            "$ref": "#/definitions/private.Profile"
                         }
                     },
                     "400": {
@@ -1383,13 +1277,69 @@
                 }
             }
         },
+        "/private/reservation": {
+            "post": {
+                "tags": [
+                    "private"
+                ],
+                "description": "Create new reservation (role user required)",
+                "operationId": "ReservationsController.Create new reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "reservation",
+                        "description": "New Reservation",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReservationToCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ReservationInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/public/area": {
             "get": {
                 "tags": [
                     "public"
                 ],
                 "description": "Get area info by id",
-                "operationId": "PublicAreasController.Retrieve public area info",
+                "operationId": "AreasController.Retrieve public area info",
                 "consumes": [
                     "application/json"
                 ],
@@ -1410,7 +1360,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -1431,7 +1381,7 @@
                     "public"
                 ],
                 "description": "Get public areas list",
-                "operationId": "PublicAreasController.Get public areas list",
+                "operationId": "AreasController.Get public areas list",
                 "consumes": [
                     "application/json"
                 ],
@@ -1461,8 +1411,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "orderDirection",
-                        "description": "asc or desc",
+                        "name": "orderDesc",
+                        "description": "true or false",
                         "type": "string"
                     },
                     {
@@ -1478,7 +1428,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Area"
+                                "$ref": "#/definitions/models.AreaInfo"
                             }
                         }
                     },
@@ -1506,7 +1456,7 @@
                     "public"
                 ],
                 "description": "Get local info by id",
-                "operationId": "PublicLocalsController.Retrieve public local info",
+                "operationId": "LocalsController.Retrieve public local info",
                 "consumes": [
                     "application/json"
                 ],
@@ -1527,7 +1477,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Local"
+                            "$ref": "#/definitions/models.LocalInfo"
                         }
                     },
                     "400": {
@@ -1548,7 +1498,7 @@
                     "public"
                 ],
                 "description": "Get public locals list",
-                "operationId": "PublicLocalsController.Get public locals list",
+                "operationId": "LocalsController.Get public locals list",
                 "consumes": [
                     "application/json"
                 ],
@@ -1578,8 +1528,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "sortorder",
-                        "description": "asc or desc",
+                        "name": "orderDesc",
+                        "description": "true or false",
                         "type": "string"
                     },
                     {
@@ -1602,7 +1552,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Local"
+                                "$ref": "#/definitions/models.LocalInfo"
                             }
                         }
                     },
@@ -1645,7 +1595,7 @@
                         "description": "Credentials for authentication",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/public_controllers.Credentials"
+                            "$ref": "#/definitions/public.Credentials"
                         }
                     }
                 ],
@@ -1653,7 +1603,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/public_controllers.Session"
+                            "$ref": "#/definitions/public.Session"
                         }
                     },
                     "400": {
@@ -1673,8 +1623,8 @@
                 "tags": [
                     "public"
                 ],
-                "description": "Get reservation info by id",
-                "operationId": "PublicReservationsController.Retrieve public reservation info",
+                "description": "Get reservation's info by id",
+                "operationId": "ReservationsController.Retrieve public area info",
                 "consumes": [
                     "application/json"
                 ],
@@ -1684,7 +1634,7 @@
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "id",
+                        "name": "reservation_id",
                         "description": "Reservation id",
                         "required": true,
                         "type": "integer",
@@ -1695,7 +1645,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Reservation"
+                            "$ref": "#/definitions/models.ReservationInfo"
                         }
                     },
                     "400": {
@@ -1710,13 +1660,120 @@
                 }
             }
         },
-        "/public/users/usernames": {
+        "/public/reservations": {
             "get": {
                 "tags": [
                     "public"
                 ],
-                "description": "Get usernames list",
-                "operationId": "PublicUsersController.Get usernames list",
+                "description": "Get public areas list",
+                "operationId": "ReservationsController.Get public reservation list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit (10 or 50 or 100)",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderDesc",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "user_id",
+                        "description": "User ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "local_id",
+                        "description": "Local ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "confirmed",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pending",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "description": "Search in activity name",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ReservationInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/public/users/publicinfo": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "description": "Get user's public info list",
+                "operationId": "UsersController.Get usernames list",
                 "consumes": [
                     "application/json"
                 ],
@@ -1728,14 +1785,12 @@
                         "in": "query",
                         "name": "prefixFilter",
                         "description": "prefixFilter",
-                        "required": true,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "limit",
-                        "description": "Limit",
-                        "required": true,
+                        "description": "Limit (10 or 50 or 100)",
                         "type": "integer",
                         "format": "int64"
                     },
@@ -1743,16 +1798,30 @@
                         "in": "query",
                         "name": "offset",
                         "description": "Offset",
-                        "required": true,
                         "type": "integer",
                         "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "ordDesc",
+                        "description": "true or false",
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.UserOnlyUsernamesAndId"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserPublicInfo"
+                            }
                         }
                     },
                     "400": {
@@ -1794,7 +1863,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -1827,7 +1896,7 @@
                         "description": "Area",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     }
                 ],
@@ -1835,7 +1904,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -1905,7 +1974,7 @@
                         "description": "Area",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     }
                 ],
@@ -1913,7 +1982,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models2.Area"
+                            "$ref": "#/definitions/models.AreaInfo"
                         }
                     },
                     "400": {
@@ -1981,7 +2050,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/.Area"
+                                "$ref": "#/definitions/models.AreaInfo"
                             }
                         }
                     },
@@ -1999,28 +2068,7 @@
         }
     },
     "definitions": {
-        ".0xc4203142c0": {
-            "type": "object"
-        },
-        ".0xc420314340": {
-            "type": "object"
-        },
-        ".Area": {
-            "type": "object"
-        },
-        ".Profile": {
-            "type": "object"
-        },
-        ".ProfileEdit": {
-            "type": "object"
-        },
-        ".User": {
-            "type": "object"
-        },
-        ".UserOnlyUsernamesAndId": {
-            "type": "object"
-        },
-        "admin_controllers.UserEdit": {
+        "admin.UserEdit": {
             "title": "UserEdit",
             "type": "object",
             "properties": {
@@ -2032,113 +2080,36 @@
                 }
             }
         },
-        "models.Area": {
-            "title": "Area",
+        "controllers.ReservationToCreate": {
+            "title": "ReservationToCreate",
             "type": "object",
             "properties": {
-                "description": {
+                "ActivityDescription": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "location": {
+                "ActivityName": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Local": {
-            "title": "Local",
-            "type": "object",
-            "properties": {
-                "area_id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "enable_to_reserve": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "working_begin_time_hours": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "working_begin_time_minutes": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "working_end_time_hours": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "working_end_time_minutes": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "working_months": {
-                    "type": "string"
-                },
-                "working_week_days": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Reservation": {
-            "title": "Reservation",
-            "type": "object",
-            "properties": {
-                "activity_description": {
-                    "type": "string"
-                },
-                "activity_name": {
-                    "type": "string"
-                },
-                "begin_time": {
+                "BeginTime": {
                     "type": "string",
                     "format": "datetime"
                 },
-                "confirmed": {
-                    "type": "boolean"
-                },
-                "end_time": {
+                "EndTime": {
                     "type": "string",
                     "format": "datetime"
                 },
-                "id": {
+                "ID": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "local_id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "pending": {
-                    "type": "boolean"
-                },
-                "user_id": {
+                "LocalID": {
                     "type": "integer",
                     "format": "int64"
                 }
             }
         },
-        "models2.Area": {
-            "title": "Area",
+        "models.AreaInfo": {
+            "title": "AreaInfo",
             "type": "object",
             "properties": {
                 "Description": {
@@ -2153,22 +2124,170 @@
                 },
                 "Name": {
                     "type": "string"
-                },
-                "areaAdmins": {
-                    "$ref": "#/definitions/4882.\u003cnil\u003e.0xc420314340"
-                },
-                "locals": {
-                    "$ref": "#/definitions/4860.\u003cnil\u003e.0xc4203142c0"
-                },
-                "model": {
-                    "$ref": "#/definitions/models2.Model"
                 }
             }
         },
-        "models2.Model": {
-            "type": "object"
+        "models.LocalInfo": {
+            "title": "LocalInfo",
+            "type": "object",
+            "properties": {
+                "AreaID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "EnableToReserve": {
+                    "type": "boolean"
+                },
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Location": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "WorkingBeginTimeHours": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingBeginTimeMinutes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingEndTimeHours": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingEndTimeMinutes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingMonths": {
+                    "type": "string"
+                },
+                "WorkingWeekDays": {
+                    "type": "string"
+                }
+            }
         },
-        "public_controllers.Credentials": {
+        "models.ReservationInfo": {
+            "title": "ReservationInfo",
+            "type": "object",
+            "properties": {
+                "ActivityDescription": {
+                    "type": "string"
+                },
+                "ActivityName": {
+                    "type": "string"
+                },
+                "BeginTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Confirmed": {
+                    "type": "boolean"
+                },
+                "EndTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "LocalID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Pending": {
+                    "type": "boolean"
+                },
+                "UserID": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.UserInfo": {
+            "title": "UserInfo",
+            "type": "object",
+            "properties": {
+                "Email": {
+                    "type": "string"
+                },
+                "Enable": {
+                    "type": "boolean"
+                },
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Rol": {
+                    "type": "string"
+                },
+                "SendNotificationsToEmail": {
+                    "type": "boolean"
+                },
+                "Username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserPublicInfo": {
+            "title": "UserPublicInfo",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "private.Profile": {
+            "title": "Profile",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "send_notifications_to_email": {
+                    "type": "boolean"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "private.ProfileEdit": {
+            "title": "ProfileEdit",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "send_notifications_to_email": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "public.Credentials": {
             "title": "Credentials",
             "type": "object",
             "properties": {
@@ -2180,7 +2299,7 @@
                 }
             }
         },
-        "public_controllers.Session": {
+        "public.Session": {
             "title": "Session",
             "type": "object",
             "properties": {
@@ -2195,5 +2314,23 @@
                 }
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "public",
+            "description": "ReservationsController ...\n"
+        },
+        {
+            "name": "private",
+            "description": "ReservationsController ...\n"
+        },
+        {
+            "name": "admin",
+            "description": "ReservationsController ...\n"
+        },
+        {
+            "name": "test",
+            "description": "TestingModel2Controller ...\n"
+        }
+    ]
 }

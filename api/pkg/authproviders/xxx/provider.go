@@ -9,7 +9,8 @@ import (
 
 type provider struct{}
 
-func (this *provider) Authenticate(username, password string) error {
+// Authenticate ...
+func (p *provider) Authenticate(username, password string) error {
 	if users[username] == zero {
 		users[username] = authproviders.UserRecords{
 			Username: username,
@@ -25,13 +26,14 @@ func (this *provider) Authenticate(username, password string) error {
 	return nil
 }
 
-func (this *provider) GetUserRecords(username string) (authproviders.UserRecords, error) {
+func (p *provider) GetUserRecords(username string) (authproviders.UserRecords, error) {
 	if users[username] == zero {
 		return zero, errors.New("User not found")
 	}
 	return users[username], nil
 }
 
+// GetProvider ...
 func GetProvider() authproviders.Provider {
 	return &provider{}
 }

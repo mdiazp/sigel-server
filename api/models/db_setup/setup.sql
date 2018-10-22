@@ -18,7 +18,7 @@ create table k_user(
 
 create table area(
     id                          serial primary key,
-    name                        varchar(100) not null,
+    name                        varchar(100) not null unique,
     description                 varchar(1024) not null,
     location                    varchar(1024),
 );
@@ -26,7 +26,7 @@ create table area(
 create table local(
     id                          serial primary key,
     area_id                     integer references area(id) on delete cascade not null,
-    name                        varchar(100) not null,
+    name                        varchar(100) not null unique,
     description                 varchar(1024) not null,
     location                    varchar(1024) not null,
     working_moths               varchar(12) not null,
@@ -44,8 +44,8 @@ create table reservation(
     local_id                integer references local(id) on delete cascade not null,
     activity_name           varchar(100) not null,
     activity_description    varchar(1024) not null,
-    begin_time              timestamp not null,
-    end_time                timestamp not null,
+    begin_time              timestamp without time zone not null,
+    end_time                timestamp without time zone not null,
     confirmed               boolean not null,
     pending                 boolean not null
 );
@@ -54,14 +54,8 @@ create table notification(
     id                      serial primary key,
     to_user                 integer references k_user(id) on delete cascade not null,
     message                 varchar(1024) not null,
-    creation_time           timestamp not null,
+    creation_time           timestamp without time zone not null,
     readed                  boolean not null
-);
-
-create table area_admin(
-    id                      serial primary key,
-    user_id                 integer references k_user(id) on delete cascade not null,
-    area_id                 integer references area(id) on delete cascade not null,
 );
 
 create table local_admin(
