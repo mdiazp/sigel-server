@@ -50,7 +50,11 @@
         {
             "RelationClass" : "LocalAdmin",
             "RelationColumn" : "user_id"
-        }
+        },
+        {
+            "RelationClass" : "Notification",
+            "RelationColumn" : "user_id"
+        } 
     ],
     "Ones" : []
 }

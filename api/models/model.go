@@ -24,6 +24,7 @@ type Model interface {
 	AreaModel
 	UserModel
 	ReservationModel
+	NotificationModel
 }
 
 // NewModel ...

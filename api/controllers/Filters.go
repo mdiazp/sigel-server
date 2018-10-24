@@ -21,11 +21,10 @@ func AuthFilter(ctx *context.Context) {
 	}
 
 	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
-		u := &models.User{
-			UserInfo: models.UserInfo{
-				Username: "manuel.diaz",
-				Rol:      "Superadmin",
-			},
+		u := app.Model().NewUser()
+		e := app.Model().RetrieveOne(u, "k_user.username=$1", "manuel.diaz")
+		if e != nil {
+			wrec(ctx, 500)
 		}
 		ctx.Input.SetData("Author", u)
 		return

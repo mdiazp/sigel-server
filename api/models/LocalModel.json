@@ -80,7 +80,7 @@
         {
             "RelationClass" : "LocalAdmin",
             "RelationColumn" : "local_id"
-        } 
+        }
     ],
     "Ones" : [
         {

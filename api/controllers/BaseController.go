@@ -70,8 +70,18 @@ func (c *BaseController) Validate(obj interface{}) {
 	}
 }
 
+// ReadPagOrder ...
+func (c *BaseController) ReadPagOrder() (*int, *int, *string, *bool) {
+	limit := c.ReadInt("limit")
+	offset := c.ReadInt("offset")
+	orderby := c.ReadString("orderby")
+	desc := c.ReadBool("orderDesc")
+	return limit, offset, orderby, desc
+}
+
+/*
 // ReadPagAndOrdOptions ...
-func (c *BaseController) ReadPagAndOrdOptions(defaultOrderByOption string, orderByOptions ...string) PagAndOrdOptions {
+func (c *BaseController) readPagAndOrdOptions(defaultOrderByOption string, orderByOptions ...string) PagAndOrdOptions {
 	var (
 		opt PagAndOrdOptions
 		e   error
@@ -105,6 +115,7 @@ func (c *BaseController) ReadPagAndOrdOptions(defaultOrderByOption string, order
 
 	return opt
 }
+*/
 
 // Fmtorder ...
 func (c *BaseController) Fmtorder(opt *PagAndOrdOptions) string {

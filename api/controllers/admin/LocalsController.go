@@ -1,7 +1,10 @@
 package admin
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego"
+	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -25,8 +28,10 @@ type LocalsController struct {
 // @Accept json
 // @router /local [get]
 func (c *LocalsController) Get() {
-	beego.Debug(models.RolAdmin)
 	c.AccessControl(models.RolAdmin)
+	beego.Debug("it is going to enter inside c.isLocalAdmin()")
+	c.isLocalAdmin()
+	beego.Debug("it go out from c.isLocalAdmin()")
 	c.Data["json"] = c.BaseLocalsController.Show()
 	c.ServeJSON()
 }
@@ -55,7 +60,7 @@ func (c *LocalsController) Post() {
 // @Description Edit local (role admin required)
 // @Param	authHd		header	string	true		"Authentication token"
 // @Param	local_id		query	int	true		"Local id"
-// @Param	local		body	models.LocalInfo	true		"Edited Local"
+// @Param	local		body	controllers.EditLocalInfo	true		"Edited Local"
 // @Success 200 {object} models.LocalInfo
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
@@ -66,6 +71,7 @@ func (c *LocalsController) Post() {
 // @router /local [patch]
 func (c *LocalsController) Patch() {
 	c.AccessControl(models.RolAdmin)
+	c.isLocalAdmin()
 	c.Data["json"] = c.BaseLocalsController.Update()
 	c.ServeJSON()
 }
@@ -85,6 +91,7 @@ func (c *LocalsController) Patch() {
 // @router /local [delete]
 func (c *LocalsController) Delete() {
 	c.AccessControl(models.RolSuperadmin)
+	c.isLocalAdmin()
 	c.BaseLocalsController.Remove()
 	c.Data["json"] = "OK"
 	c.ServeJSON()
@@ -133,6 +140,7 @@ func (c *LocalsController) List() {
 // @router /local/admins [get]
 func (c *LocalsController) Admins() {
 	c.AccessControl(models.RolSuperadmin)
+	c.isLocalAdmin()
 	ladmins := *(c.BaseLocalsController.Admins().Users)
 	admins := make([]models.UserPublicInfo, 0)
 
@@ -166,6 +174,7 @@ func (c *LocalsController) Admins() {
 // @router /local/admins [put]
 func (c *LocalsController) PutAdmin() {
 	c.AccessControl(models.RolSuperadmin)
+	c.isLocalAdmin()
 	c.Data["json"] = c.BaseLocalsController.AddAdmin()
 	c.ServeJSON()
 }
@@ -186,7 +195,25 @@ func (c *LocalsController) PutAdmin() {
 // @router /local/admins [delete]
 func (c *LocalsController) DeleteAdmin() {
 	c.AccessControl(models.RolSuperadmin)
+	c.isLocalAdmin()
 	c.BaseLocalsController.RemoveAdmin()
 	c.Data["json"] = "OK"
 	c.ServeJSON()
+}
+
+func (c *LocalsController) isLocalAdmin() {
+	if c.GetAuthor().HaveRol(models.RolSuperadmin) {
+		return
+	}
+
+	localID := *(c.ReadInt("local_id", true))
+	userID := c.GetAuthor().ID
+
+	beego.Debug("user's rol is %s", c.GetAuthor().Rol)
+
+	_, e := app.Model().GetLocalAdmin(localID, userID)
+	if e == models.ErrNoRows {
+		c.WE(fmt.Errorf("Forbbiden"), 403)
+	}
+	c.WE(e, 500)
 }

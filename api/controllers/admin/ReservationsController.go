@@ -10,7 +10,7 @@ type ReservationsController struct {
 }
 
 // Get ...
-// @Title Retrieve area info
+// @Title Retrieve reservation info
 // @Description Get reservation's info by id
 // @Param	reservation_id		query	int	true		"Reservation id"
 // @Success 200 {object} models.ReservationInfo
@@ -21,6 +21,38 @@ type ReservationsController struct {
 // @router /reservation [get]
 func (c *ReservationsController) Get() {
 	c.Data["json"] = c.BaseReservationsController.Show()
+	c.ServeJSON()
+}
+
+// Accept ...
+// @Title Accept reservation
+// @Description Accept reservation, pending will be false
+// @Param	reservation_id		query	int	true		"Reservation id"
+// @Success 200 {string}
+// @Failure 400 Bad request
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /reservation [patch]
+func (c *ReservationsController) Accept() {
+	c.BaseReservationsController.AcceptReservation()
+	c.Data["json"] = "OK"
+	c.ServeJSON()
+}
+
+// Refuse ...
+// @Title Refuse reservation
+// @Description Refuse reservation and delete it
+// @Param	reservation_id		query	int	true		"Reservation id"
+// @Success 200 {string}
+// @Failure 400 Bad request
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /reservation [delete]
+func (c *ReservationsController) Refuse() {
+	c.BaseReservationsController.RefuseReservation()
+	c.Data["json"] = "OK"
 	c.ServeJSON()
 }
 

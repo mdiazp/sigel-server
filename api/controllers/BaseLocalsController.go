@@ -44,10 +44,14 @@ func (c *BaseLocalsController) Create() *models.Local {
 
 // Update ...
 func (c *BaseLocalsController) Update() *models.Local {
+	var el EditLocalInfo
+	c.ReadInputBody(el)
+
 	l := app.Model().NewLocal()
-	c.ReadInputBody(l)
-	c.Validate(l)
 	l.ID = *c.ReadInt("local_id", true)
+	l.Load()
+	el.copyToLocal(l)
+	c.Validate(l)
 
 	c.checkLocalUniqueNameConstraint(l)
 
@@ -75,10 +79,7 @@ func (c *BaseLocalsController) Remove() {
 
 // List ...
 func (c *BaseLocalsController) List() *models.LocalCollection {
-	limit := c.ReadInt("limit")
-	offset := c.ReadInt("offset")
-	orderby := c.ReadString("orderby")
-	desc := c.ReadBool("orderDesc")
+	limit, offset, orderby, desc := c.ReadPagOrder()
 	enableToReserve := c.ReadBool("enable_to_reserve")
 	areaID := c.ReadInt("area_id")
 	search := c.ReadString("search")
@@ -139,4 +140,33 @@ func (c *BaseLocalsController) checkLocalUniqueNameConstraint(l *models.Local) {
 		}
 		c.WE(e, 500)
 	}
+}
+
+// EditLocalInfo ...
+type EditLocalInfo struct {
+	ID                      int
+	Name                    string
+	Description             string
+	Location                string
+	WorkingMonths           string
+	WorkingWeekDays         string
+	WorkingBeginTimeHours   int
+	WorkingBeginTimeMinutes int
+	WorkingEndTimeHours     int
+	WorkingEndTimeMinutes   int
+	EnableToReserve         bool
+}
+
+func (el *EditLocalInfo) copyToLocal(l *models.Local) {
+	l.ID = el.ID
+	l.Name = el.Name
+	l.Description = el.Description
+	l.Location = el.Location
+	l.WorkingMonths = el.WorkingMonths
+	l.WorkingWeekDays = el.WorkingWeekDays
+	l.WorkingBeginTimeHours = el.WorkingBeginTimeHours
+	l.WorkingBeginTimeMinutes = el.WorkingBeginTimeMinutes
+	l.WorkingEndTimeHours = el.WorkingEndTimeHours
+	l.WorkingBeginTimeMinutes = el.WorkingEndTimeMinutes
+	l.EnableToReserve = el.EnableToReserve
 }

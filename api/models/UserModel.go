@@ -24,7 +24,8 @@ type User struct {
 	UserInfo
 	model Model
 
-	localAdmins *[]*LocalAdmin
+	localAdmins   *[]*LocalAdmin
+	notifications *[]*Notification
 }
 
 /////////////////////////////////////////////////////
@@ -114,6 +115,20 @@ func (u *User) LocalAdmins() (*[]*LocalAdmin, error) {
 		}
 	}
 	return u.localAdmins, e
+}
+
+// Notifications ...
+func (u *User) Notifications() (*[]*Notification, error) {
+	var e error
+	if u.notifications == nil {
+		tmp := u.model.NewNotificationCollection()
+		hfilter := fmt.Sprintf("user_id=%d", u.ID)
+		e = u.model.RetrieveCollection(&hfilter, nil, nil, nil, nil, tmp)
+		if e == nil {
+			u.notifications = tmp.Notifications
+		}
+	}
+	return u.notifications, e
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

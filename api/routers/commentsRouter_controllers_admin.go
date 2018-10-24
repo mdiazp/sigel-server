@@ -111,11 +111,43 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"],
+		beego.ControllerComments{
+			Method: "GetNotification",
+			Router: `/profile/notification`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"],
+		beego.ControllerComments{
+			Method: "GetNotifications",
+			Router: `/profile/notification`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/reservation`,
 			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"],
+		beego.ControllerComments{
+			Method: "Accept",
+			Router: `/reservation`,
+			AllowHTTPMethods: []string{"patch"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"],
+		beego.ControllerComments{
+			Method: "Refuse",
+			Router: `/reservation`,
+			AllowHTTPMethods: []string{"delete"},
 			MethodParams: param.Make(),
 			Params: nil})
 

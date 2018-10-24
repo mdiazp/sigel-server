@@ -1,13 +1,14 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // LocalCustomModel ...
 type LocalCustomModel interface {
 	GetLocals(
 		areaID *int, search *string, enableToReserve *bool, adminID *int,
 		limit, offset *int, orderby *string, desc *bool) (*LocalCollection, error)
-
 	GetLocalAdmins(localID int) (*UserCollection, error)
 }
 

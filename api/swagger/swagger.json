@@ -506,7 +506,7 @@
                         "description": "Edited Local",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.LocalInfo"
+                            "$ref": "#/definitions/controllers.EditLocalInfo"
                         }
                     }
                 ],
@@ -801,13 +801,100 @@
                 }
             }
         },
+        "/admin/profile/notification": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Get notification by username",
+                "operationId": "NotificationsController.Get Notifications",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit (10 or 50 or 100)",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderDesc",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "user_id",
+                        "description": "Notification ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/.NotificationInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/admin/reservation": {
             "get": {
                 "tags": [
                     "admin"
                 ],
                 "description": "Get reservation's info by id",
-                "operationId": "ReservationsController.Retrieve area info",
+                "operationId": "ReservationsController.Retrieve reservation info",
                 "consumes": [
                     "application/json"
                 ],
@@ -830,6 +917,80 @@
                         "schema": {
                             "$ref": "#/definitions/models.ReservationInfo"
                         }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Refuse reservation and delete it",
+                "operationId": "ReservationsController.Refuse reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "reservation_id",
+                        "description": "Reservation id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Accept reservation, pending will be false",
+                "operationId": "ReservationsController.Accept reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "reservation_id",
+                        "description": "Reservation id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string}"
                     },
                     "400": {
                         "description": "Bad request"
@@ -1260,6 +1421,85 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/private.Profile"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/private/profile/notification": {
+            "get": {
+                "tags": [
+                    "private"
+                ],
+                "description": "Get notification by username",
+                "operationId": "NotificationsController.Get Notifications",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit (10 or 50 or 100)",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderDesc",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/.Notification"
+                            }
                         }
                     },
                     "400": {
@@ -2068,6 +2308,12 @@
         }
     },
     "definitions": {
+        ".Notification": {
+            "type": "object"
+        },
+        ".NotificationInfo": {
+            "type": "object"
+        },
         "admin.UserEdit": {
             "title": "UserEdit",
             "type": "object",
@@ -2076,6 +2322,50 @@
                     "type": "boolean"
                 },
                 "rol": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.EditLocalInfo": {
+            "title": "EditLocalInfo",
+            "type": "object",
+            "properties": {
+                "Description": {
+                    "type": "string"
+                },
+                "EnableToReserve": {
+                    "type": "boolean"
+                },
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Location": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "WorkingBeginTimeHours": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingBeginTimeMinutes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingEndTimeHours": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingEndTimeMinutes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "WorkingMonths": {
+                    "type": "string"
+                },
+                "WorkingWeekDays": {
                     "type": "string"
                 }
             }
@@ -2097,10 +2387,6 @@
                 "EndTime": {
                     "type": "string",
                     "format": "datetime"
-                },
-                "ID": {
-                    "type": "integer",
-                    "format": "int64"
                 },
                 "LocalID": {
                     "type": "integer",
@@ -2322,11 +2608,11 @@
         },
         {
             "name": "private",
-            "description": "ReservationsController ...\n"
+            "description": "NotificationController ...\n"
         },
         {
             "name": "admin",
-            "description": "ReservationsController ...\n"
+            "description": "NotificationController ...\n"
         },
         {
             "name": "test",

@@ -1,0 +1,44 @@
+{
+    "StructName" : "Notification",
+    "TableName" : "notification",
+    "AutoPKey" : true,
+	"Columns" : [
+        {
+            "PropertyName" : "ID",
+            "PropertyType" : "int",
+            "ColumnName" : "id",
+            "PrimaryKey" : true
+        },
+        {
+            "PropertyName" : "UserID",
+            "PropertyType" : "int",
+            "ColumnName" : "user_id",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Message",
+            "PropertyType" : "string",
+            "ColumnName" : "message",
+            "PrimaryKey" : false
+        },
+	    {
+            "PropertyName" : "CreationTime",
+            "PropertyType" : "time.Time",
+            "ColumnName" : "creation_time",
+            "PrimaryKey" : false
+        },
+        {
+            "PropertyName" : "Readed",
+            "PropertyType" : "bool",
+            "ColumnName" : "readed",
+            "PrimaryKey" : false
+        }
+    ],
+    "Manys" : [],
+    "Ones" : [
+        {
+            "RelationClass" : "User",
+	        "RelationProperty" : "UserID"
+        }
+    ]
+}

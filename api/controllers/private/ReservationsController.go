@@ -24,7 +24,7 @@ type ReservationsController struct {
 // @Accept json
 // @router /reservation [post]
 func (c *ReservationsController) Post() {
-	c.AccessControl(models.RolSuperadmin)
+	c.AccessControl(models.RolUser)
 	c.Data["json"] = c.BaseReservationsController.Create()
 	c.ServeJSON()
 }
