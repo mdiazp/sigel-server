@@ -29,9 +29,7 @@ type LocalsController struct {
 // @router /local [get]
 func (c *LocalsController) Get() {
 	c.AccessControl(models.RolAdmin)
-	beego.Debug("it is going to enter inside c.isLocalAdmin()")
 	c.isLocalAdmin()
-	beego.Debug("it go out from c.isLocalAdmin()")
 	c.Data["json"] = c.BaseLocalsController.Show()
 	c.ServeJSON()
 }

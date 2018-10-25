@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 
+	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -45,17 +46,24 @@ func (c *BaseLocalsController) Create() *models.Local {
 // Update ...
 func (c *BaseLocalsController) Update() *models.Local {
 	var el EditLocalInfo
-	c.ReadInputBody(el)
+	c.ReadObjectInBody("Local", &el, true)
 
 	l := app.Model().NewLocal()
 	l.ID = *c.ReadInt("local_id", true)
+
 	l.Load()
+
 	el.copyToLocal(l)
 	c.Validate(l)
 
 	c.checkLocalUniqueNameConstraint(l)
 
 	e := l.Update()
+
+	fmt.Println(l)
+	beego.Debug("Updating new local with ID=" +
+		string(l.ID) + " and area.ID=" + string(l.AreaID))
+
 	if e == models.ErrNoRows {
 		c.WE(e, 404)
 	}
@@ -158,7 +166,6 @@ type EditLocalInfo struct {
 }
 
 func (el *EditLocalInfo) copyToLocal(l *models.Local) {
-	l.ID = el.ID
 	l.Name = el.Name
 	l.Description = el.Description
 	l.Location = el.Location
