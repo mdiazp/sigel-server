@@ -5,7 +5,7 @@ import (
 	"github.com/mdiazp/sirel-server/api/models"
 )
 
-// NotificationController ...
+// NotificationsController ...
 type NotificationsController struct {
 	controllers.BaseNotificationController
 }

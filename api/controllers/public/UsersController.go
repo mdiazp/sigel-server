@@ -13,7 +13,7 @@ type UsersController struct {
 // GetUsersPublicInfo ...
 // @Title Get usernames list
 // @Description Get user's public info list
-// @Param	prefixFilter		query	string	false		"prefixFilter"
+// @Param	username		query	string	false		"prefixFilter"
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
@@ -25,6 +25,11 @@ type UsersController struct {
 // @Accept json
 // @router /users/publicinfo [get]
 func (c *UsersController) GetUsersPublicInfo() {
+	c.Ctx.Input.SetParam("name", "")
+	c.Ctx.Input.SetParam("email", "")
+	c.Ctx.Input.SetParam("rol", "")
+	c.Ctx.Input.SetParam("enable", "")
+
 	users := c.GetUsers()
 	upinfo := make([]*models.UserPublicInfo, 0)
 

@@ -4,14 +4,17 @@ import (
 	"github.com/mdiazp/sirel-server/api/controllers"
 )
 
+// LogoutController ...
 type LogoutController struct {
 	controllers.BaseController
 }
 
+// URLMapping ...
 func (c *LogoutController) URLMapping() {
 	c.Mapping("/logout", c.Logout)
 }
 
+// Logout ...
 // @Title Logout
 // @Summary Logout
 // @Description Close session of the user in the system
@@ -21,6 +24,6 @@ func (c *LogoutController) URLMapping() {
 // @Failure 401 Unauthorized
 // @Failure 500 Internal Server Error
 // @router /logout [delete]
-func (this *LogoutController) Logout() {
-	this.ServeJSON()
+func (c *LogoutController) Logout() {
+	c.ServeJSON()
 }

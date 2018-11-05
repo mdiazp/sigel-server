@@ -11,7 +11,7 @@ func (m *model) GetAreas(search *string, limit, offset *int, orderby *string,
 	orderDesc *bool) (*AreaCollection, error) {
 
 	if search != nil {
-		*search = "WHERE name like '" + *search + "%'"
+		*search = "name ilike '%" + *search + "%'"
 	}
 
 	collection := m.NewAreaCollection()

@@ -46,7 +46,7 @@ func (m *model) GetLocals(
 		if where != "" {
 			where += " AND "
 		}
-		where += fmt.Sprintf("local.name like '%s'", *search+"%")
+		where += "local.name ilike '%" + *search + "%'"
 	}
 
 	if orderby != nil {

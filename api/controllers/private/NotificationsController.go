@@ -2,7 +2,7 @@ package private
 
 import "github.com/mdiazp/sirel-server/api/controllers"
 
-// NotificationController ...
+// NotificationsController ...
 type NotificationsController struct {
 	controllers.BaseNotificationController
 }

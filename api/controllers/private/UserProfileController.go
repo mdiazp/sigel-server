@@ -1,6 +1,8 @@
 package private
 
 import (
+	"fmt"
+
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -14,7 +16,7 @@ type ProfileController struct {
 // @Title Get User Profile
 // @Description Get user profile by username
 // @Param	authHd		header	string	true		"Authentication token"
-// @Success 200 {object} private.Profile
+// @Success 200 {object} models.UserProfile
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 404 Not Found
@@ -31,8 +33,8 @@ func (c *ProfileController) Get() {
 // @Title Edit Profile
 // @Description Edit profile
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	profile		body	private.ProfileEdit	true		"Edited Profile"
-// @Success 200 {object} private.Profile
+// @Param	profile		body	models.ProfileEdit	true		"Edited Profile"
+// @Success 200 {object} models.UserProfile
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 404 Not Found
@@ -40,13 +42,17 @@ func (c *ProfileController) Get() {
 // @Accept json
 // @router /profile [patch]
 func (c *ProfileController) Patch() {
-	profile := ProfileEdit{}
+	profile := models.ProfileEdit{}
 	c.ReadInputBody(&profile)
 
 	au := c.GetAuthor()
+	if au.Username == "SIREL" {
+		c.WE(fmt.Errorf("User SIREL don't can be updated"), 403)
+	}
+
 	au.Email = profile.Email
 	au.SendNotificationsToEmail = profile.SendNotificationsToEmail
-	c.Validate(&au)
+	c.Validate(au)
 
 	e := au.Update()
 	c.WE(e, 500)
@@ -55,26 +61,11 @@ func (c *ProfileController) Patch() {
 	c.ServeJSON()
 }
 
-func toProfile(u *models.User) Profile {
-	return Profile{
+func toProfile(u *models.User) models.UserProfile {
+	return models.UserProfile{
 		Username: u.Username,
 		Name:     u.Name,
-		ProfileEdit: ProfileEdit{
-			Email: u.Email,
-			SendNotificationsToEmail: u.SendNotificationsToEmail,
-		},
+		Email:    u.Email,
+		SendNotificationsToEmail: u.SendNotificationsToEmail,
 	}
-}
-
-// Profile ...
-type Profile struct {
-	Username string `json:"username"`
-	Name     string `json:"name"`
-	ProfileEdit
-}
-
-// ProfileEdit ...
-type ProfileEdit struct {
-	Email                    string `json:"email"`
-	SendNotificationsToEmail bool   `json:"send_notifications_to_email"`
 }

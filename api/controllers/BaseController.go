@@ -31,6 +31,10 @@ func (c *BaseController) WE(e error, statusCode int, ms ...interface{}) {
 		beego.Debug(e.Error())
 	}
 
+	if statusCode == 401 {
+		beego.Debug(e.Error())
+	}
+
 	c.Ctx.Output.SetStatus(statusCode)
 	if len(ms) > 0 {
 		c.Data["json"] = ms[0]
@@ -79,44 +83,6 @@ func (c *BaseController) ReadPagOrder() (*int, *int, *string, *bool) {
 	return limit, offset, orderby, desc
 }
 
-/*
-// ReadPagAndOrdOptions ...
-func (c *BaseController) readPagAndOrdOptions(defaultOrderByOption string, orderByOptions ...string) PagAndOrdOptions {
-	var (
-		opt PagAndOrdOptions
-		e   error
-		ok  bool
-	)
-
-	opt.Limit, e = c.GetInt("limit", 20)
-	opt.Offset, e = c.GetInt("offset", 0)
-	opt.OrderBy = c.GetString("orderby", "id")
-
-	ok = false
-
-	for _, o := range orderByOptions {
-		if o == opt.OrderBy {
-			ok = true
-			break
-		}
-	}
-
-	if !ok {
-		opt.OrderBy = defaultOrderByOption
-	}
-
-	opt.orderDirection = c.GetString("orderDirection", "asc")
-	if opt.orderDirection != "asc" && opt.orderDirection != "desc" {
-		e = fmt.Errorf("orderDirection have an invalid value: %s", opt.orderDirection)
-		beego.Debug(e.Error())
-	}
-
-	c.WE(e, 400)
-
-	return opt
-}
-*/
-
 // Fmtorder ...
 func (c *BaseController) Fmtorder(opt *PagAndOrdOptions) string {
 	exp := opt.OrderBy
@@ -140,6 +106,7 @@ func (c *BaseController) ReadString(name string, required ...bool) *string {
 // ReadInt ...
 func (c *BaseController) ReadInt(name string, required ...bool) *int {
 	tmp := c.GetString(name)
+	beego.Debug(name + " = " + tmp)
 	if tmp != "" {
 		x, e := strconv.Atoi(tmp)
 		c.WE(e, 400)

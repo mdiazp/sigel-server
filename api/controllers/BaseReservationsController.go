@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -90,7 +91,7 @@ func (c *BaseReservationsController) RefuseReservation() {
 	eh, em, _ := r.EndTime.Clock()
 
 	e = app.Model().NotificateToUser(r.UserID,
-		fmt.Sprintf("Su reservacion en el local %s con fecha %d/%d/%d %d:%d - %d:%d fue aceptada",
+		fmt.Sprintf("Su reservacion en el local %s con fecha %d/%d/%d %d:%d - %d:%d fue denegada",
 			local.Name, year, month, day, bh, bm, eh, em))
 
 	c.WE(e, 500)
@@ -107,6 +108,9 @@ func (c *BaseReservationsController) List() *models.ReservationCollection {
 	confirmed := c.ReadBool("confirmed")
 	pending := c.ReadBool("pending")
 	sdate := c.ReadString("date")
+	beego.Debug("before localAdminID")
+	localAdminID := c.ReadInt("localAdminID")
+	beego.Debug("after localAdminID")
 	search := c.ReadString("search")
 	date, e := app.Model().NewDate(sdate)
 	if e != nil {
@@ -114,7 +118,7 @@ func (c *BaseReservationsController) List() *models.ReservationCollection {
 	}
 
 	rs, e := app.Model().GetReservations(search, userID, localID, confirmed,
-		pending, date, limit, offset, orderby, desc)
+		pending, date, localAdminID, limit, offset, orderby, desc)
 
 	if e != models.ErrNoRows {
 		c.WE(e, 500)

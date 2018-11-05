@@ -32,7 +32,7 @@ func (c *BaseAreasController) Create() *models.Area {
 	c.ReadInputBody(a)
 	c.Validate(a)
 
-	c.checkAreaUniqueNameConstraint(a)
+	c.checkAreaUniqueNameConstraint(a, true)
 
 	e := app.Model().Create(a)
 	c.WE(e, 500)
@@ -46,7 +46,7 @@ func (c *BaseAreasController) Update() *models.Area {
 	c.Validate(a)
 	a.ID = *c.ReadInt("area_id", true)
 
-	c.checkAreaUniqueNameConstraint(a)
+	c.checkAreaUniqueNameConstraint(a, false)
 
 	e := a.Update()
 	if e == models.ErrNoRows {
@@ -85,12 +85,13 @@ func (c *BaseAreasController) List() *models.AreaCollection {
 	return areas
 }
 
-func (c *BaseAreasController) checkAreaUniqueNameConstraint(a *models.Area) {
+func (c *BaseAreasController) checkAreaUniqueNameConstraint(a *models.Area, create bool) {
 	// Checking unique name constraint
 	ax := app.Model().NewArea()
 	e := app.Model().RetrieveOne(ax, "name=$1", a.Name)
+
 	if e != models.ErrNoRows {
-		if e == nil && ax.ID != a.ID {
+		if e == nil && (create || ax.ID != a.ID) {
 			c.WE(fmt.Errorf("Name is already taked"), 400)
 		}
 		c.WE(e, 500)

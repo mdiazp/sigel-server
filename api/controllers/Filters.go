@@ -16,10 +16,6 @@ const AuthHd = "authHd"
 
 // AuthFilter ...
 func AuthFilter(ctx *context.Context) {
-	if strings.HasPrefix(ctx.Input.URL(), "/api/login") {
-		return
-	}
-
 	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
 		u := app.Model().NewUser()
 		e := app.Model().RetrieveOne(u, "k_user.username=$1", "manuel.diaz")

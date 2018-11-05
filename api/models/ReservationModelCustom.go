@@ -10,7 +10,7 @@ import (
 // ReservationCustomModel ...
 type ReservationCustomModel interface {
 	GetReservations(search *string, userID, localID *int,
-		confirmed *bool, pending *bool, date *Date,
+		confirmed *bool, pending *bool, date *Date, localAdminID *int,
 		limit, offset *int, orderby *string, desc *bool) (*ReservationCollection, error)
 
 	AddReservation(ri ReservationInfo) (*Reservation, bool, error)
@@ -18,7 +18,7 @@ type ReservationCustomModel interface {
 }
 
 func (m *model) GetReservations(search *string, userID, localID *int,
-	confirmed *bool, pending *bool, date *Date,
+	confirmed *bool, pending *bool, date *Date, localAdminID *int,
 	limit, offset *int, orderby *string, desc *bool) (*ReservationCollection, error) {
 
 	where := ""
@@ -59,6 +59,17 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 		where += fmt.Sprintf("extract(year from reservation.begin_time)=%d AND ", date.Year) +
 			fmt.Sprintf("extract(month from reservation.begin_time)=%d AND ", date.Month) +
 			fmt.Sprintf("extract(day from reservation.begin_time)=%d", date.Day)
+	}
+
+	if localAdminID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "reservation.local_id IN (" +
+			fmt.Sprintf(
+				"SELECT local_admin.local_id FROM local_admin "+
+					"WHERE local_admin.user_id=%d", *localAdminID) +
+			")"
 	}
 
 	hf := &where

@@ -903,6 +903,13 @@
                 ],
                 "parameters": [
                     {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "in": "query",
                         "name": "reservation_id",
                         "description": "Reservation id",
@@ -943,6 +950,13 @@
                 ],
                 "parameters": [
                     {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "in": "query",
                         "name": "reservation_id",
                         "description": "Reservation id",
@@ -957,6 +971,12 @@
                     },
                     "400": {
                         "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "404": {
                         "description": "Not Found"
@@ -979,6 +999,13 @@
                     "application/json"
                 ],
                 "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "in": "query",
                         "name": "reservation_id",
@@ -1018,6 +1045,13 @@
                     "application/json"
                 ],
                 "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "in": "query",
                         "name": "limit",
@@ -1199,7 +1233,7 @@
                         "description": "Edited User",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin.UserEdit"
+                            "$ref": "#/definitions/models.UserEdit"
                         }
                     }
                 ],
@@ -1251,8 +1285,32 @@
                     },
                     {
                         "in": "query",
-                        "name": "prefixFilter",
-                        "description": "prefixFilter",
+                        "name": "username",
+                        "description": "Prefix username",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "search in Name",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "email",
+                        "description": "search in email",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rol",
+                        "description": "Rol",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "enable",
+                        "description": "enable (true or false)",
                         "type": "string"
                     },
                     {
@@ -1369,7 +1427,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/private.Profile"
+                            "$ref": "#/definitions/models.UserProfile"
                         }
                     },
                     "400": {
@@ -1412,7 +1470,7 @@
                         "description": "Edited Profile",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/private.ProfileEdit"
+                            "$ref": "#/definitions/models.ProfileEdit"
                         }
                     }
                 ],
@@ -1420,7 +1478,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/private.Profile"
+                            "$ref": "#/definitions/models.UserProfile"
                         }
                     },
                     "400": {
@@ -2023,7 +2081,7 @@
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "prefixFilter",
+                        "name": "username",
                         "description": "prefixFilter",
                         "type": "string"
                     },
@@ -2075,236 +2133,6 @@
                     }
                 }
             }
-        },
-        "/test/area": {
-            "get": {
-                "tags": [
-                    "test"
-                ],
-                "description": "Get area",
-                "operationId": "TestingModel2Controller.Retrieve Area list",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "area_id",
-                        "description": "area id",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.AreaInfo"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "test"
-                ],
-                "description": "Create area",
-                "operationId": "TestingModel2Controller.Create Area",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "area",
-                        "description": "Area",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AreaInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.AreaInfo"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "test"
-                ],
-                "description": "Delete area",
-                "operationId": "TestingModel2Controller.Delete Area",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "area_id",
-                        "description": "area id",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string}"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "test"
-                ],
-                "description": "Update area",
-                "operationId": "TestingModel2Controller.Update Area",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "area",
-                        "description": "Area",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AreaInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.AreaInfo"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/test/areas": {
-            "get": {
-                "tags": [
-                    "test"
-                ],
-                "description": "Areas",
-                "operationId": "TestingModel2Controller.Areas",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "searchInName",
-                        "description": "searchInName",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "limit",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "offset",
-                        "description": "offset",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "orderby",
-                        "description": "orderby",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "orderDesc",
-                        "description": "orderDesc (true or false)",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.AreaInfo"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -2313,18 +2141,6 @@
         },
         ".NotificationInfo": {
             "type": "object"
-        },
-        "admin.UserEdit": {
-            "title": "UserEdit",
-            "type": "object",
-            "properties": {
-                "enable": {
-                    "type": "boolean"
-                },
-                "rol": {
-                    "type": "string"
-                }
-            }
         },
         "controllers.EditLocalInfo": {
             "title": "EditLocalInfo",
@@ -2461,6 +2277,18 @@
                 }
             }
         },
+        "models.ProfileEdit": {
+            "title": "ProfileEdit",
+            "type": "object",
+            "properties": {
+                "Email": {
+                    "type": "string"
+                },
+                "SendNotificationsToEmail": {
+                    "type": "boolean"
+                }
+            }
+        },
         "models.ReservationInfo": {
             "title": "ReservationInfo",
             "type": "object",
@@ -2499,6 +2327,18 @@
                 }
             }
         },
+        "models.UserEdit": {
+            "title": "UserEdit",
+            "type": "object",
+            "properties": {
+                "Enable": {
+                    "type": "boolean"
+                },
+                "Rol": {
+                    "type": "string"
+                }
+            }
+        },
         "models.UserInfo": {
             "title": "UserInfo",
             "type": "object",
@@ -2527,49 +2367,41 @@
                 }
             }
         },
+        "models.UserProfile": {
+            "title": "UserProfile",
+            "type": "object",
+            "properties": {
+                "Email": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "SendNotificationsToEmail": {
+                    "type": "boolean"
+                },
+                "Username": {
+                    "type": "string"
+                }
+            }
+        },
         "models.UserPublicInfo": {
             "title": "UserPublicInfo",
             "type": "object",
             "properties": {
-                "id": {
+                "ID": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "name": {
+                "Name": {
                     "type": "string"
                 },
-                "username": {
+                "Username": {
                     "type": "string"
-                }
-            }
-        },
-        "private.Profile": {
-            "title": "Profile",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "send_notifications_to_email": {
-                    "type": "boolean"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "private.ProfileEdit": {
-            "title": "ProfileEdit",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "send_notifications_to_email": {
-                    "type": "boolean"
                 }
             }
         },
@@ -2608,15 +2440,11 @@
         },
         {
             "name": "private",
-            "description": "NotificationController ...\n"
+            "description": "NotificationsController ...\n"
         },
         {
             "name": "admin",
-            "description": "NotificationController ...\n"
-        },
-        {
-            "name": "test",
-            "description": "TestingModel2Controller ...\n"
+            "description": "NotificationsController ...\n"
         }
     ]
 }

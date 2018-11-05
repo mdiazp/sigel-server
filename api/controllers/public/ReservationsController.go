@@ -46,6 +46,7 @@ func (c *ReservationsController) Get() {
 // @Accept json
 // @router /reservations [get]
 func (c *ReservationsController) List() {
+	c.Ctx.Input.SetParam("localAdminID", "")
 	c.Data["json"] = c.BaseReservationsController.List().Reservations
 	c.ServeJSON()
 }

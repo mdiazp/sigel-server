@@ -24,7 +24,6 @@ type AreasController struct {
 // @Accept json
 // @router /area [get]
 func (c *AreasController) Get() {
-	c.AccessControl(models.RolAdmin)
 	c.Data["json"] = c.BaseAreasController.Show()
 	c.ServeJSON()
 }

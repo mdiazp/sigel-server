@@ -36,7 +36,7 @@ func (c *BaseLocalsController) Create() *models.Local {
 	c.ReadInputBody(l)
 	c.Validate(l)
 
-	c.checkLocalUniqueNameConstraint(l)
+	c.checkLocalUniqueNameConstraint(l, true)
 
 	e := app.Model().Create(l)
 	c.WE(e, 500)
@@ -56,7 +56,7 @@ func (c *BaseLocalsController) Update() *models.Local {
 	el.copyToLocal(l)
 	c.Validate(l)
 
-	c.checkLocalUniqueNameConstraint(l)
+	c.checkLocalUniqueNameConstraint(l, false)
 
 	e := l.Update()
 
@@ -138,12 +138,12 @@ func (c *BaseLocalsController) RemoveAdmin() {
 	c.WE(e, 500)
 }
 
-func (c *BaseLocalsController) checkLocalUniqueNameConstraint(l *models.Local) {
+func (c *BaseLocalsController) checkLocalUniqueNameConstraint(l *models.Local, create bool) {
 	// Checking unique name constraint
 	lx := app.Model().NewLocal()
 	e := app.Model().RetrieveOne(lx, "name=$1", l.Name)
 	if e != models.ErrNoRows {
-		if e == nil && lx.ID != l.ID {
+		if e == nil && (create || lx.ID != l.ID) {
 			c.WE(fmt.Errorf("Name is already taked"), 400)
 		}
 		c.WE(e, 500)

@@ -41,13 +41,14 @@ func (c *BaseUsersController) Register(ui models.UserInfo) (*models.User, error)
 
 // GetUsers ...
 func (c *BaseUsersController) GetUsers() *[]*models.User {
-	prefixFilter := c.ReadString("prefixFilter")
-	limit := c.ReadInt("limit")
-	offset := c.ReadInt("offset")
-	orderby := c.ReadString("orderby")
-	desc := c.ReadBool("ordDesc")
+	username := c.ReadString("username")
+	name := c.ReadString("name")
+	email := c.ReadString("email")
+	rol := c.ReadString("rol")
+	enable := c.ReadBool("enable")
+	limit, offset, orderby, desc := c.ReadPagOrder()
 
-	data, e := app.Model().GetUsers(prefixFilter, limit, offset, orderby, desc)
+	data, e := app.Model().GetUsers(username, name, email, rol, enable, limit, offset, orderby, desc)
 	if e == models.ErrNoRows {
 		c.WE(e, 404)
 	}

@@ -37,7 +37,7 @@ func (c *UsersController) Get() {
 // @Description Edit rol and enable properties (role admin required, user can't edit itself)
 // @Param	authHd		header	string	true		"Authentication token"
 // @Param	user_id		query	int	true		"User id"
-// @Param	userEdit		body	admin.UserEdit	true		"Edited User"
+// @Param	userEdit		body	models.UserEdit	true		"Edited User"
 // @Success 200 {object} models.UserInfo
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
@@ -50,8 +50,12 @@ func (c *UsersController) Patch() {
 	c.AccessControl(models.RolSuperadmin)
 	u := c.GetUser()
 
-	uedit := UserEdit{}
+	uedit := models.UserEdit{}
 	c.ReadInputBody(&uedit)
+
+	if u.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
+		c.WE(fmt.Errorf("Only user SIREL is enabled to edit superadmin users"), 403)
+	}
 
 	if uedit.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
 		c.WE(fmt.Errorf("Only user SIREl is enabled to create superadmin users"), 403)
@@ -72,7 +76,11 @@ func (c *UsersController) Patch() {
 // @Title Get Users List
 // @Description Get users list (role admin required, user can't edit itself)
 // @Param	authHd		header	string	true		"Authentication token"
-// @Param	prefixFilter		query	string	false		"prefixFilter"
+// @Param	username		query	string	false		"Prefix username"
+// @Param	name		query	string	false		"search in Name"
+// @Param	email		query	string	false		"search in email"
+// @Param	rol		query	string	false		"Rol"
+// @Param	enable		query	string	false		"enable (true or false)"
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
@@ -86,12 +94,7 @@ func (c *UsersController) Patch() {
 // @Accept json
 // @router /users [get]
 func (c *UsersController) List() {
+	c.AccessControl(models.RolSuperadmin)
 	c.Data["json"] = c.BaseUsersController.GetUsers()
 	c.ServeJSON()
-}
-
-// UserEdit ...
-type UserEdit struct {
-	Rol    string `json:"rol"`
-	Enable bool   `json:"enable"`
 }

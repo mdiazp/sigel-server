@@ -28,7 +28,6 @@ type LocalsController struct {
 // @Accept json
 // @router /local [get]
 func (c *LocalsController) Get() {
-	c.AccessControl(models.RolAdmin)
 	c.isLocalAdmin()
 	c.Data["json"] = c.BaseLocalsController.Show()
 	c.ServeJSON()
@@ -115,7 +114,6 @@ func (c *LocalsController) Delete() {
 // @Accept json
 // @router /locals [get]
 func (c *LocalsController) List() {
-	c.AccessControl(models.RolAdmin)
 	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
 		c.Ctx.Input.SetParam("ofAdmin", "true")
 	}
