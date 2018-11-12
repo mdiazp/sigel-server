@@ -30,7 +30,7 @@ func (c *ReservationsController) Get() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	orderDesc		query	string	false		"true or false"
+// @Param	desc		query	string	false		"true or false"
 // @Param	user_id		query	int	false		"User ID"
 // @Param	local_id		query	int	false		"Local ID"
 // @Param	confirmed		query	string	false		"true or false"

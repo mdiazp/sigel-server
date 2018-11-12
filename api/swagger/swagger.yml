@@ -188,7 +188,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -507,7 +507,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -540,7 +540,42 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-  /admin/profile/notification:
+  /admin/notification:
+    get:
+      tags:
+      - admin
+      description: Get notification by username
+      operationId: NotificationsController.Get Notification
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: notification_id
+        description: Notification ID
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/.NotificationInfo'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /admin/notifications:
     get:
       tags:
       - admin
@@ -571,7 +606,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -727,7 +762,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -904,7 +939,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: ordDesc
+        name: desc
         description: true or false
         type: string
       responses:
@@ -1014,6 +1049,41 @@ paths:
       tags:
       - private
       description: Get notification by username
+      operationId: NotificationsController.Get Notification
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: notification_id
+        description: Notification ID
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/.Notification'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /private/profile/notifications:
+    get:
+      tags:
+      - private
+      description: Get notification by username
       operationId: NotificationsController.Get Notifications
       consumes:
       - application/json
@@ -1040,8 +1110,12 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
+        type: string
+      - in: query
+        name: readed
+        description: (true or false)
         type: string
       - in: query
         name: date
@@ -1084,6 +1158,42 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.ReservationToCreate'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ReservationInfo'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    patch:
+      tags:
+      - private
+      description: Confirm reservation (role user required)
+      operationId: ReservationsController.Confirm reservation
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: reservationID
+        description: Reservation ID
+        required: true
+        type: integer
+        format: int64
       responses:
         "200":
           description: ""
@@ -1153,7 +1263,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -1231,7 +1341,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -1343,7 +1453,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: orderDesc
+        name: desc
         description: true or false
         type: string
       - in: query
@@ -1389,6 +1499,51 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /public/servertime:
+    get:
+      tags:
+      - public
+      description: Get server time info
+      operationId: InfoController.Retrieve serve time info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+          schema:
+            format: datetime
+            type: string
+        "500":
+          description: Internal Server Error
+  /public/user/publicinfo:
+    get:
+      tags:
+      - public
+      description: Get user's public info
+      operationId: UsersController.Get user's public info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: user_id
+        description: User ID
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.UserPublicInfo'
+        "400":
+          description: Bad request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /public/users/publicinfo:
     get:
       tags:
@@ -1419,7 +1574,7 @@ paths:
         description: OrderBy (property name)
         type: string
       - in: query
-        name: ordDesc
+        name: desc
         description: true or false
         type: string
       responses:
@@ -1639,12 +1794,15 @@ definitions:
         type: string
       rol:
         type: string
+      userID:
+        type: integer
+        format: int64
       username:
         type: string
 tags:
 - name: public
   description: |
-    ReservationsController ...
+    InfoController ...
 - name: private
   description: |
     NotificationsController ...

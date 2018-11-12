@@ -69,6 +69,13 @@ func (m *model) GetUsers(username *string, name *string, email *string,
 		hfilter = nil
 	}
 
+	if orderby == nil {
+		tmp := "username"
+		orderby = &tmp
+		tmp2 := false
+		desc = &tmp2
+	}
+
 	e := m.RetrieveCollection(hfilter, limit, offset, orderby, desc, users)
 	return users.Users, e
 }

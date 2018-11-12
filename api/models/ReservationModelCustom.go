@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/astaxie/beego"
 )
 
 // ReservationCustomModel ...
@@ -77,6 +79,13 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 		hf = nil
 	}
 
+	if orderby == nil {
+		tmp := "begin_time"
+		orderby = &tmp
+		tmp2 := true
+		desc = &tmp2
+	}
+
 	rs := m.NewReservationCollection()
 	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, rs)
 	return rs, e
@@ -102,6 +111,12 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 
 	by, bm, bd := bt.Date()
 	ey, em, ed := et.Date()
+
+	beego.Debug("bt = ", bt)
+	beego.Debug("et = ", et)
+
+	beego.Debug(fmt.Sprintf("by = %d, bm = %s, bd = %d", by, bm, bd))
+	beego.Debug(fmt.Sprintf("ey = %d, em = %s, ed = %d", ey, em, ed))
 
 	if bt.After(et) || time.Now().After(bt) || by != ey || bm != em || bd != ed {
 		return nil, true, eInvalid

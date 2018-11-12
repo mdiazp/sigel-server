@@ -101,7 +101,7 @@ func (c *LocalsController) Delete() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	orderDesc		query	string	false		"true or false"
+// @Param	desc		query	string	false		"true or false"
 // @Param	enable_to_reserve		query	string	false		"Local Property (true o false)"
 // @Param	area_id		query	int	false		"Local Property"
 // @Param	search		query	string	false		"Search in name"

@@ -21,7 +21,7 @@ type NotificationsController struct {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile/notification [get]
+// @router /notification [get]
 func (c *NotificationsController) GetNotification() {
 	c.AccessControl(models.RolSuperadmin)
 	c.Data["json"] = c.BaseNotificationController.GetNotification()
@@ -35,7 +35,7 @@ func (c *NotificationsController) GetNotification() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	orderDesc		query	string	false		"true or false"
+// @Param	desc		query	string	false		"true or false"
 // @Param	user_id		query	int	true		"Notification ID"
 // @Param	date		query	string		"yyyy-mm-dd"
 // @Success 200 {object} []model.NotificationInfo
@@ -44,7 +44,7 @@ func (c *NotificationsController) GetNotification() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile/notification [get]
+// @router /notifications [get]
 func (c *NotificationsController) GetNotifications() {
 	c.AccessControl(models.RolSuperadmin)
 	c.Data["json"] = c.BaseNotificationController.GetNotifications()

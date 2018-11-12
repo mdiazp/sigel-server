@@ -114,7 +114,7 @@ func init() {
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"],
 		beego.ControllerComments{
 			Method: "GetNotification",
-			Router: `/profile/notification`,
+			Router: `/notification`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -122,7 +122,7 @@ func init() {
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:NotificationsController"],
 		beego.ControllerComments{
 			Method: "GetNotifications",
-			Router: `/profile/notification`,
+			Router: `/notifications`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})

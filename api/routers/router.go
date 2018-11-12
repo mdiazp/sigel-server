@@ -31,6 +31,7 @@ func init() {
 				&public.LocalsController{},
 				&public.AreasController{},
 				&public.ReservationsController{},
+				&public.InfoController{},
 			),
 		),
 		beego.NSNamespace("/private",

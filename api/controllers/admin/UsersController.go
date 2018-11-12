@@ -84,7 +84,7 @@ func (c *UsersController) Patch() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	ordDesc		query	string	false		"true or false"
+// @Param	desc		query	string	false		"true or false"
 // @Success 200 {object} []models.UserInfo
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized

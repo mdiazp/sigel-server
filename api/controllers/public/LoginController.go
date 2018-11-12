@@ -90,6 +90,7 @@ func (c *LoginController) Login() {
 
 	// Prepare response
 	c.Data["json"] = Session{
+		UserID:   u.ID,
 		Username: u.Username,
 		Rol:      u.Rol,
 		Token:    s,
@@ -100,6 +101,7 @@ func (c *LoginController) Login() {
 
 // Session ...
 type Session struct {
+	UserID   int    `json:"userID"`
 	Username string `json:"username"`
 	Rol      string `json:"rol"`
 	Token    string `json:"jwtToken"`

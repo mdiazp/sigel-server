@@ -58,6 +58,13 @@ func (m *model) GetLocals(
 		hf = &where
 	}
 
+	if orderby == nil {
+		tmp := "name"
+		orderby = &tmp
+		tmp2 := false
+		desc = &tmp2
+	}
+
 	locals := m.NewLocalCollection()
 	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, locals, join...)
 	return locals, e
@@ -68,7 +75,10 @@ func (m *model) GetLocalAdmins(localID int) (*UserCollection, error) {
 	where := fmt.Sprintf("local_admin.local_id=%d", localID)
 	join := "local_admin ON k_user.id=local_admin.user_id"
 
+	orderby := "k_user.username"
+	desc := false
+
 	admins := m.NewUserCollection()
-	e := m.RetrieveCollection(&where, nil, nil, nil, nil, admins, &join)
+	e := m.RetrieveCollection(&where, nil, nil, &orderby, &desc, admins, &join)
 	return admins, e
 }

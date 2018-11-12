@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 
+	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -31,13 +32,22 @@ func (c *BaseNotificationController) GetNotification() *models.Notification {
 func (c *BaseNotificationController) GetNotifications() *[]*models.Notification {
 	limit, offset, orderby, desc := c.ReadPagOrder()
 	userID := c.ReadInt("user_id")
+	readed := c.ReadBool("readed")
 	sdate := c.ReadString("date")
+	beego.Debug("before NewDate")
 	date, e := app.Model().NewDate(sdate)
 	if e != nil {
 		c.WE(e, 400)
 	}
 
-	ns, e := app.Model().GetNotifications(limit, offset, orderby, desc, userID, date)
+	if orderby == nil {
+		tmp := "creation_time"
+		orderby = &tmp
+		tmp2 := true
+		desc = &tmp2
+	}
+
+	ns, e := app.Model().GetNotifications(limit, offset, orderby, desc, userID, date, readed)
 	if e != models.ErrNoRows {
 		c.WE(e, 500)
 	}

@@ -79,7 +79,7 @@ func (c *BaseController) ReadPagOrder() (*int, *int, *string, *bool) {
 	limit := c.ReadInt("limit")
 	offset := c.ReadInt("offset")
 	orderby := c.ReadString("orderby")
-	desc := c.ReadBool("orderDesc")
+	desc := c.ReadBool("desc")
 	return limit, offset, orderby, desc
 }
 
@@ -106,7 +106,7 @@ func (c *BaseController) ReadString(name string, required ...bool) *string {
 // ReadInt ...
 func (c *BaseController) ReadInt(name string, required ...bool) *int {
 	tmp := c.GetString(name)
-	beego.Debug(name + " = " + tmp)
+	beego.Debug(name + " = -" + tmp + "-")
 	if tmp != "" {
 		x, e := strconv.Atoi(tmp)
 		c.WE(e, 400)

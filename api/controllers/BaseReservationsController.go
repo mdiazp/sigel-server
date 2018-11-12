@@ -33,25 +33,51 @@ func (c *BaseReservationsController) Create() *models.Reservation {
 		c.WE(fmt.Errorf("User SIREL can't reserve"), 403)
 	}
 
-	lc := ReservationToCreate{}
-	c.ReadObjectInBody("reservation", &lc, true)
+	rc := ReservationToCreate{}
+	beego.Debug("before readObjectInBody")
+	c.ReadObjectInBody("reservation", &rc, true)
+	beego.Debug("afterReadObjectInBody")
 
-	li := models.ReservationInfo{}
-	li.ID = lc.LocalID
-	li.UserID = c.GetAuthor().ID
-	li.LocalID = lc.LocalID
-	li.ActivityName = lc.ActivityName
-	li.ActivityDescription = lc.ActivityDescription
-	li.BeginTime = lc.BeginTime
-	li.EndTime = lc.EndTime
-	c.Validate(li)
+	ri := models.ReservationInfo{}
+	ri.ID = rc.LocalID
+	ri.UserID = c.GetAuthor().ID
+	ri.LocalID = rc.LocalID
+	ri.ActivityName = rc.ActivityName
+	ri.ActivityDescription = rc.ActivityDescription
+	ri.BeginTime = rc.BeginTime
+	ri.EndTime = rc.EndTime
+	beego.Debug("before validate")
+	c.Validate(ri)
+	beego.Debug("after validate")
 
-	l, me, e := app.Model().AddReservation(li)
+	r, me, e := app.Model().AddReservation(ri)
 	if e != nil && me {
 		c.WE(e, 400)
 	}
 	c.WE(e, 500)
-	return l
+	return r
+}
+
+// Confirm ...
+func (c *BaseController) Confirm() *models.Reservation {
+	rID := c.ReadInt("reservationID", true)
+	r := app.Model().NewReservation()
+	r.ID = *rID
+	e := r.Load()
+	if e == models.ErrNoRows {
+		c.WE(e, 404)
+	}
+	c.WE(e, 500)
+
+	if c.GetAuthor().ID != r.UserID {
+		c.WE(fmt.Errorf("Only the user that is author of a reservation can confirm it"), 403)
+	}
+
+	r.Confirmed = true
+	e = r.Update()
+	c.WE(e, 500)
+
+	return r
 }
 
 // AcceptReservation ...

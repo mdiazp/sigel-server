@@ -1,6 +1,10 @@
 package private
 
-import "github.com/mdiazp/sirel-server/api/controllers"
+import (
+	"strconv"
+
+	"github.com/mdiazp/sirel-server/api/controllers"
+)
 
 // NotificationsController ...
 type NotificationsController struct {
@@ -32,7 +36,8 @@ func (c *NotificationsController) GetNotification() {
 // @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
 // @Param	offset		query	int	false		"Offset"
 // @Param	orderby		query	string	false		"OrderBy (property name)"
-// @Param	orderDesc		query	string	false		"true or false"
+// @Param	desc		query	string	false		"true or false"
+// @Param	readed		query	string		"(true or false)"
 // @Param	date		query	string		"yyyy-mm-dd"
 // @Success 200 {object} []model.Notification
 // @Failure 400 Bad request
@@ -40,9 +45,9 @@ func (c *NotificationsController) GetNotification() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile/notification [get]
+// @router /profile/notifications [get]
 func (c *NotificationsController) GetNotifications() {
-	c.Ctx.Input.SetParam("user_id", string(c.GetAuthor().ID))
+	c.Ctx.Input.SetParam("user_id", strconv.Itoa(c.GetAuthor().ID))
 	c.Data["json"] = c.BaseNotificationController.GetNotifications()
 	c.ServeJSON()
 }

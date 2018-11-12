@@ -10,7 +10,7 @@ type NotificationCustomModel interface {
 	NotificateToUser(userID int, message string) error
 	GetNotification(nID, userID int) (*Notification, error)
 	GetNotifications(limit, offset *int, orderby *string, desc *bool,
-		userID *int, date *Date) (*[]*Notification, error)
+		userID *int, date *Date, readed *bool) (*[]*Notification, error)
 }
 
 func (m *model) NotificateToUser(userID int, message string) error {
@@ -31,7 +31,7 @@ func (m *model) GetNotification(nID, userID int) (*Notification, error) {
 }
 
 func (m *model) GetNotifications(limit, offset *int, orderby *string, desc *bool,
-	userID *int, date *Date) (*[]*Notification, error) {
+	userID *int, date *Date, readed *bool) (*[]*Notification, error) {
 
 	where := ""
 	if userID != nil {
@@ -39,6 +39,12 @@ func (m *model) GetNotifications(limit, offset *int, orderby *string, desc *bool
 			where += " AND "
 		}
 		where += fmt.Sprintf("notification.user_id=%d", *userID)
+	}
+	if readed != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("notification.readed=%t", *readed)
 	}
 	if date != nil {
 		if where != "" {
