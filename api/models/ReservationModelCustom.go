@@ -148,6 +148,7 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 		if e != nil {
 			return nil, false, e
 		}
+		beego.Debug(tmp)
 		return nil, true, eConflictTime
 	}
 
