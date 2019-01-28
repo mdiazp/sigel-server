@@ -11,6 +11,7 @@ import (
 	_ "github.com/mdiazp/sirel-server/api/routers"
 )
 
+// SirelConfig ...
 type SirelConfig struct {
 	SIREL_PASSWORD string `json:"SIREL_PASSWORD"`
 

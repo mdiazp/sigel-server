@@ -97,6 +97,7 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 	eInvalid := fmt.Errorf("Invalid reservation")
 	eUnworked := fmt.Errorf("Non laboral date in this local")
 	eConflictTime := fmt.Errorf("Conflict time with other reservations")
+	eMinDuration := fmt.Errorf("No se puede reservar por menos de 30 minutos.")
 
 	l := m.NewLocal()
 	l.ID = ri.LocalID
@@ -122,11 +123,12 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 		return nil, true, eInvalid
 	}
 
-	// Validatinf if date is laboral
+	// Validating if date is laboral
 	if l.WorkingMonths[int(bt.Month())-1] == '0' ||
-		l.WorkingWeekDays[int(bt.Weekday())-1] == '0' {
+		l.WorkingWeekDays[int(bt.Weekday())] == '0' {
 		return nil, true, eUnworked
 	}
+
 	if bt.Hour() < l.WorkingBeginTimeHours ||
 		(bt.Hour() == l.WorkingBeginTimeHours && bt.Minute() < l.WorkingBeginTimeMinutes) ||
 		et.Hour() > l.WorkingEndTimeHours ||
@@ -134,7 +136,12 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 		return nil, true, eUnworked
 	}
 
-	// Validate that don't exist's conflict time with other reservations
+	// Validate that reservation interval has more than 30 minutes
+	if (et.Hour()*60+et.Minute())-(bt.Hour()*60+bt.Minute())+1 < 30 {
+		return nil, true, eMinDuration
+	}
+
+	// Validate that don't exists conflict time with other reservations
 	tmp := l.model.NewReservation()
 
 	println("------------> bt =", ri.BeginTime.Format("2006-01-02 15:04:05"))
@@ -154,7 +161,7 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 
 	ri.LocalID = l.ID
 	ri.Pending = true
-	ri.Confirmed = l.WorkingWeekDays[int(bt.Weekday())-1] == '1'
+	ri.Confirmed = l.WorkingWeekDays[int(bt.Weekday())] == '1'
 
 	r := l.model.NewReservation()
 	r.ReservationInfo = ri

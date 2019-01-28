@@ -174,6 +174,6 @@ func (el *EditLocalInfo) copyToLocal(l *models.Local) {
 	l.WorkingBeginTimeHours = el.WorkingBeginTimeHours
 	l.WorkingBeginTimeMinutes = el.WorkingBeginTimeMinutes
 	l.WorkingEndTimeHours = el.WorkingEndTimeHours
-	l.WorkingBeginTimeMinutes = el.WorkingEndTimeMinutes
+	l.WorkingEndTimeMinutes = el.WorkingEndTimeMinutes
 	l.EnableToReserve = el.EnableToReserve
 }

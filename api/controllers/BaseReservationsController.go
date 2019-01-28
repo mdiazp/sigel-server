@@ -34,9 +34,7 @@ func (c *BaseReservationsController) Create() *models.Reservation {
 	}
 
 	rc := ReservationToCreate{}
-	beego.Debug("before readObjectInBody")
 	c.ReadObjectInBody("reservation", &rc, true)
-	beego.Debug("afterReadObjectInBody")
 
 	ri := models.ReservationInfo{}
 	ri.ID = rc.LocalID
@@ -46,11 +44,10 @@ func (c *BaseReservationsController) Create() *models.Reservation {
 	ri.ActivityDescription = rc.ActivityDescription
 	ri.BeginTime = rc.BeginTime
 	ri.EndTime = rc.EndTime
-	beego.Debug("before validate")
 	c.Validate(ri)
-	beego.Debug("after validate")
 
 	r, me, e := app.Model().AddReservation(ri)
+
 	if e != nil && me {
 		c.WE(e, 400)
 	}
@@ -173,6 +170,9 @@ func (c *BaseReservationsController) loadReservation() *models.Reservation {
 }
 
 func (c *BaseReservationsController) isLocalAdmin(localID, userID int) {
+	if c.GetAuthor().HaveRol(models.RolSuperadmin) {
+		return
+	}
 	_, e := app.Model().GetLocalAdmin(localID, userID)
 	if e == models.ErrNoRows {
 		c.WE(fmt.Errorf("Forbbiden"), 403)
