@@ -24,41 +24,51 @@ type SirelConfig struct {
 	AdBDN      string `json:"AdBDN"`
 	AdUser     string `json:"ad_user"`
 	AdPassword string `json:"ad_password"`
+
+	MailSenderUser     string
+	MailSenderPassword string
+	MailSenderHost     string
+	MailSenderPort     string
 }
 
 func loadConfig() error {
-	var config_path string
-	flag.StringVar(&config_path, "configpath", "/home/kino/my_configs/sirel/config.json", "Path to config file.")
+	var configPath string
+	flag.StringVar(&configPath, "configpath", "/home/kino/my_configs/sirel/config.json", "Path to config file.")
 	flag.Parse()
 
-	file, err := os.Open(config_path)
+	file, err := os.Open(configPath)
 	if err != nil {
 		beego.Critical("Cannot open config file: ", err)
 		return err
 	}
 	defer file.Close()
 
-	cred := &SirelConfig{}
+	config := &SirelConfig{}
 
 	//Parsing json file
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(cred)
+	err = decoder.Decode(config)
 	if err != nil {
 		beego.Critical("Cannot get configuration from file: ", err)
 		return err
 	}
 
-	beego.AppConfig.Set("SIREL_PASSWORD", cred.SIREL_PASSWORD)
+	beego.AppConfig.Set("SIREL_PASSWORD", config.SIREL_PASSWORD)
 
-	beego.AppConfig.Set("DB_SOURCE_NAME", cred.DB_SOURCE_NAME)
-	beego.AppConfig.Set("DB_USER", cred.DB_USER)
-	beego.AppConfig.Set("DB_PASSWORD", cred.DB_PASSWORD)
+	beego.AppConfig.Set("DB_SOURCE_NAME", config.DB_SOURCE_NAME)
+	beego.AppConfig.Set("DB_USER", config.DB_USER)
+	beego.AppConfig.Set("DB_PASSWORD", config.DB_PASSWORD)
 
-	beego.AppConfig.Set("AdAddress", cred.AdAddress)
-	beego.AppConfig.Set("AdSuff", cred.AdSuff)
-	beego.AppConfig.Set("AdBDN", cred.AdBDN)
-	beego.AppConfig.Set("AdUser", cred.AdUser)
-	beego.AppConfig.Set("AdPassword", cred.AdPassword)
+	beego.AppConfig.Set("AdAddress", config.AdAddress)
+	beego.AppConfig.Set("AdSuff", config.AdSuff)
+	beego.AppConfig.Set("AdBDN", config.AdBDN)
+	beego.AppConfig.Set("AdUser", config.AdUser)
+	beego.AppConfig.Set("AdPassword", config.AdPassword)
+
+	beego.AppConfig.Set("MailSenderUser", config.MailSenderUser)
+	beego.AppConfig.Set("MailSenderPassword", config.MailSenderPassword)
+	beego.AppConfig.Set("MailSenderHost", config.MailSenderHost)
+	beego.AppConfig.Set("MailSenderPort", config.MailSenderPort)
 
 	return nil
 }

@@ -86,18 +86,21 @@ func (c *BaseReservationsController) AcceptReservation() {
 	local, e := r.Local()
 	c.WE(e, 500)
 
+	r.Pending = false
+	e = r.Update()
+	c.WE(e, 500)
+
 	year, month, day := r.BeginTime.Date()
 	bh, bm, _ := r.BeginTime.Clock()
 	eh, em, _ := r.EndTime.Clock()
 
-	e = app.Model().NotificateToUser(r.UserID,
-		fmt.Sprintf("Su reservacion en el local %s con fecha %d/%d/%d %d:%d - %d:%d fue aceptada",
-			local.Name, year, month, day, bh, bm, eh, em))
-	c.WE(e, 500)
-
-	r.Pending = false
-	e = r.Update()
-	c.WE(e, 500)
+	// Notificate to user by email
+	msg := fmt.Sprintf(
+		"Su reservacion en el local %s con "+
+			"fecha %d/%.2d/%.2d entre %.2d:%.2d y %.2d:%.2d fue aceptada",
+		local.Name, year, month, day, bh, bm, eh, em,
+	)
+	notificateByEmail(r, msg)
 }
 
 // RefuseReservation ...
@@ -109,18 +112,36 @@ func (c *BaseReservationsController) RefuseReservation() {
 	local, e := r.Local()
 	c.WE(e, 500)
 
+	e = app.Model().Delete(r)
+	c.WE(e, 500)
+
 	year, month, day := r.BeginTime.Date()
 	bh, bm, _ := r.BeginTime.Clock()
 	eh, em, _ := r.EndTime.Clock()
 
-	e = app.Model().NotificateToUser(r.UserID,
-		fmt.Sprintf("Su reservacion en el local %s con fecha %d/%d/%d %d:%d - %d:%d fue denegada",
-			local.Name, year, month, day, bh, bm, eh, em))
+	// Notificate to user by email
+	msg := fmt.Sprintf(
+		"Su reservacion en el local %s con "+
+			"fecha %d/%.2d/%.2d entre %.2d:%.2d y %.2d:%.2d fue denegada",
+		local.Name, year, month, day, bh, bm, eh, em,
+	)
+	notificateByEmail(r, msg)
+}
 
-	c.WE(e, 500)
+func notificateByEmail(r *models.Reservation, msg string) {
+	e := app.Model().NotificateToUser(r.UserID, msg)
+	if e != nil {
+		beego.Debug("Notification couldn't be saved for user: ", e.Error())
+	}
 
-	e = app.Model().Delete(r)
-	c.WE(e, 500)
+	// Send Email
+	u, e := app.Model().GetUserByID(r.UserID)
+	if e == nil && u.SendNotificationsToEmail {
+		e = app.GetMailSender().SendMail(u.Email, msg)
+		if e != nil {
+			beego.Debug("Notification couldn't be sended to user email: ", e.Error())
+		}
+	}
 }
 
 // List ...

@@ -8,10 +8,18 @@ import (
 
 // UserCustomModel ...
 type UserCustomModel interface {
+	GetUserByID(userID int) (*User, error)
 	GetUser(username string) (*User, error)
 	GetUsers(username *string, name *string, email *string,
 		rol *string, enable *bool, limit, offset *int,
 		orderby *string, desc *bool) (*[]*User, error)
+}
+
+// GetUserByID ...
+func (m *model) GetUserByID(userID int) (*User, error) {
+	u := m.NewUser()
+	e := m.RetrieveOne(u, "id=$1", userID)
+	return u, e
 }
 
 // GetUser ...

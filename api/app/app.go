@@ -7,6 +7,7 @@ import (
 	"github.com/mdiazp/sirel-server/api/pkg/authproviders/ldap"
 	"github.com/mdiazp/sirel-server/api/pkg/authproviders/xxx"
 	"github.com/mdiazp/sirel-server/api/pkg/cryptoutil"
+	"github.com/mdiazp/sirel-server/api/pkg/mailsender"
 )
 
 var (
@@ -14,6 +15,7 @@ var (
 	crypto       *cryptoutil.JWTCrypt
 	ldapProvider authproviders.Provider
 	xxxProvider  authproviders.Provider
+	mailSender   *MailSender
 )
 
 // InitApp ...
@@ -28,6 +30,45 @@ func InitApp() {
 		beego.AppConfig.String("AdPassword"),
 	)
 	xxxProvider = xxx.GetProvider()
+
+	mailSender = &MailSender{
+		identity: "",
+		user:     beego.AppConfig.String("MailSenderUser"),
+		password: beego.AppConfig.String("MailSenderPassword"),
+		host:     beego.AppConfig.String("MailSenderHost"),
+		port:     beego.AppConfig.String("MailSenderPort"),
+	}
+}
+
+// GetMailSender ...
+func GetMailSender() *MailSender {
+	return mailSender
+}
+
+// MailSender ...
+type MailSender struct {
+	identity string
+	user     string
+	password string
+	host     string
+	port     string
+}
+
+// SendMail ...
+func (ms *MailSender) SendMail(to, mailBody string) error {
+	return mailsender.SendMail(
+		mailsender.SMTPServer{
+			Host: ms.host,
+			Port: ms.port,
+		},
+		mailsender.Mail{
+			SenderID: ms.user,
+			ToIds:    []string{to},
+			Subject:  "SIGA",
+			Body:     mailBody,
+		},
+		ms.password,
+	)
 }
 
 // Model ...
