@@ -23,7 +23,7 @@ func (c *LogoutController) URLMapping() {
 // @Failure 400 Bad request
 // @Failure 401 Unauthorized
 // @Failure 500 Internal Server Error
-// @router /logout [delete]
+// @router /session/logout [delete]
 func (c *LogoutController) Logout() {
 	c.ServeJSON()
 }

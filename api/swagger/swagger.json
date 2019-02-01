@@ -1420,7 +1420,7 @@
                 }
             }
         },
-        "/private/logout": {
+        "/private/session/logout": {
             "delete": {
                 "tags": [
                     "private"
@@ -1453,7 +1453,144 @@
                 }
             }
         },
-        "/private/profile": {
+        "/private/session/notification": {
+            "get": {
+                "tags": [
+                    "private"
+                ],
+                "description": "Get notification by username",
+                "operationId": "NotificationsController.Get Notification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "notification_id",
+                        "description": "Notification ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/.Notification"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/private/session/notifications": {
+            "get": {
+                "tags": [
+                    "private"
+                ],
+                "description": "Get notification by username",
+                "operationId": "NotificationsController.Get Notifications",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authHd",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit (10 or 50 or 100)",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "desc",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "readed",
+                        "description": "(true or false)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/.Notification"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/private/session/profile": {
             "get": {
                 "tags": [
                     "private"
@@ -1548,144 +1685,7 @@
                 }
             }
         },
-        "/private/profile/notification": {
-            "get": {
-                "tags": [
-                    "private"
-                ],
-                "description": "Get notification by username",
-                "operationId": "NotificationsController.Get Notification",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "notification_id",
-                        "description": "Notification ID",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/.Notification"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/private/profile/notifications": {
-            "get": {
-                "tags": [
-                    "private"
-                ],
-                "description": "Get notification by username",
-                "operationId": "NotificationsController.Get Notifications",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "authHd",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "Limit (10 or 50 or 100)",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "offset",
-                        "description": "Offset",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "in": "query",
-                        "name": "orderby",
-                        "description": "OrderBy (property name)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "desc",
-                        "description": "true or false",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "readed",
-                        "description": "(true or false)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "date",
-                        "description": "yyyy-mm-dd",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/.Notification"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/private/reservation": {
+        "/private/session/reservation": {
             "post": {
                 "tags": [
                     "private"
@@ -1774,6 +1774,119 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.ReservationInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/private/session/reservations": {
+            "get": {
+                "tags": [
+                    "private"
+                ],
+                "description": "Get user's reservations list",
+                "operationId": "ReservationsController.Get user's reservations list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit (10 or 50 or 100)",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "description": "OrderBy (property name)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "desc",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "user_id",
+                        "description": "User ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "local_id",
+                        "description": "Local ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "confirmed",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pending",
+                        "description": "true or false",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "not_before_date",
+                        "description": "yyyy-mm-dd",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "description": "Search in activity name",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ReservationInfo"
+                            }
                         }
                     },
                     "400": {

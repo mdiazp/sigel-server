@@ -1,6 +1,8 @@
 package private
 
 import (
+	"strconv"
+
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -22,7 +24,7 @@ type ReservationsController struct {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /reservation [post]
+// @router /session/reservation [post]
 func (c *ReservationsController) Post() {
 	c.AccessControl(models.RolUser)
 	c.Data["json"] = c.BaseReservationsController.Create()
@@ -41,9 +43,39 @@ func (c *ReservationsController) Post() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /reservation [patch]
+// @router /session/reservation [patch]
 func (c *ReservationsController) Confirm() {
 	c.AccessControl(models.RolUser)
 	c.Data["json"] = c.BaseReservationsController.Confirm()
+	c.ServeJSON()
+}
+
+// List ...
+// @Title Get user's reservations list
+// @Description Get user's reservations list
+// @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
+// @Param	offset		query	int	false		"Offset"
+// @Param	orderby		query	string	false		"OrderBy (property name)"
+// @Param	desc		query	string	false		"true or false"
+// @Param	user_id		query	int	false		"User ID"
+// @Param	local_id		query	int	false		"Local ID"
+// @Param	confirmed		query	string	false		"true or false"
+// @Param	pending		query	string	false		"true or false"
+// @Param	date		query	string		"yyyy-mm-dd"
+// @Param	not_before_date		query	string		"yyyy-mm-dd"
+// @Param	search		query	string	false		"Search in activity name"
+// @Success 200 {object} []models.ReservationInfo
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /session/reservations [get]
+func (c *ReservationsController) List() {
+	c.Ctx.Input.SetParam("user_id", strconv.Itoa(c.GetAuthor().ID))
+	c.Ctx.Input.SetParam("localAdminID", "")
+
+	c.Data["json"] = c.BaseReservationsController.List().Reservations
 	c.ServeJSON()
 }

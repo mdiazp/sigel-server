@@ -70,6 +70,22 @@ func (c *BaseController) Confirm() *models.Reservation {
 		c.WE(fmt.Errorf("Only the user that is author of a reservation can confirm it"), 403)
 	}
 
+	bt := r.BeginTime
+	bt = bt.AddDate(0, 0, -1)
+
+	st := time.Now()
+
+	beego.Debug("bt.Year = ", bt.Year())
+	beego.Debug("bt.Month = ", bt.Month())
+	beego.Debug("bt.Day = ", bt.Day())
+	beego.Debug("st.Year = ", st.Year())
+	beego.Debug("st.Month = ", st.Month())
+	beego.Debug("st.Day = ", st.Day())
+
+	if bt.Year() != st.Year() || bt.Month() != st.Month() || bt.Day() != st.Day() {
+		c.WE(fmt.Errorf("La reservacion solo puede ser confirmada un dia antes"), 400)
+	}
+
 	r.Confirmed = true
 	e = r.Update()
 	c.WE(e, 500)
@@ -151,18 +167,26 @@ func (c *BaseReservationsController) List() *models.ReservationCollection {
 	localID := c.ReadInt("local_id")
 	confirmed := c.ReadBool("confirmed")
 	pending := c.ReadBool("pending")
-	sdate := c.ReadString("date")
-	beego.Debug("before localAdminID")
 	localAdminID := c.ReadInt("localAdminID")
-	beego.Debug("after localAdminID")
 	search := c.ReadString("search")
+	sdate := c.ReadString("date")
 	date, e := app.Model().NewDate(sdate)
 	if e != nil {
 		c.WE(e, 400)
 	}
+	sdate = c.ReadString("not_before_date")
+	notBeforeDate, e := app.Model().NewDate(sdate)
+	if e != nil {
+		c.WE(e, 400)
+	}
+
+	beego.Debug("desc !== nil  ======== ", (desc != nil))
+	if desc != nil {
+		beego.Debug("---onononononononononon------ desc = ", *desc)
+	}
 
 	rs, e := app.Model().GetReservations(search, userID, localID, confirmed,
-		pending, date, localAdminID, limit, offset, orderby, desc)
+		pending, date, notBeforeDate, localAdminID, limit, offset, orderby, desc)
 
 	if e != models.ErrNoRows {
 		c.WE(e, 500)

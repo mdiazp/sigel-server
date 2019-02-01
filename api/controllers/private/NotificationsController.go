@@ -22,7 +22,7 @@ type NotificationsController struct {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile/notification [get]
+// @router /session/notification [get]
 func (c *NotificationsController) GetNotification() {
 	c.Ctx.Input.SetParam("user_id", string(c.GetAuthor().ID))
 	c.Data["json"] = c.BaseNotificationController.GetNotification()
@@ -45,7 +45,7 @@ func (c *NotificationsController) GetNotification() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile/notifications [get]
+// @router /session/notifications [get]
 func (c *NotificationsController) GetNotifications() {
 	c.Ctx.Input.SetParam("user_id", strconv.Itoa(c.GetAuthor().ID))
 	c.Data["json"] = c.BaseNotificationController.GetNotifications()

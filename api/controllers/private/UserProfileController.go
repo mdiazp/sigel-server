@@ -22,7 +22,7 @@ type ProfileController struct {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile [get]
+// @router /session/profile [get]
 func (c *ProfileController) Get() {
 	au := c.GetAuthor()
 	c.Data["json"] = toProfile(au)
@@ -40,14 +40,14 @@ func (c *ProfileController) Get() {
 // @Failure 404 Not Found
 // @Failure 500 Internal Server Error
 // @Accept json
-// @router /profile [patch]
+// @router /session/profile [patch]
 func (c *ProfileController) Patch() {
 	profile := models.ProfileEdit{}
 	c.ReadInputBody(&profile)
 
 	au := c.GetAuthor()
 	if au.Username == "SIREL" {
-		c.WE(fmt.Errorf("User SIREL don't can be updated"), 403)
+		c.WE(fmt.Errorf("User SIREL can't be updated"), 403)
 	}
 
 	au.Email = profile.Email

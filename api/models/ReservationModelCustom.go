@@ -12,16 +12,18 @@ import (
 // ReservationCustomModel ...
 type ReservationCustomModel interface {
 	GetReservations(search *string, userID, localID *int,
-		confirmed *bool, pending *bool, date *Date, localAdminID *int,
-		limit, offset *int, orderby *string, desc *bool) (*ReservationCollection, error)
+		confirmed *bool, pending *bool, date *Date, notBeforeDate *Date,
+		localAdminID *int, limit, offset *int, orderby *string,
+		desc *bool) (*ReservationCollection, error)
 
 	AddReservation(ri ReservationInfo) (*Reservation, bool, error)
 	NewDate(s *string) (*Date, error)
 }
 
 func (m *model) GetReservations(search *string, userID, localID *int,
-	confirmed *bool, pending *bool, date *Date, localAdminID *int,
-	limit, offset *int, orderby *string, desc *bool) (*ReservationCollection, error) {
+	confirmed *bool, pending *bool, date *Date, notBeforeDate *Date,
+	localAdminID *int, limit, offset *int, orderby *string,
+	desc *bool) (*ReservationCollection, error) {
 
 	where := ""
 	if search != nil {
@@ -62,6 +64,16 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 			fmt.Sprintf("extract(month from reservation.begin_time)=%d AND ", date.Month) +
 			fmt.Sprintf("extract(day from reservation.begin_time)=%d", date.Day)
 	}
+	if notBeforeDate != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "(" +
+			fmt.Sprintf("extract(year from reservation.begin_time)>%d OR ", notBeforeDate.Year) +
+			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)>%d) OR", notBeforeDate.Year, notBeforeDate.Month) +
+			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)=%d AND extract(day from reservation.begin_time)>=%d)", notBeforeDate.Year, notBeforeDate.Month, notBeforeDate.Day) +
+			")"
+	}
 
 	if localAdminID != nil {
 		if where != "" {
@@ -80,11 +92,16 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 	}
 
 	if orderby == nil {
-		tmp := "begin_time"
+		tmp := "reservation.begin_time"
 		orderby = &tmp
 		tmp2 := true
 		desc = &tmp2
+	} else {
+		*orderby = "reservation." + *orderby
 	}
+
+	beego.Debug("orderby = ", *orderby)
+	beego.Debug("desc", *desc)
 
 	rs := m.NewReservationCollection()
 	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, rs)
