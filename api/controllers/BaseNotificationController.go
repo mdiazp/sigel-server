@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -34,7 +33,6 @@ func (c *BaseNotificationController) GetNotifications() *[]*models.Notification 
 	userID := c.ReadInt("user_id")
 	readed := c.ReadBool("readed")
 	sdate := c.ReadString("date")
-	beego.Debug("before NewDate")
 	date, e := app.Model().NewDate(sdate)
 	if e != nil {
 		c.WE(e, 400)
@@ -52,4 +50,53 @@ func (c *BaseNotificationController) GetNotifications() *[]*models.Notification 
 		c.WE(e, 500)
 	}
 	return ns
+}
+
+// GetNotificationsCount ...
+func (c *BaseNotificationController) GetNotificationsCount() int {
+	userID := c.ReadInt("user_id")
+	readed := c.ReadBool("readed")
+	sdate := c.ReadString("date")
+	date, e := app.Model().NewDate(sdate)
+	if e != nil {
+		c.WE(e, 400)
+	}
+
+	cnt, e := app.Model().GetNotificationsCount(userID, date, readed)
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return cnt
+}
+
+// SetUserNotificationsAsReaded ...
+func (c *BaseNotificationController) SetUserNotificationsAsReaded() {
+	userID := c.ReadInt("user_id")
+
+	e := app.Model().SetUserNotificationsAsReaded(*userID)
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+}
+
+// ReadNotification ...
+func (c *BaseNotificationController) ReadNotification() {
+	userID := c.ReadInt("user_id")
+	nID := c.ReadInt("notification_id")
+
+	n := app.Model().NewNotification()
+	n.ID = *nID
+	
+	e := n.Load()
+	if e == models.ErrNoRows {
+		c.WE(e, 404)
+	}
+	c.WE(e, 500)
+	if n.UserID != *userID {
+		c.WE(fmt.Errorf("Forbidden"), 403)
+	}
+
+	n.Readed = true
+	e = n.Update()
+	c.WE(e, 500)
 }

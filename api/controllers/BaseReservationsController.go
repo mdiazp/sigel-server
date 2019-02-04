@@ -83,7 +83,7 @@ func (c *BaseController) Confirm() *models.Reservation {
 	beego.Debug("st.Day = ", st.Day())
 
 	if bt.Year() != st.Year() || bt.Month() != st.Month() || bt.Day() != st.Day() {
-		c.WE(fmt.Errorf("La reservacion solo puede ser confirmada un dia antes"), 400)
+		c.WE(fmt.Errorf("La reservación solo puede ser confirmada un día antes"), 400)
 	}
 
 	r.Confirmed = true
