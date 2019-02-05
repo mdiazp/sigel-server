@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/astaxie/beego"
 )
 
 // ReservationCustomModel ...
@@ -100,9 +98,6 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 		*orderby = "reservation." + *orderby
 	}
 
-	beego.Debug("orderby = ", *orderby)
-	beego.Debug("desc", *desc)
-
 	rs := m.NewReservationCollection()
 	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, rs)
 	return rs, e
@@ -110,11 +105,11 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 
 // AddReservation ...
 func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
-	eLocalDontExist := fmt.Errorf("Don't axists any local with ID=%d", ri.LocalID)
-	eInvalid := fmt.Errorf("Invalid reservation")
-	eUnworked := fmt.Errorf("Non laboral date in this local")
-	eConflictTime := fmt.Errorf("Conflict time with other reservations")
-	eMinDuration := fmt.Errorf("No se puede reservar por menos de 30 minutos.")
+	eLocalDontExist := fmt.Errorf("Local no encontrado", ri.LocalID)
+	eInvalid := fmt.Errorf("Reservación incorrecta")
+	eUnworked := fmt.Errorf("El local no está laborable es la fecha")
+	eConflictTime := fmt.Errorf("Existe conflicto de tiempo con otras reservaciones")
+	eMinDuration := fmt.Errorf("No se puede reservar por menos de 30 minutos")
 
 	l := m.NewLocal()
 	l.ID = ri.LocalID
@@ -129,12 +124,6 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 
 	by, bm, bd := bt.Date()
 	ey, em, ed := et.Date()
-
-	beego.Debug("bt = ", bt)
-	beego.Debug("et = ", et)
-
-	beego.Debug(fmt.Sprintf("by = %d, bm = %s, bd = %d", by, bm, bd))
-	beego.Debug(fmt.Sprintf("ey = %d, em = %s, ed = %d", ey, em, ed))
 
 	if bt.After(et) || time.Now().After(bt) || by != ey || bm != em || bd != ed {
 		return nil, true, eInvalid
@@ -172,7 +161,6 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 		if e != nil {
 			return nil, false, e
 		}
-		beego.Debug(tmp)
 		return nil, true, eConflictTime
 	}
 
@@ -196,7 +184,7 @@ type Date struct {
 
 // NewDate return an object Date given a string with format yyyy-mm-dd
 func (m *model) NewDate(s *string) (*Date, error) {
-	err := fmt.Errorf("date's format is invalid")
+	err := fmt.Errorf("El formato de fecha no es válido")
 	if s == nil {
 		return nil, nil
 	}
@@ -225,7 +213,7 @@ func getnumber(s string) (int, error) {
 	x := 0
 	for _, c := range s {
 		if c < '0' || '9' < c {
-			return 0, fmt.Errorf("Invalid number")
+			return 0, fmt.Errorf("El valor debe contener solo dígitos")
 		}
 		x *= 10
 		x += int(c) - int('0')

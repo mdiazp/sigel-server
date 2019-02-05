@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/astaxie/beego"
 
@@ -15,9 +17,11 @@ import (
 type SirelConfig struct {
 	SIREL_PASSWORD string `json:"SIREL_PASSWORD"`
 
-	DB_SOURCE_NAME string `json:"DB_SOURCE_NAME"`
-	DB_USER        string `json:"DB_USER"`
-	DB_PASSWORD    string `json:"DB_PASSWORD"`
+	DB_HOST     string
+	DB_PORT     string
+	DB_NAME     string
+	DB_USER     string `json:"DB_USER"`
+	DB_PASSWORD string `json:"DB_PASSWORD"`
 
 	AdAddress  string `json:"AdAddress"`
 	AdSuff     string `json:"AdSuff"`
@@ -29,11 +33,15 @@ type SirelConfig struct {
 	MailSenderPassword string
 	MailSenderHost     string
 	MailSenderPort     string
+
+	LoggingFilePath string
+
+	PublicStaticFilesPath string
 }
 
 func loadConfig() error {
 	var configPath string
-	flag.StringVar(&configPath, "configpath", "/home/kino/my_configs/sirel/config.json", "Path to config file.")
+	flag.StringVar(&configPath, "configpath", "/home/kino/my_configs/sigel/config.json", "Path to config file.")
 	flag.Parse()
 
 	file, err := os.Open(configPath)
@@ -55,7 +63,9 @@ func loadConfig() error {
 
 	beego.AppConfig.Set("SIREL_PASSWORD", config.SIREL_PASSWORD)
 
-	beego.AppConfig.Set("DB_SOURCE_NAME", config.DB_SOURCE_NAME)
+	beego.AppConfig.Set("DB_HOST", config.DB_HOST)
+	beego.AppConfig.Set("DB_PORT", config.DB_PORT)
+	beego.AppConfig.Set("DB_NAME", config.DB_NAME)
 	beego.AppConfig.Set("DB_USER", config.DB_USER)
 	beego.AppConfig.Set("DB_PASSWORD", config.DB_PASSWORD)
 
@@ -69,6 +79,10 @@ func loadConfig() error {
 	beego.AppConfig.Set("MailSenderPassword", config.MailSenderPassword)
 	beego.AppConfig.Set("MailSenderHost", config.MailSenderHost)
 	beego.AppConfig.Set("MailSenderPort", config.MailSenderPort)
+
+	beego.AppConfig.Set("LoggingFilePath", config.LoggingFilePath)
+
+	beego.AppConfig.Set("PublicStaticFilesPath", config.PublicStaticFilesPath)
 
 	return nil
 }
@@ -85,6 +99,21 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+
+	/************************************************************/
+	// Logging File
+	tim := time.Now()
+	pln := fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d",
+		tim.Year(), tim.Month(), tim.Day(),
+		tim.Hour(), tim.Minute(), tim.Second())
+	beego.SetLogger(
+		"file",
+		fmt.Sprintf(
+			`{"filename":"%s"}`,
+			beego.AppConfig.String("LoggingFilePath")+"/"+pln+"-upr-sigel.log",
+		),
+	)
+	beego.BeeLogger.DelLogger("console")
 
 	beego.Run()
 }

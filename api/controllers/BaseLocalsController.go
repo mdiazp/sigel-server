@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -61,8 +60,6 @@ func (c *BaseLocalsController) Update() *models.Local {
 	e := l.Update()
 
 	fmt.Println(l)
-	beego.Debug("Updating new local with ID=" +
-		string(l.ID) + " and area.ID=" + string(l.AreaID))
 
 	if e == models.ErrNoRows {
 		c.WE(e, 404)

@@ -29,14 +29,16 @@ type Model interface {
 
 // NewModel ...
 func NewModel() Model {
-	dbName := beego.AppConfig.String("DB_SOURCE_NAME")
+	dbHost := beego.AppConfig.String("DB_HOST")
+	dbPort := beego.AppConfig.String("DB_PORT")
+	dbName := beego.AppConfig.String("DB_NAME")
 	dbUser := beego.AppConfig.String("DB_USER")
 	dbPassword := beego.AppConfig.String("DB_PASSWORD")
 
 	dbDriver := "postgres"
 
-	conn := fmt.Sprintf("user=%s dbname=%s password=%s sslmode=disable",
-		dbUser, dbName, dbPassword)
+	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+		dbHost, dbPort, dbUser, dbName, dbPassword)
 
 	db, e := sql.Open(dbDriver, conn)
 	if e != nil {

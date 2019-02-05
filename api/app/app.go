@@ -64,7 +64,7 @@ func (ms *MailSender) SendMail(to, mailBody string) error {
 		mailsender.Mail{
 			SenderID: ms.user,
 			ToIds:    []string{to},
-			Subject:  "SIGA",
+			Subject:  "SIGEL",
 			Body:     mailBody,
 		},
 		ms.password,

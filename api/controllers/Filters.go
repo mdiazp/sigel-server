@@ -16,6 +16,7 @@ const AuthHd = "authHd"
 
 // AuthFilter ...
 func AuthFilter(ctx *context.Context) {
+	/*
 	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
 		u := app.Model().NewUser()
 		e := app.Model().RetrieveOne(u, "k_user.username=$1", "manuel.diaz")
@@ -25,10 +26,11 @@ func AuthFilter(ctx *context.Context) {
 		ctx.Input.SetData("Author", u)
 		return
 	}
+	*/
 
 	username, e := app.Crypto().Decrypt(ctx.Input.Header(AuthHd))
 	if e != nil {
-		beego.Debug(e)
+		/*beego.Debug(e)*/
 		wrec(ctx, 401)
 		return
 	}

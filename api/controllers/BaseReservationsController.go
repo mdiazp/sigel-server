@@ -30,7 +30,7 @@ func (c *BaseReservationsController) Show() *models.Reservation {
 // Create ...
 func (c *BaseReservationsController) Create() *models.Reservation {
 	if c.GetAuthor().Username == "SIREL" {
-		c.WE(fmt.Errorf("User SIREL can't reserve"), 403)
+		c.WE(fmt.Errorf("El Usuario SIREL no puede reservar"), 403)
 	}
 
 	rc := ReservationToCreate{}
@@ -67,20 +67,13 @@ func (c *BaseController) Confirm() *models.Reservation {
 	c.WE(e, 500)
 
 	if c.GetAuthor().ID != r.UserID {
-		c.WE(fmt.Errorf("Only the user that is author of a reservation can confirm it"), 403)
+		c.WE(fmt.Errorf("La reservación solo puede confirmarla el author de la misma"), 403)
 	}
 
 	bt := r.BeginTime
 	bt = bt.AddDate(0, 0, -1)
 
 	st := time.Now()
-
-	beego.Debug("bt.Year = ", bt.Year())
-	beego.Debug("bt.Month = ", bt.Month())
-	beego.Debug("bt.Day = ", bt.Day())
-	beego.Debug("st.Year = ", st.Year())
-	beego.Debug("st.Month = ", st.Month())
-	beego.Debug("st.Day = ", st.Day())
 
 	if bt.Year() != st.Year() || bt.Month() != st.Month() || bt.Day() != st.Day() {
 		c.WE(fmt.Errorf("La reservación solo puede ser confirmada un día antes"), 400)
@@ -112,8 +105,10 @@ func (c *BaseReservationsController) AcceptReservation() {
 
 	// Notificate to user by email
 	msg := fmt.Sprintf(
-		"Su reservacion en el local %s con "+
-			"fecha %d/%.2d/%.2d entre %.2d:%.2d y %.2d:%.2d fue aceptada",
+		"Su solicitud para realizar la actividad %s en el local %s en la "+
+			"fecha %d/%.2d/%.2d en el horario entre %.2d:%.2d y %.2d:%.2d "+
+			"fue aceptada.",
+		r.ActivityName,
 		local.Name, year, month, day, bh, bm, eh, em,
 	)
 	notificateByEmail(r, msg)
@@ -137,9 +132,12 @@ func (c *BaseReservationsController) RefuseReservation() {
 
 	// Notificate to user by email
 	msg := fmt.Sprintf(
-		"Su reservacion en el local %s con "+
-			"fecha %d/%.2d/%.2d entre %.2d:%.2d y %.2d:%.2d fue denegada",
+		"Su solicitud para realizar la actividad %s en el local %s en la "+
+			"fecha %d/%.2d/%.2d en el horario entre %.2d:%.2d y %.2d:%.2d "+
+			"fue denegada. Ante cualquier duda contacte a %s.",
+		r.ActivityName,
 		local.Name, year, month, day, bh, bm, eh, em,
+		c.GetAuthor().Email,
 	)
 	notificateByEmail(r, msg)
 }
@@ -155,7 +153,7 @@ func notificateByEmail(r *models.Reservation, msg string) {
 	if e == nil && u.SendNotificationsToEmail {
 		e = app.GetMailSender().SendMail(u.Email, msg)
 		if e != nil {
-			beego.Debug("Notification couldn't be sended to user email: ", e.Error())
+			beego.Debug("Notification couldn't be sended to user's email: ", e.Error())
 		}
 	}
 }
@@ -178,11 +176,6 @@ func (c *BaseReservationsController) List() *models.ReservationCollection {
 	notBeforeDate, e := app.Model().NewDate(sdate)
 	if e != nil {
 		c.WE(e, 400)
-	}
-
-	beego.Debug("desc !== nil  ======== ", (desc != nil))
-	if desc != nil {
-		beego.Debug("---onononononononononon------ desc = ", *desc)
 	}
 
 	rs, e := app.Model().GetReservations(search, userID, localID, confirmed,

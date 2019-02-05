@@ -3,7 +3,6 @@ package public
 import (
 	"time"
 
-	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/controllers"
 )
 
@@ -21,6 +20,5 @@ type InfoController struct {
 // @router /servertime [get]
 func (c *InfoController) ServerTime() {
 	c.Data["json"] = time.Now()
-	beego.Debug("Server Time = ", time.Now())
 	c.ServeJSON()
 }

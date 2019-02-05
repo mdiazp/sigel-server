@@ -3,7 +3,6 @@ package admin
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/app"
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
@@ -204,8 +203,6 @@ func (c *LocalsController) isLocalAdmin() {
 
 	localID := *(c.ReadInt("local_id", true))
 	userID := c.GetAuthor().ID
-
-	beego.Debug("user's rol is %s", c.GetAuthor().Rol)
 
 	_, e := app.Model().GetLocalAdmin(localID, userID)
 	if e == models.ErrNoRows {

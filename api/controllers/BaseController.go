@@ -68,8 +68,8 @@ func (c *BaseController) Validate(obj interface{}) {
 		c.WE(e, 500)
 	}
 	if !ok {
-		beego.Debug(fmt.Sprint(obj))
-		beego.Debug(valid.Errors)
+		// beego.Debug(fmt.Sprint(obj))
+		// beego.Debug(valid.Errors)
 		c.WE(errors.New("bad request"), 400)
 	}
 }
@@ -106,7 +106,6 @@ func (c *BaseController) ReadString(name string, required ...bool) *string {
 // ReadInt ...
 func (c *BaseController) ReadInt(name string, required ...bool) *int {
 	tmp := c.GetString(name)
-	beego.Debug(name + " = -" + tmp + "-")
 	if tmp != "" {
 		x, e := strconv.Atoi(tmp)
 		c.WE(e, 400)

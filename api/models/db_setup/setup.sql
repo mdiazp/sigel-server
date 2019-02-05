@@ -20,7 +20,7 @@ create table area(
     id                          serial primary key,
     name                        varchar(100) not null unique,
     description                 varchar(1024) not null,
-    location                    varchar(1024),
+    location                    varchar(1024)
 );
 
 create table local(
@@ -61,5 +61,5 @@ create table notification(
 create table local_admin(
     id                      serial primary key,
     user_id                 integer references k_user(id) on delete cascade not null,
-    local_id                integer references local(id) on delete cascade not null,
+    local_id                integer references local(id) on delete cascade not null
 );

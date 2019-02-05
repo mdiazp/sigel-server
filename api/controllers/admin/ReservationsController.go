@@ -3,7 +3,6 @@ package admin
 import (
 	"strconv"
 
-	"github.com/astaxie/beego"
 	"github.com/mdiazp/sirel-server/api/controllers"
 	"github.com/mdiazp/sirel-server/api/models"
 )
@@ -89,8 +88,6 @@ func (c *ReservationsController) Refuse() {
 // @router /reservations [get]
 func (c *ReservationsController) List() {
 	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
-		beego.Debug("c.GetAuthor().ID = ", c.GetAuthor().ID)
-		beego.Debug("and string(c.GetAuthor().ID) = ", strconv.Itoa(c.GetAuthor().ID))
 		c.Ctx.Input.SetParam("localAdminID", strconv.Itoa(c.GetAuthor().ID))
 	}
 	c.Data["json"] = c.BaseReservationsController.List().Reservations
