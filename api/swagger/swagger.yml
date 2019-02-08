@@ -808,6 +808,61 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/reservationscount:
+    get:
+      tags:
+      - admin
+      description: Get public reservations count
+      operationId: ReservationsController.Get public reservations count
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: user_id
+        description: User ID
+        type: integer
+        format: int64
+      - in: query
+        name: local_id
+        description: Local ID
+        type: integer
+        format: int64
+      - in: query
+        name: confirmed
+        description: true or false
+        type: string
+      - in: query
+        name: pending
+        description: true or false
+        type: string
+      - in: query
+        name: date
+        description: yyyy-mm-dd
+        type: string
+      - in: query
+        name: search
+        description: Search in activity name
+        type: string
+      responses:
+        "200":
+          description: int
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/user:
     get:
       tags:

@@ -93,3 +93,29 @@ func (c *ReservationsController) List() {
 	c.Data["json"] = c.BaseReservationsController.List().Reservations
 	c.ServeJSON()
 }
+
+// ReservationsCount ...
+// @Title Get public reservations count
+// @Description Get public reservations count
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	user_id		query	int	false		"User ID"
+// @Param	local_id		query	int	false		"Local ID"
+// @Param	confirmed		query	string	false		"true or false"
+// @Param	pending		query	string	false		"true or false"
+// @Param	date		query	string		"yyyy-mm-dd"
+// @Param	search		query	string	false		"Search in activity name"
+// @Success 200 int
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /reservationscount [get]
+func (c *ReservationsController) ReservationsCount() {
+	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
+		c.Ctx.Input.SetParam("localAdminID", strconv.Itoa(c.GetAuthor().ID))
+	}
+	c.Data["json"] = c.BaseReservationsController.Count()
+	c.ServeJSON()
+}

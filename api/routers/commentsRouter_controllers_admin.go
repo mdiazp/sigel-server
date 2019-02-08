@@ -159,6 +159,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:ReservationsController"],
+		beego.ControllerComments{
+			Method: "ReservationsCount",
+			Router: `/reservationscount`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/admin:UsersController"],
 		beego.ControllerComments{
 			Method: "Get",

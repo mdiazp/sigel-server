@@ -2,6 +2,7 @@ package public
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/mdiazp/sirel-server/api/models"
 
@@ -52,7 +53,7 @@ func (c *LoginController) Login() {
 		urecords, e := authp.GetUserRecords(cred.Username)
 		c.WE(e, 500)
 		if urecords.Username != cred.Username {
-			c.WE(e, 400)
+			c.WE(fmt.Errorf("Usuario incorrecto"), 400)
 		}
 		cred.Username = urecords.Username
 
@@ -70,11 +71,11 @@ func (c *LoginController) Login() {
 
 		// Check if user is enable
 		if !u.Enable {
-			c.WE(errors.New("401: user disabled"), 401)
+			c.WE(errors.New("disabled user"), 401)
 		}
 	} else {
 		if beego.AppConfig.String("SIREL_PASSWORD") != cred.Password {
-			c.WE(errors.New("401: wrong credentials"), 401)
+			c.WE(errors.New("wrong credentials"), 401)
 		}
 		u = app.Model().NewUser()
 		u.UserInfo = models.UserInfo{

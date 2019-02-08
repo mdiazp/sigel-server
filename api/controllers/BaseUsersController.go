@@ -31,7 +31,7 @@ func (c *BaseUsersController) Register(ui models.UserInfo) (*models.User, error)
 
 	// Register if user don't exits
 	if e == models.ErrNoRows {
-		u := m.NewUser()
+		u = m.NewUser()
 		u.UserInfo = ui
 		e = m.Create(u)
 	}

@@ -9,85 +9,30 @@ import (
 
 // ReservationCustomModel ...
 type ReservationCustomModel interface {
-	GetReservations(search *string, userID, localID *int,
-		confirmed *bool, pending *bool, date *Date, notBeforeDate *Date,
-		localAdminID *int, limit, offset *int, orderby *string,
+	GetReservations(f ReservationFilter, limit, offset *int, orderby *string,
 		desc *bool) (*ReservationCollection, error)
+	GetReservationsCount(f ReservationFilter) (int, error)
 
 	AddReservation(ri ReservationInfo) (*Reservation, bool, error)
 	NewDate(s *string) (*Date, error)
 }
 
-func (m *model) GetReservations(search *string, userID, localID *int,
-	confirmed *bool, pending *bool, date *Date, notBeforeDate *Date,
-	localAdminID *int, limit, offset *int, orderby *string,
+// ReservationFilter ...
+type ReservationFilter struct {
+	UserID        *int
+	LocalID       *int
+	Confirmed     *bool
+	Pending       *bool
+	LocalAdminID  *int
+	Search        *string
+	Date          *Date
+	NotBeforeDate *Date
+}
+
+func (m *model) GetReservations(f ReservationFilter, limit, offset *int, orderby *string,
 	desc *bool) (*ReservationCollection, error) {
 
-	where := ""
-	if search != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "reservation.activity_name like '%" + *search + "%'"
-	}
-	if userID != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("reservation.user_id=%d", *userID)
-	}
-	if localID != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("reservation.local_id=%d", *localID)
-	}
-	if confirmed != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("reservation.confirmed=%t", *confirmed)
-	}
-	if pending != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("reservation.pending=%t", *pending)
-	}
-	if date != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("extract(year from reservation.begin_time)=%d AND ", date.Year) +
-			fmt.Sprintf("extract(month from reservation.begin_time)=%d AND ", date.Month) +
-			fmt.Sprintf("extract(day from reservation.begin_time)=%d", date.Day)
-	}
-	if notBeforeDate != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "(" +
-			fmt.Sprintf("extract(year from reservation.begin_time)>%d OR ", notBeforeDate.Year) +
-			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)>%d) OR", notBeforeDate.Year, notBeforeDate.Month) +
-			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)=%d AND extract(day from reservation.begin_time)>=%d)", notBeforeDate.Year, notBeforeDate.Month, notBeforeDate.Day) +
-			")"
-	}
-
-	if localAdminID != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "reservation.local_id IN (" +
-			fmt.Sprintf(
-				"SELECT local_admin.local_id FROM local_admin "+
-					"WHERE local_admin.user_id=%d", *localAdminID) +
-			")"
-	}
-
-	hf := &where
-	if where == "" {
-		hf = nil
-	}
+	hf := m.MakeReservationHorizontalFilter(f)
 
 	if orderby == nil {
 		tmp := "reservation.begin_time"
@@ -103,9 +48,87 @@ func (m *model) GetReservations(search *string, userID, localID *int,
 	return rs, e
 }
 
+func (m *model) GetReservationsCount(f ReservationFilter) (int, error) {
+	hf := m.MakeReservationHorizontalFilter(f)
+
+	o := m.NewReservation()
+	count := 0
+	e := m.RetrieveCount(hf, o, &count)
+	return count, e
+}
+
+func (m *model) MakeReservationHorizontalFilter(f ReservationFilter) *string {
+	where := ""
+	if f.Search != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "reservation.activity_name like '%" + *f.Search + "%'"
+	}
+	if f.UserID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("reservation.user_id=%d", *f.UserID)
+	}
+	if f.LocalID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("reservation.local_id=%d", *f.LocalID)
+	}
+	if f.Confirmed != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("reservation.confirmed=%t", *f.Confirmed)
+	}
+	if f.Pending != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("reservation.pending=%t", *f.Pending)
+	}
+	if f.Date != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("extract(year from reservation.begin_time)=%d AND ", f.Date.Year) +
+			fmt.Sprintf("extract(month from reservation.begin_time)=%d AND ", f.Date.Month) +
+			fmt.Sprintf("extract(day from reservation.begin_time)=%d", f.Date.Day)
+	}
+	if f.NotBeforeDate != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "(" +
+			fmt.Sprintf("extract(year from reservation.begin_time)>%d OR ", f.NotBeforeDate.Year) +
+			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)>%d) OR", f.NotBeforeDate.Year, f.NotBeforeDate.Month) +
+			fmt.Sprintf("(extract(year from reservation.begin_time)=%d AND extract(month from reservation.begin_time)=%d AND extract(day from reservation.begin_time)>=%d)", f.NotBeforeDate.Year, f.NotBeforeDate.Month, f.NotBeforeDate.Day) +
+			")"
+	}
+
+	if f.LocalAdminID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "reservation.local_id IN (" +
+			fmt.Sprintf(
+				"SELECT local_admin.local_id FROM local_admin "+
+					"WHERE local_admin.user_id=%d", *f.LocalAdminID) +
+			")"
+	}
+
+	if where == "" {
+		return nil
+	}
+
+	return &where
+}
+
 // AddReservation ...
 func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
-	eLocalDontExist := fmt.Errorf("Local no encontrado", ri.LocalID)
+	eLocalDontExist := fmt.Errorf("Local no encontrado")
 	eInvalid := fmt.Errorf("Reservación incorrecta")
 	eUnworked := fmt.Errorf("El local no está laborable es la fecha")
 	eConflictTime := fmt.Errorf("Existe conflicto de tiempo con otras reservaciones")
@@ -149,9 +172,6 @@ func (m *model) AddReservation(ri ReservationInfo) (*Reservation, bool, error) {
 
 	// Validate that don't exists conflict time with other reservations
 	tmp := l.model.NewReservation()
-
-	println("------------> bt =", ri.BeginTime.Format("2006-01-02 15:04:05"))
-	println("------------> et =", ri.EndTime.Format("2006-01-02 15:04:05"))
 
 	e = l.model.RetrieveOne(tmp,
 		"reservation.local_id=$1 AND NOT(reservation.end_time < $2 OR $3 < reservation.begin_time)",

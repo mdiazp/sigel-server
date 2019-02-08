@@ -29,7 +29,7 @@ create table local(
     name                        varchar(100) not null unique,
     description                 varchar(1024) not null,
     location                    varchar(1024) not null,
-    working_moths               varchar(12) not null,
+    working_months               varchar(12) not null,
     working_week_days           varchar(7) not null,
     working_begin_time_hours    integer not null,
     working_begin_time_minutes  integer not null,
@@ -52,7 +52,7 @@ create table reservation(
 
 create table notification(
     id                      serial primary key,
-    to_user                 integer references k_user(id) on delete cascade not null,
+    user_id                 integer references k_user(id) on delete cascade not null,
     message                 varchar(1024) not null,
     creation_time           timestamp without time zone not null,
     readed                  boolean not null

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 
 	"github.com/mdiazp/sirel-server/api/app"
 	_ "github.com/mdiazp/sirel-server/api/routers"
@@ -95,7 +96,7 @@ func main() {
 
 	app.InitApp()
 
-	if beego.BConfig.RunMode == "dev" {
+	if beego.AppConfig.String("SERVE_SWAGGER") == "true" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
@@ -113,7 +114,9 @@ func main() {
 			beego.AppConfig.String("LoggingFilePath")+"/"+pln+"-upr-sigel.log",
 		),
 	)
+	beego.BConfig.Log.AccessLogs = true
 	beego.BeeLogger.DelLogger("console")
+	logs.EnableFuncCallDepth(true)
 
 	beego.Run()
 }

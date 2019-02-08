@@ -158,33 +158,53 @@ func notificateByEmail(r *models.Reservation, msg string) {
 	}
 }
 
+// Count ...
+func (c *BaseReservationsController) Count() int {
+	f := c.ReadReservationFilter()
+
+	count, e := app.Model().GetReservationsCount(f)
+
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return count
+}
+
 // List ...
 func (c *BaseReservationsController) List() *models.ReservationCollection {
 	limit, offset, orderby, desc := c.ReadPagOrder()
-	userID := c.ReadInt("user_id")
-	localID := c.ReadInt("local_id")
-	confirmed := c.ReadBool("confirmed")
-	pending := c.ReadBool("pending")
-	localAdminID := c.ReadInt("localAdminID")
-	search := c.ReadString("search")
-	sdate := c.ReadString("date")
-	date, e := app.Model().NewDate(sdate)
-	if e != nil {
-		c.WE(e, 400)
-	}
-	sdate = c.ReadString("not_before_date")
-	notBeforeDate, e := app.Model().NewDate(sdate)
-	if e != nil {
-		c.WE(e, 400)
-	}
+	f := c.ReadReservationFilter()
 
-	rs, e := app.Model().GetReservations(search, userID, localID, confirmed,
-		pending, date, notBeforeDate, localAdminID, limit, offset, orderby, desc)
+	rs, e := app.Model().GetReservations(f, limit, offset, orderby, desc)
 
 	if e != models.ErrNoRows {
 		c.WE(e, 500)
 	}
 	return rs
+}
+
+// ReadReservationFilter ...
+func (c *BaseReservationsController) ReadReservationFilter() models.ReservationFilter {
+	f := models.ReservationFilter{}
+	f.UserID = c.ReadInt("user_id")
+	f.LocalID = c.ReadInt("local_id")
+	f.Confirmed = c.ReadBool("confirmed")
+	f.Pending = c.ReadBool("pending")
+	f.LocalAdminID = c.ReadInt("localAdminID")
+	f.Search = c.ReadString("search")
+	sdate := c.ReadString("date")
+	var e error
+	f.Date, e = app.Model().NewDate(sdate)
+	if e != nil {
+		c.WE(e, 400)
+	}
+	sdate = c.ReadString("not_before_date")
+	f.NotBeforeDate, e = app.Model().NewDate(sdate)
+	if e != nil {
+		c.WE(e, 400)
+	}
+
+	return f
 }
 
 // ReservationToCreate ...
