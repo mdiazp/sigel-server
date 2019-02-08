@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/astaxie/beego/context"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/models"
 )
 
 // GetAuthorFromInputData ...

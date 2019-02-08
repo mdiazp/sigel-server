@@ -10,8 +10,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 
-	"github.com/mdiazp/sirel-server/api/app"
-	_ "github.com/mdiazp/sirel-server/api/routers"
+	"github.com/mdiazp/sigel-server/api/app"
+	_ "github.com/mdiazp/sigel-server/api/routers"
 )
 
 // SirelConfig ...

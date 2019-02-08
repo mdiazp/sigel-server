@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/mdiazp/sirel-server/api/pkg/authproviders"
+	"github.com/mdiazp/sigel-server/api/pkg/authproviders"
 )
 
 type provider struct{}

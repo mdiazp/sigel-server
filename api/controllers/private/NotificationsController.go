@@ -3,7 +3,7 @@ package private
 import (
 	"strconv"
 
-	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sigel-server/api/controllers"
 )
 
 // NotificationsController ...

@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"github.com/mdiazp/sirel-server/api/controllers"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/controllers"
+	"github.com/mdiazp/sigel-server/api/models"
 )
 
 // AreasController ...

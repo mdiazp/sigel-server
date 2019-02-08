@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/mdiazp/sirel-server/api/app"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/app"
+	"github.com/mdiazp/sigel-server/api/models"
 )
 
 // BaseNotificationController ...
@@ -86,7 +86,7 @@ func (c *BaseNotificationController) ReadNotification() {
 
 	n := app.Model().NewNotification()
 	n.ID = *nID
-	
+
 	e := n.Load()
 	if e == models.ErrNoRows {
 		c.WE(e, 404)

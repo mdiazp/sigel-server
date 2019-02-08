@@ -7,8 +7,8 @@ import (
 	"github.com/astaxie/beego"
 
 	"github.com/astaxie/beego/context"
-	"github.com/mdiazp/sirel-server/api/app"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/app"
+	"github.com/mdiazp/sigel-server/api/models"
 )
 
 // AuthHd ...
@@ -17,15 +17,15 @@ const AuthHd = "authHd"
 // AuthFilter ...
 func AuthFilter(ctx *context.Context) {
 	/*
-	if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
-		u := app.Model().NewUser()
-		e := app.Model().RetrieveOne(u, "k_user.username=$1", "manuel.diaz")
-		if e != nil {
-			wrec(ctx, 500)
+		if ok, _ := beego.AppConfig.Bool("DISABLE_AUTH"); ok {
+			u := app.Model().NewUser()
+			e := app.Model().RetrieveOne(u, "k_user.username=$1", "manuel.diaz")
+			if e != nil {
+				wrec(ctx, 500)
+			}
+			ctx.Input.SetData("Author", u)
+			return
 		}
-		ctx.Input.SetData("Author", u)
-		return
-	}
 	*/
 
 	username, e := app.Crypto().Decrypt(ctx.Input.Header(AuthHd))

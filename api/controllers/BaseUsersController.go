@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/mdiazp/sirel-server/api/app"
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/app"
+	"github.com/mdiazp/sigel-server/api/models"
 )
 
 // BaseUsersController ...

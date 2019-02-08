@@ -1,7 +1,7 @@
 package private
 
 import (
-	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sigel-server/api/controllers"
 )
 
 // LogoutController ...

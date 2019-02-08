@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mdiazp/sirel-server/api/models"
+	"github.com/mdiazp/sigel-server/api/models"
 
 	"github.com/astaxie/beego"
-	"github.com/mdiazp/sirel-server/api/app"
-	"github.com/mdiazp/sirel-server/api/controllers"
+	"github.com/mdiazp/sigel-server/api/app"
+	"github.com/mdiazp/sigel-server/api/controllers"
 )
 
 // LoginController ...

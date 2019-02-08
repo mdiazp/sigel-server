@@ -1,8 +1,8 @@
 package ldap
 
 import (
-	"github.com/mdiazp/sirel-server/api/pkg/authproviders"
-	"github.com/mdiazp/sirel-server/api/pkg/ldaputil"
+	"github.com/mdiazp/sigel-server/api/pkg/authproviders"
+	"github.com/mdiazp/sigel-server/api/pkg/ldaputil"
 )
 
 type provider struct {

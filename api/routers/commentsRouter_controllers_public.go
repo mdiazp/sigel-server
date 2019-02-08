@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:AreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:AreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:AreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:AreasController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/area`,
@@ -15,7 +15,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:AreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:AreasController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:AreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:AreasController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/areas`,
@@ -23,7 +23,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:InfoController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:InfoController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:InfoController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:InfoController"],
 		beego.ControllerComments{
 			Method: "ServerTime",
 			Router: `/servertime`,
@@ -31,7 +31,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LocalsController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/local`,
@@ -39,7 +39,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LocalsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LocalsController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/locals`,
@@ -47,7 +47,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LoginController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:LoginController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LoginController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:LoginController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -55,7 +55,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:ReservationsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:ReservationsController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/reservation`,
@@ -63,7 +63,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:ReservationsController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:ReservationsController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/reservations`,
@@ -71,7 +71,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:UsersController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:UsersController"],
 		beego.ControllerComments{
 			Method: "GetUserPublicInfo",
 			Router: `/user/publicinfo`,
@@ -79,7 +79,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sirel-server/api/controllers/public:UsersController"],
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/public:UsersController"],
 		beego.ControllerComments{
 			Method: "GetUsersPublicInfo",
 			Router: `/users/publicinfo`,

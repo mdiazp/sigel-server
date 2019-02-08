@@ -8,10 +8,10 @@ package routers
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
-	"github.com/mdiazp/sirel-server/api/controllers"
-	"github.com/mdiazp/sirel-server/api/controllers/admin"
-	"github.com/mdiazp/sirel-server/api/controllers/private"
-	"github.com/mdiazp/sirel-server/api/controllers/public"
+	"github.com/mdiazp/sigel-server/api/controllers"
+	"github.com/mdiazp/sigel-server/api/controllers/admin"
+	"github.com/mdiazp/sigel-server/api/controllers/private"
+	"github.com/mdiazp/sigel-server/api/controllers/public"
 )
 
 func init() {
