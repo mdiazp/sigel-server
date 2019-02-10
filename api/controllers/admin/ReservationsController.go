@@ -90,7 +90,41 @@ func (c *ReservationsController) List() {
 	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
 		c.Ctx.Input.SetParam("localAdminID", strconv.Itoa(c.GetAuthor().ID))
 	}
-	c.Data["json"] = c.BaseReservationsController.List().Reservations
+	rs := c.BaseReservationsController.List().Reservations
+
+	c.Data["json"] = rs
+	c.ServeJSON()
+}
+
+// List2 ...
+// @Title Get public reservation list
+// @Description Get public areas list
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	limit		query	int	false		"Limit (10 or 50 or 100)"
+// @Param	offset		query	int	false		"Offset"
+// @Param	orderby		query	string	false		"OrderBy (property name)"
+// @Param	desc		query	string	false		"true or false"
+// @Param	user_id		query	int	false		"User ID"
+// @Param	local_id		query	int	false		"Local ID"
+// @Param	confirmed		query	string	false		"true or false"
+// @Param	pending		query	string	false		"true or false"
+// @Param	date		query	string		"yyyy-mm-dd"
+// @Param	search		query	string	false		"Search in activity name"
+// @Success 200 {object} []controllers.ReservationWithusername
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /reservations2 [get]
+func (c *ReservationsController) List2() {
+	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
+		c.Ctx.Input.SetParam("localAdminID", strconv.Itoa(c.GetAuthor().ID))
+	}
+	rs := c.BaseReservationsController.List2()
+
+	c.Data["json"] = rs
 	c.ServeJSON()
 }
 

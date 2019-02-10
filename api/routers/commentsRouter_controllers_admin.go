@@ -161,6 +161,14 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:ReservationsController"],
 		beego.ControllerComments{
+			Method: "List2",
+			Router: `/reservations2`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:ReservationsController"],
+		beego.ControllerComments{
 			Method: "ReservationsCount",
 			Router: `/reservationscount`,
 			AllowHTTPMethods: []string{"get"},

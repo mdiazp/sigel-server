@@ -808,6 +808,83 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/reservations2:
+    get:
+      tags:
+      - admin
+      description: Get public areas list
+      operationId: ReservationsController.Get public reservation list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: limit
+        description: Limit (10 or 50 or 100)
+        type: integer
+        format: int64
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+        format: int64
+      - in: query
+        name: orderby
+        description: OrderBy (property name)
+        type: string
+      - in: query
+        name: desc
+        description: true or false
+        type: string
+      - in: query
+        name: user_id
+        description: User ID
+        type: integer
+        format: int64
+      - in: query
+        name: local_id
+        description: Local ID
+        type: integer
+        format: int64
+      - in: query
+        name: confirmed
+        description: true or false
+        type: string
+      - in: query
+        name: pending
+        description: true or false
+        type: string
+      - in: query
+        name: date
+        description: yyyy-mm-dd
+        type: string
+      - in: query
+        name: search
+        description: Search in activity name
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/controllers.ReservationWithusername'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/reservationscount:
     get:
       tags:
@@ -1811,6 +1888,14 @@ paths:
         "500":
           description: Internal Server Error
 definitions:
+  .0xc42032e380:
+    type: object
+  .0xc4203665c0:
+    type: object
+  .0xc420342700:
+    type: object
+  .0xc420366520:
+    type: object
   .Notification:
     type: object
   .NotificationInfo:
@@ -1863,6 +1948,29 @@ definitions:
       LocalID:
         type: integer
         format: int64
+  controllers.ReservationWithusername:
+    title: ReservationWithusername
+    type: object
+    properties:
+      Username:
+        type: string
+  models.Area:
+    title: Area
+    type: object
+    properties:
+      Description:
+        type: string
+      ID:
+        type: integer
+        format: int64
+      Location:
+        type: string
+      Name:
+        type: string
+      locals:
+        $ref: '#/definitions/13083.<nil>.0xc420342700'
+      model:
+        $ref: '#/definitions/models.Model'
   models.AreaInfo:
     title: AreaInfo
     type: object
@@ -1876,6 +1984,46 @@ definitions:
         type: string
       Name:
         type: string
+  models.Local:
+    title: Local
+    type: object
+    properties:
+      AreaID:
+        type: integer
+        format: int64
+      Description:
+        type: string
+      EnableToReserve:
+        type: boolean
+      ID:
+        type: integer
+        format: int64
+      Location:
+        type: string
+      Name:
+        type: string
+      WorkingBeginTimeHours:
+        type: integer
+        format: int64
+      WorkingBeginTimeMinutes:
+        type: integer
+        format: int64
+      WorkingEndTimeHours:
+        type: integer
+        format: int64
+      WorkingEndTimeMinutes:
+        type: integer
+        format: int64
+      WorkingMonths:
+        type: string
+      WorkingWeekDays:
+        type: string
+      area:
+        $ref: '#/definitions/models.Area'
+      localAdmins:
+        $ref: '#/definitions/9273.<nil>.0xc42032e380'
+      model:
+        $ref: '#/definitions/models.Model'
   models.LocalInfo:
     title: LocalInfo
     type: object
@@ -1910,6 +2058,8 @@ definitions:
         type: string
       WorkingWeekDays:
         type: string
+  models.Model:
+    type: object
   models.ProfileEdit:
     title: ProfileEdit
     type: object
@@ -1918,6 +2068,39 @@ definitions:
         type: string
       SendNotificationsToEmail:
         type: boolean
+  models.Reservation:
+    title: Reservation
+    type: object
+    properties:
+      ActivityDescription:
+        type: string
+      ActivityName:
+        type: string
+      BeginTime:
+        type: string
+        format: datetime
+      Confirmed:
+        type: boolean
+      EndTime:
+        type: string
+        format: datetime
+      ID:
+        type: integer
+        format: int64
+      LocalID:
+        type: integer
+        format: int64
+      Pending:
+        type: boolean
+      UserID:
+        type: integer
+        format: int64
+      local:
+        $ref: '#/definitions/models.Local'
+      model:
+        $ref: '#/definitions/models.Model'
+      user:
+        $ref: '#/definitions/models.User'
   models.ReservationInfo:
     title: ReservationInfo
     type: object
@@ -1945,6 +2128,31 @@ definitions:
       UserID:
         type: integer
         format: int64
+  models.User:
+    title: User
+    type: object
+    properties:
+      Email:
+        type: string
+      Enable:
+        type: boolean
+      ID:
+        type: integer
+        format: int64
+      Name:
+        type: string
+      Rol:
+        type: string
+      SendNotificationsToEmail:
+        type: boolean
+      Username:
+        type: string
+      localAdmins:
+        $ref: '#/definitions/22374.<nil>.0xc420366520'
+      model:
+        $ref: '#/definitions/models.Model'
+      notifications:
+        $ref: '#/definitions/22404.<nil>.0xc4203665c0'
   models.UserEdit:
     title: UserEdit
     type: object

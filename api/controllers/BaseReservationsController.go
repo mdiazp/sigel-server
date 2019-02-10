@@ -183,6 +183,39 @@ func (c *BaseReservationsController) List() *models.ReservationCollection {
 	return rs
 }
 
+// List2 ...
+func (c *BaseReservationsController) List2() *[]ReservationWithusername {
+	limit, offset, orderby, desc := c.ReadPagOrder()
+	f := c.ReadReservationFilter()
+
+	rs, e := app.Model().GetReservations(f, limit, offset, orderby, desc)
+
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+
+	rwus := make([]ReservationWithusername, 0)
+	for _, r := range *rs.Reservations {
+		u, e := app.Model().GetUserByID(r.UserID)
+		c.WE(e, 500)
+
+		rwu := ReservationWithusername{
+			Reservation: *r,
+			Username:    u.Username,
+		}
+
+		rwus = append(rwus, rwu)
+	}
+
+	return &rwus
+}
+
+// ReservationWithusername ...
+type ReservationWithusername struct {
+	models.Reservation
+	Username string
+}
+
 // ReadReservationFilter ...
 func (c *BaseReservationsController) ReadReservationFilter() models.ReservationFilter {
 	f := models.ReservationFilter{}
