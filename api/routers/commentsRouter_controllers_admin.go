@@ -111,6 +111,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:LocalsController"],
+		beego.ControllerComments{
+			Method: "LocalsCount",
+			Router: `/localscount`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:NotificationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:NotificationsController"],
 		beego.ControllerComments{
 			Method: "GetNotification",

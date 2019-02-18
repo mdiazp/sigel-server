@@ -115,7 +115,7 @@ func main() {
 		),
 	)
 	beego.BConfig.Log.AccessLogs = true
-	beego.BeeLogger.DelLogger("console")
+	/*beego.BeeLogger.DelLogger("console")*/
 	logs.EnableFuncCallDepth(true)
 
 	beego.Run()

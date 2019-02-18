@@ -540,6 +540,48 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/localscount:
+    get:
+      tags:
+      - admin
+      description: Get admin Locals count
+      operationId: LocalsController.Get Locals count
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: enable_to_reserve
+        description: Local Property (true o false)
+        type: string
+      - in: query
+        name: area_id
+        description: Local Property
+        type: integer
+        format: int64
+      - in: query
+        name: search
+        description: Search in name
+        type: string
+      responses:
+        "200":
+          description: int
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/notification:
     get:
       tags:
@@ -1888,13 +1930,13 @@ paths:
         "500":
           description: Internal Server Error
 definitions:
-  .0xc42032e380:
+  .0xc42038fb40:
     type: object
-  .0xc4203665c0:
+  .0xc42038fbe0:
     type: object
-  .0xc420342700:
+  .0xc420358ec0:
     type: object
-  .0xc420366520:
+  .0xc420365240:
     type: object
   .Notification:
     type: object
@@ -1968,7 +2010,7 @@ definitions:
       Name:
         type: string
       locals:
-        $ref: '#/definitions/13083.<nil>.0xc420342700'
+        $ref: '#/definitions/13083.<nil>.0xc420365240'
       model:
         $ref: '#/definitions/models.Model'
   models.AreaInfo:
@@ -2021,7 +2063,7 @@ definitions:
       area:
         $ref: '#/definitions/models.Area'
       localAdmins:
-        $ref: '#/definitions/9273.<nil>.0xc42032e380'
+        $ref: '#/definitions/9273.<nil>.0xc420358ec0'
       model:
         $ref: '#/definitions/models.Model'
   models.LocalInfo:
@@ -2148,11 +2190,11 @@ definitions:
       Username:
         type: string
       localAdmins:
-        $ref: '#/definitions/22374.<nil>.0xc420366520'
+        $ref: '#/definitions/22884.<nil>.0xc42038fb40'
       model:
         $ref: '#/definitions/models.Model'
       notifications:
-        $ref: '#/definitions/22404.<nil>.0xc4203665c0'
+        $ref: '#/definitions/22914.<nil>.0xc42038fbe0'
   models.UserEdit:
     title: UserEdit
     type: object

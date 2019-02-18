@@ -120,6 +120,29 @@ func (c *LocalsController) List() {
 	c.ServeJSON()
 }
 
+// LocalsCount ...
+// @Title Get Locals count
+// @Description Get admin Locals count
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	enable_to_reserve		query	string	false		"Local Property (true o false)"
+// @Param	area_id		query	int	false		"Local Property"
+// @Param	search		query	string	false		"Search in name"
+// @Success 200 int
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /localscount [get]
+func (c *LocalsController) LocalsCount() {
+	if !c.GetAuthor().HaveRol(models.RolSuperadmin) {
+		c.Ctx.Input.SetParam("ofAdmin", "true")
+	}
+	c.Data["json"] = c.BaseLocalsController.Count()
+	c.ServeJSON()
+}
+
 // Admins ...
 // @Title Get Admins
 // @Description Delete user from admins by id (role admin required)

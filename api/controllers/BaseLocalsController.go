@@ -82,26 +82,51 @@ func (c *BaseLocalsController) Remove() {
 	app.Model().Delete(l)
 }
 
+// Count ...
+func (c *BaseLocalsController) Count() int {
+	f := c.ReadLocalsFilter()
+
+	count, e := app.Model().GetLocalsCount(f)
+
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return count
+}
+
 // List ...
 func (c *BaseLocalsController) List() *models.LocalCollection {
 	limit, offset, orderby, desc := c.ReadPagOrder()
+
+	locals, e := app.Model().GetLocals(
+		c.ReadLocalsFilter(),
+		limit, offset, orderby, desc,
+	)
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return locals
+}
+
+// ReadLocalsFilter ...
+func (c *BaseLocalsController) ReadLocalsFilter() models.LocalFilter {
 	enableToReserve := c.ReadBool("enable_to_reserve")
 	areaID := c.ReadInt("area_id")
 	search := c.ReadString("search")
 	ofAdmin := c.ReadBool("ofAdmin")
+
 	var userID *int
 
 	if ofAdmin != nil && *ofAdmin {
 		userID = &c.GetAuthor().ID
 	}
 
-	locals, e := app.Model().GetLocals(
-		areaID, search, enableToReserve, userID,
-		limit, offset, orderby, desc)
-	if e != models.ErrNoRows {
-		c.WE(e, 500)
+	return models.LocalFilter{
+		EnableToReserve: enableToReserve,
+		AreaID:          areaID,
+		Search:          search,
+		AdminID:         userID,
 	}
-	return locals
 }
 
 // Admins ...

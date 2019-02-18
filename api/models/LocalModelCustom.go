@@ -6,57 +6,28 @@ import (
 
 // LocalCustomModel ...
 type LocalCustomModel interface {
-	GetLocals(
-		areaID *int, search *string, enableToReserve *bool, adminID *int,
-		limit, offset *int, orderby *string, desc *bool) (*LocalCollection, error)
+	GetLocals(filter LocalFilter, limit, offset *int, orderby *string,
+		desc *bool) (*LocalCollection, error)
+	GetLocalsCount(filter LocalFilter) (int, error)
+	MakeLocalHorizontalFilter(f LocalFilter) (hf *string, join []*string)
 	GetLocalAdmins(localID int) (*UserCollection, error)
 }
 
-// GetLocals ...
-func (m *model) GetLocals(
-	areaID *int, search *string, enableToReserve *bool, adminID *int,
-	limit, offset *int, orderby *string, desc *bool) (*LocalCollection, error) {
+type LocalFilter struct {
+	AreaID          *int
+	Search          *string
+	EnableToReserve *bool
+	AdminID         *int
+}
 
-	var join []*string
-	where := ""
-	if adminID != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("local_admin.user_id=%d", *adminID)
-		tmp := "local_admin ON local.id=local_admin.local_id"
-		join = append(join, &tmp)
-	}
-
-	if areaID != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("local.area_id=%d", *areaID)
-	}
-
-	if enableToReserve != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("local.enable_to_reserve=%t", *enableToReserve)
-	}
-
-	if search != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "local.name ilike '%" + *search + "%'"
-	}
+func (m *model) GetLocals(filter LocalFilter, limit, offset *int, orderby *string,
+	desc *bool) (*LocalCollection, error) {
 
 	if orderby != nil {
 		*orderby = "local." + *orderby
 	}
 
-	var hf *string
-	if where != "" {
-		hf = &where
-	}
+	hf, join := m.MakeLocalHorizontalFilter(filter)
 
 	if orderby == nil {
 		tmp := "name"
@@ -68,6 +39,55 @@ func (m *model) GetLocals(
 	locals := m.NewLocalCollection()
 	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, locals, join...)
 	return locals, e
+}
+
+func (m *model) GetLocalsCount(filter LocalFilter) (int, error) {
+	hf, join := m.MakeLocalHorizontalFilter(filter)
+
+	o := m.NewLocal()
+	count := 0
+	e := m.RetrieveCount(hf, o, &count, join...)
+	return count, e
+}
+
+// MakeLocalHorizontalFilter ...
+func (m *model) MakeLocalHorizontalFilter(f LocalFilter) (hf *string, join []*string) {
+	where := ""
+	if f.AdminID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("local_admin.user_id=%d", *(f.AdminID))
+		tmp := "local_admin ON local.id=local_admin.local_id"
+		join = append(join, &tmp)
+	}
+
+	if f.AreaID != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("local.area_id=%d", *(f.AreaID))
+	}
+
+	if f.EnableToReserve != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("local.enable_to_reserve=%t", *(f.EnableToReserve))
+	}
+
+	if f.Search != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "local.name ilike '%" + *(f.Search) + "%'"
+	}
+
+	if where != "" {
+		hf = &where
+	}
+
+	return
 }
 
 // GetLocalAdmins ...
