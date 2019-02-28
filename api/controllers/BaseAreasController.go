@@ -72,17 +72,37 @@ func (c *BaseAreasController) Remove() {
 
 // List ...
 func (c *BaseAreasController) List() *models.AreaCollection {
-	limit := c.ReadInt("limit")
-	offset := c.ReadInt("offset")
-	orderby := c.ReadString("orderby")
-	desc := c.ReadBool("orderDesc")
-	search := c.ReadString("search")
+	limit, offset, orderby, desc := c.ReadPagOrder()
 
-	areas, e := app.Model().GetAreas(search, limit, offset, orderby, desc)
+	areas, e := app.Model().GetAreas(
+		c.ReadAreasFilter(),
+		limit, offset, orderby, desc,
+	)
 	if e != models.ErrNoRows {
 		c.WE(e, 500)
 	}
 	return areas
+}
+
+// Count ...
+func (c *BaseAreasController) Count() int {
+	f := c.ReadAreasFilter()
+
+	count, e := app.Model().GetAreasCount(f)
+
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return count
+}
+
+// ReadAreasFilter ...
+func (c *BaseAreasController) ReadAreasFilter() models.AreaFilter {
+	search := c.ReadString("search")
+
+	return models.AreaFilter{
+		Search: search,
+	}
 }
 
 func (c *BaseAreasController) checkAreaUniqueNameConstraint(a *models.Area, create bool) {

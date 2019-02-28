@@ -41,18 +41,43 @@ func (c *BaseUsersController) Register(ui models.UserInfo) (*models.User, error)
 
 // GetUsers ...
 func (c *BaseUsersController) GetUsers() *[]*models.User {
+	limit, offset, orderby, desc := c.ReadPagOrder()
+
+	users, e := app.Model().GetUsers(
+		c.ReadUsersFilter(),
+		limit, offset, orderby, desc,
+	)
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return users
+}
+
+// Count ...
+func (c *BaseUsersController) Count() int {
+	f := c.ReadUsersFilter()
+
+	count, e := app.Model().GetUsersCount(f)
+
+	if e != models.ErrNoRows {
+		c.WE(e, 500)
+	}
+	return count
+}
+
+// ReadUsersFilter ...
+func (c *BaseUsersController) ReadUsersFilter() models.UserFilter {
 	username := c.ReadString("username")
 	name := c.ReadString("name")
 	email := c.ReadString("email")
 	rol := c.ReadString("rol")
 	enable := c.ReadBool("enable")
-	limit, offset, orderby, desc := c.ReadPagOrder()
 
-	data, e := app.Model().GetUsers(username, name, email, rol, enable, limit, offset, orderby, desc)
-	if e == models.ErrNoRows {
-		c.WE(e, 404)
+	return models.UserFilter{
+		Username: username,
+		Name:     name,
+		Email:    email,
+		Rol:      rol,
+		Enable:   enable,
 	}
-	c.WE(e, 500)
-
-	return data
 }

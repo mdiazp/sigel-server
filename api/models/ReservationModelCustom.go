@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/astaxie/beego/validation"
 )
 
 // ReservationCustomModel ...
@@ -239,4 +241,10 @@ func getnumber(s string) (int, error) {
 		x += int(c) - int('0')
 	}
 	return x, nil
+}
+
+// Valid ...
+func (r *ReservationInfo) Valid(v *validation.Validation) {
+	validateNotEmptyString("activityName", r.ActivityName, v)
+	validateNotEmptyString("activityDescription", r.ActivityDescription, v)
 }

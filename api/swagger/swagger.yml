@@ -212,6 +212,39 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/areascount:
+    get:
+      tags:
+      - admin
+      description: Get areas count (role admin required)
+      operationId: AreasController.Get Areas Count
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: search
+        description: Search in name
+        type: string
+      responses:
+        "200":
+          description: int
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /admin/local:
     get:
       tags:
@@ -1133,6 +1166,55 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /admin/userscount:
+    get:
+      tags:
+      - admin
+      description: Get users list (role admin required, user can't edit itself)
+      operationId: UsersController.Get Users Count
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: username
+        description: Prefix username
+        type: string
+      - in: query
+        name: name
+        description: search in Name
+        type: string
+      - in: query
+        name: email
+        description: search in email
+        type: string
+      - in: query
+        name: rol
+        description: Rol
+        type: string
+      - in: query
+        name: enable
+        description: enable (true or false)
+        type: string
+      responses:
+        "200":
+          description: int
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
   /private/session/logout:
     delete:
       tags:
@@ -1426,6 +1508,40 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/models.ReservationInfo'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - private
+      description: Cancel reservation (role user required)
+      operationId: ReservationsController.Cancel reservation
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: authHd
+        description: Authentication token
+        required: true
+        type: string
+      - in: query
+        name: reservationID
+        description: Reservation ID
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: string
         "400":
           description: Bad request
         "401":
@@ -1930,13 +2046,13 @@ paths:
         "500":
           description: Internal Server Error
 definitions:
-  .0xc42038fb40:
+  .0xc42037a260:
     type: object
-  .0xc42038fbe0:
+  .0xc42037a300:
     type: object
-  .0xc420358ec0:
+  .0xc420332600:
     type: object
-  .0xc420365240:
+  .0xc420346980:
     type: object
   .Notification:
     type: object
@@ -2010,7 +2126,7 @@ definitions:
       Name:
         type: string
       locals:
-        $ref: '#/definitions/13083.<nil>.0xc420365240'
+        $ref: '#/definitions/14528.<nil>.0xc420346980'
       model:
         $ref: '#/definitions/models.Model'
   models.AreaInfo:
@@ -2063,7 +2179,7 @@ definitions:
       area:
         $ref: '#/definitions/models.Area'
       localAdmins:
-        $ref: '#/definitions/9273.<nil>.0xc420358ec0'
+        $ref: '#/definitions/10718.<nil>.0xc420332600'
       model:
         $ref: '#/definitions/models.Model'
   models.LocalInfo:
@@ -2190,11 +2306,11 @@ definitions:
       Username:
         type: string
       localAdmins:
-        $ref: '#/definitions/22884.<nil>.0xc42038fb40'
+        $ref: '#/definitions/25125.<nil>.0xc42037a260'
       model:
         $ref: '#/definitions/models.Model'
       notifications:
-        $ref: '#/definitions/22914.<nil>.0xc42038fbe0'
+        $ref: '#/definitions/25155.<nil>.0xc42037a300'
   models.UserEdit:
     title: UserEdit
     type: object

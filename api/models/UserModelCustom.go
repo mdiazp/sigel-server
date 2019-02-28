@@ -10,9 +10,18 @@ import (
 type UserCustomModel interface {
 	GetUserByID(userID int) (*User, error)
 	GetUser(username string) (*User, error)
-	GetUsers(username *string, name *string, email *string,
-		rol *string, enable *bool, limit, offset *int,
+	GetUsers(filter UserFilter, limit, offset *int,
 		orderby *string, desc *bool) (*[]*User, error)
+	GetUsersCount(filter UserFilter) (int, error)
+}
+
+// UserFilter ...
+type UserFilter struct {
+	Username *string
+	Name     *string
+	Email    *string
+	Rol      *string
+	Enable   *bool
 }
 
 // GetUserByID ...
@@ -30,52 +39,13 @@ func (m *model) GetUser(username string) (*User, error) {
 }
 
 // GetUsers ...
-func (m *model) GetUsers(username *string, name *string, email *string,
-	rol *string, enable *bool, limit, offset *int,
+func (m *model) GetUsers(filter UserFilter, limit, offset *int,
 	orderby *string, desc *bool) (*[]*User, error) {
-	users := m.NewUserCollection()
-
-	where := ""
-
-	if username != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "k_user.username ilike '" + *username + "%'"
+	if orderby != nil {
+		*orderby = "k_user." + *orderby
 	}
 
-	if name != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "k_user.name ilike '%" + *name + "%'"
-	}
-
-	if email != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += "k_user.email ilike '%" + *email + "%'"
-	}
-
-	if rol != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("k_user.rol='%s'", *rol)
-	}
-
-	if enable != nil {
-		if where != "" {
-			where += " AND "
-		}
-		where += fmt.Sprintf("k_user.enable=%t", *enable)
-	}
-
-	hfilter := &where
-	if where == "" {
-		hfilter = nil
-	}
+	hf, join := m.MakeUserHorizontalFilter(filter)
 
 	if orderby == nil {
 		tmp := "username"
@@ -84,8 +54,64 @@ func (m *model) GetUsers(username *string, name *string, email *string,
 		desc = &tmp2
 	}
 
-	e := m.RetrieveCollection(hfilter, limit, offset, orderby, desc, users)
+	users := m.NewUserCollection()
+	e := m.RetrieveCollection(hf, limit, offset, orderby, desc, users, join...)
 	return users.Users, e
+}
+
+func (m *model) GetUsersCount(filter UserFilter) (int, error) {
+	hf, join := m.MakeUserHorizontalFilter(filter)
+
+	o := m.NewUser()
+	count := 0
+	e := m.RetrieveCount(hf, o, &count, join...)
+	return count, e
+}
+
+// MakeUserHorizontalFilter ...
+func (m *model) MakeUserHorizontalFilter(f UserFilter) (hf *string, join []*string) {
+	where := ""
+
+	if f.Username != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "k_user.username ilike '" + *f.Username + "%'"
+	}
+
+	if f.Name != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "k_user.name ilike '%" + *f.Name + "%'"
+	}
+
+	if f.Email != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += "k_user.email ilike '%" + *f.Email + "%'"
+	}
+
+	if f.Rol != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("k_user.rol='%s'", *f.Rol)
+	}
+
+	if f.Enable != nil {
+		if where != "" {
+			where += " AND "
+		}
+		where += fmt.Sprintf("k_user.enable=%t", *f.Enable)
+	}
+
+	if where != "" {
+		hf = &where
+	}
+
+	return
 }
 
 // Valid ...

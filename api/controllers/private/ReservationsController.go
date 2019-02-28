@@ -1,8 +1,10 @@
 package private
 
 import (
+	"fmt"
 	"strconv"
 
+	"github.com/mdiazp/sigel-server/api/app"
 	"github.com/mdiazp/sigel-server/api/controllers"
 	"github.com/mdiazp/sigel-server/api/models"
 )
@@ -47,6 +49,35 @@ func (c *ReservationsController) Post() {
 func (c *ReservationsController) Confirm() {
 	c.AccessControl(models.RolUser)
 	c.Data["json"] = c.BaseReservationsController.Confirm()
+	c.ServeJSON()
+}
+
+// Cancel ...
+// @Title Cancel reservation
+// @Description Cancel reservation (role user required)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	reservationID		query	int	true		"Reservation ID"
+// @Success 200 string
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /session/reservation [delete]
+func (c *ReservationsController) Cancel() {
+	r := c.LoadReservation()
+	u := c.GetAuthor()
+
+	/*beego.Debug("u.ID = ", u.ID, " r.UserID = ", r.UserID, " r.Pending = ", r.Pending)*/
+
+	if u.ID != r.UserID || !r.Pending {
+		c.WE(fmt.Errorf("Invalid operation"), 403)
+	}
+	e := app.Model().Delete(r)
+	c.WE(e, 500)
+
+	c.Data["json"] = "OK"
 	c.ServeJSON()
 }
 

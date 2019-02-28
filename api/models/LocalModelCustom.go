@@ -2,6 +2,8 @@ package models
 
 import (
 	"fmt"
+
+	"github.com/astaxie/beego/validation"
 )
 
 // LocalCustomModel ...
@@ -13,6 +15,7 @@ type LocalCustomModel interface {
 	GetLocalAdmins(localID int) (*UserCollection, error)
 }
 
+// LocalFilter ...
 type LocalFilter struct {
 	AreaID          *int
 	Search          *string
@@ -101,4 +104,11 @@ func (m *model) GetLocalAdmins(localID int) (*UserCollection, error) {
 	admins := m.NewUserCollection()
 	e := m.RetrieveCollection(&where, nil, nil, &orderby, &desc, admins, &join)
 	return admins, e
+}
+
+// Valid ...
+func (l *LocalInfo) Valid(v *validation.Validation) {
+	validateNotEmptyString("name", l.Name, v)
+	validateNotEmptyString("description", l.Description, v)
+	validateNotEmptyString("location", l.Location, v)
 }

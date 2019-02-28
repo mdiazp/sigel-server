@@ -108,3 +108,21 @@ func (c *AreasController) List() {
 	c.Data["json"] = c.BaseAreasController.List().Areas
 	c.ServeJSON()
 }
+
+// AreasCount ...
+// @Title Get Areas Count
+// @Description Get areas count (role admin required)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	search		query	string	false		"Search in name"
+// @Success 200 int
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /areascount [get]
+func (c *AreasController) AreasCount() {
+	c.Data["json"] = c.BaseAreasController.Count()
+	c.ServeJSON()
+}

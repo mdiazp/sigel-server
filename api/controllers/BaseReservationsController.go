@@ -30,7 +30,7 @@ func (c *BaseReservationsController) Show() *models.Reservation {
 // Create ...
 func (c *BaseReservationsController) Create() *models.Reservation {
 	if c.GetAuthor().Username == "SIREL" {
-		c.WE(fmt.Errorf("El Usuario SIREL no puede reservar"), 403)
+		c.WE(fmt.Errorf("El Usuario SIGEL no puede reservar"), 403)
 	}
 
 	rc := ReservationToCreate{}
@@ -44,7 +44,8 @@ func (c *BaseReservationsController) Create() *models.Reservation {
 	ri.ActivityDescription = rc.ActivityDescription
 	ri.BeginTime = rc.BeginTime
 	ri.EndTime = rc.EndTime
-	c.Validate(ri)
+
+	c.Validate(&ri)
 
 	r, me, e := app.Model().AddReservation(ri)
 
@@ -88,7 +89,7 @@ func (c *BaseController) Confirm() *models.Reservation {
 
 // AcceptReservation ...
 func (c *BaseReservationsController) AcceptReservation() {
-	r := c.loadReservation()
+	r := c.LoadReservation()
 	c.isLocalAdmin(r.LocalID, c.GetAuthor().ID)
 
 	// Notificate to user
@@ -116,7 +117,7 @@ func (c *BaseReservationsController) AcceptReservation() {
 
 // RefuseReservation ...
 func (c *BaseReservationsController) RefuseReservation() {
-	r := c.loadReservation()
+	r := c.LoadReservation()
 	c.isLocalAdmin(r.LocalID, c.GetAuthor().ID)
 
 	// Notificate to user
@@ -249,7 +250,8 @@ type ReservationToCreate struct {
 	EndTime             time.Time
 }
 
-func (c *BaseReservationsController) loadReservation() *models.Reservation {
+// LoadReservation ...
+func (c *BaseReservationsController) LoadReservation() *models.Reservation {
 	r := app.Model().NewReservation()
 	r.ID = *(c.ReadInt("reservation_id", true))
 	e := r.Load()

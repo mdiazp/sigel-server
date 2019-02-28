@@ -1,8 +1,6 @@
 package admin
 
 import (
-	"fmt"
-
 	"github.com/mdiazp/sigel-server/api/controllers"
 	"github.com/mdiazp/sigel-server/api/models"
 )
@@ -52,15 +50,15 @@ func (c *UsersController) Patch() {
 
 	uedit := models.UserEdit{}
 	c.ReadInputBody(&uedit)
+	/*
+		if u.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
+			c.WE(fmt.Errorf("Only user SIREL is enabled to edit superadmin users"), 403)
+		}
 
-	if u.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
-		c.WE(fmt.Errorf("Only user SIREL is enabled to edit superadmin users"), 403)
-	}
-
-	if uedit.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
-		c.WE(fmt.Errorf("Only user SIREl is enabled to create superadmin users"), 403)
-	}
-
+		if uedit.Rol == models.RolSuperadmin && c.GetAuthor().Username != "SIREL" {
+			c.WE(fmt.Errorf("Only user SIREl is enabled to create superadmin users"), 403)
+		}
+	*/
 	u.Rol = uedit.Rol
 	u.Enable = uedit.Enable
 	c.Validate(u)
@@ -96,5 +94,28 @@ func (c *UsersController) Patch() {
 func (c *UsersController) List() {
 	c.AccessControl(models.RolSuperadmin)
 	c.Data["json"] = c.BaseUsersController.GetUsers()
+	c.ServeJSON()
+}
+
+// UsersCount ...
+// @Title Get Users Count
+// @Description Get users list (role admin required, user can't edit itself)
+// @Param	authHd		header	string	true		"Authentication token"
+// @Param	username		query	string	false		"Prefix username"
+// @Param	name		query	string	false		"search in Name"
+// @Param	email		query	string	false		"search in email"
+// @Param	rol		query	string	false		"Rol"
+// @Param	enable		query	string	false		"enable (true or false)"
+// @Success 200 int
+// @Failure 400 Bad request
+// @Failure 401 Unauthorized
+// @Failure 403 Forbidden
+// @Failure 404 Not Found
+// @Failure 500 Internal Server Error
+// @Accept json
+// @router /userscount [get]
+func (c *UsersController) UsersCount() {
+	c.AccessControl(models.RolSuperadmin)
+	c.Data["json"] = c.BaseUsersController.Count()
 	c.ServeJSON()
 }

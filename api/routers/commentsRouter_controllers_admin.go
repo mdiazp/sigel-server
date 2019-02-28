@@ -47,6 +47,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:AreasController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:AreasController"],
+		beego.ControllerComments{
+			Method: "AreasCount",
+			Router: `/areascount`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:LocalsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:LocalsController"],
 		beego.ControllerComments{
 			Method: "Get",
@@ -203,6 +211,14 @@ func init() {
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/users`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:UsersController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/admin:UsersController"],
+		beego.ControllerComments{
+			Method: "UsersCount",
+			Router: `/userscount`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})

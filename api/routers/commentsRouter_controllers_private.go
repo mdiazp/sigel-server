@@ -89,6 +89,14 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/private:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/private:ReservationsController"],
 		beego.ControllerComments{
+			Method: "Cancel",
+			Router: `/session/reservation`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/private:ReservationsController"] = append(beego.GlobalControllerRouter["github.com/mdiazp/sigel-server/api/controllers/private:ReservationsController"],
+		beego.ControllerComments{
 			Method: "List",
 			Router: `/session/reservations`,
 			AllowHTTPMethods: []string{"get"},
